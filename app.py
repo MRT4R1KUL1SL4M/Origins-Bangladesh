@@ -1,4 +1,3 @@
-import pymysql
 """
 Origins Bangladesh - Flask + MySQL (mysql-connector-python)
 
@@ -30,6 +29,8 @@ from types import SimpleNamespace
 from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import urlencode, quote
 
+import mysql.connector
+from mysql.connector import Error as MySQLError
 from markupsafe import Markup
 from flask import (
     Flask,
@@ -1067,24 +1068,60 @@ _ATLAS_CACHE_TTL_SECONDS = 300  # 5 minutes
 # -----------------------
 # DB Helpers (mysql-connector)
 # -----------------------
-from flask import g
-
 def get_db():
-    if "db" not in g:
-        g.db = pymysql.connect(
-            host=app.config["DB_HOST"],
-            user=app.config["DB_USER"],
-            password=app.config["DB_PASSWORD"],
-            database=app.config["DB_NAME"],
-            port=int(app.config["DB_PORT"]),
-            connect_timeout=10,
-            read_timeout=30,
-            write_timeout=30,
-            ssl={"ca": "/etc/ssl/certs/ca-certificates.crt"},
-            cursorclass=pymysql.cursors.DictCursor,
-            autocommit=True,
-        )
-    return g.db
+    """Create a new DB connection. Uses config.Config env values.
+
+    NOTE (Windows/local dev):
+    - Many local MySQL installs do NOT use SSL on localhost.
+    - If the client attempts SSL, you may see:
+      SSL: WRONG_VERSION_NUMBER / WinError 10053 / InterfaceError 2055.
+    - Default behavior here: disable SSL unless explicit SSL certs are provided,
+      or you set DB_SSL_DISABLED=false.
+    """
+    host = app.config.get("DB_HOST")
+    user = app.config.get("DB_USER")
+    password = app.config.get("DB_PASSWORD")
+    database = app.config.get("DB_NAME")
+    port = int(app.config.get("DB_PORT") or 3306)
+
+    # SSL controls (optional)
+    # - If you provide DB_SSL_CA / DB_SSL_CERT / DB_SSL_KEY, SSL will be used.
+    # - Otherwise SSL is disabled by default to avoid localhost handshake issues.
+    ssl_ca = os.getenv("DB_SSL_CA") or None
+    ssl_cert = os.getenv("DB_SSL_CERT") or None
+    ssl_key = os.getenv("DB_SSL_KEY") or None
+    ssl_verify_cert = (os.getenv("DB_SSL_VERIFY_CERT", "false").strip().lower() in ("1", "true", "yes", "on"))
+
+    # When no SSL materials are supplied, disable SSL by default.
+    # You can override by setting DB_SSL_DISABLED=false
+    ssl_disabled_env = os.getenv("DB_SSL_DISABLED", "true").strip().lower()
+    ssl_disabled = (ssl_disabled_env in ("1", "true", "yes", "on"))
+
+    connect_kwargs = dict(
+        host=host,
+        user=user,
+        password=password,
+        database=database,
+        port=port,
+        autocommit=False,
+        connection_timeout=10,
+    )
+
+    if ssl_ca or ssl_cert or ssl_key:
+        # Use SSL when explicit cert material is provided
+        if ssl_ca:
+            connect_kwargs["ssl_ca"] = ssl_ca
+        if ssl_cert:
+            connect_kwargs["ssl_cert"] = ssl_cert
+        if ssl_key:
+            connect_kwargs["ssl_key"] = ssl_key
+        connect_kwargs["ssl_verify_cert"] = ssl_verify_cert
+        # Some server configs require SSL; in that case do NOT set ssl_disabled.
+    else:
+        # Default safe local behavior
+        connect_kwargs["ssl_disabled"] = ssl_disabled
+
+    return mysql.connector.connect(**connect_kwargs)
 
 
 def _load_atlas_district_names() -> List[str]:
@@ -10653,10 +10690,3 @@ def api_seller_campaign_request():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-@app.teardown_appcontext
-def close_db(exception):
-    from flask import g
-    db = g.pop("db", None)
-    if db is not None:
-        db.close()
