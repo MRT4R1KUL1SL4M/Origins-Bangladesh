@@ -1069,61 +1069,28 @@ _ATLAS_CACHE_TTL_SECONDS = 300  # 5 minutes
 # DB Helpers (mysql-connector)
 # -----------------------
 def get_db():
-    """Create a new DB connection. Uses config.Config env values.
+import mysql.connector
 
-    NOTE (Windows/local dev):
-    - Many local MySQL installs do NOT use SSL on localhost.
-    - If the client attempts SSL, you may see:
-      SSL: WRONG_VERSION_NUMBER / WinError 10053 / InterfaceError 2055.
-    - Default behavior here: disable SSL unless explicit SSL certs are provided,
-      or you set DB_SSL_DISABLED=false.
-    """
-    host = app.config.get("DB_HOST")
-    user = app.config.get("DB_USER")
-    password = app.config.get("DB_PASSWORD")
-    database = app.config.get("DB_NAME")
-    port = int(app.config.get("DB_PORT") or 3306)
+host = app.config.get("DB_HOST")
+user = app.config.get("DB_USER")
+password = app.config.get("DB_PASSWORD")
+database = app.config.get("DB_NAME")
+port = int(app.config.get("DB_PORT") or 4000)
 
-    # SSL controls (optional)
-    # - If you provide DB_SSL_CA / DB_SSL_CERT / DB_SSL_KEY, SSL will be used.
-    # - Otherwise SSL is disabled by default to avoid localhost handshake issues.
-    ssl_ca = os.getenv("DB_SSL_CA") or None
-    ssl_cert = os.getenv("DB_SSL_CERT") or None
-    ssl_key = os.getenv("DB_SSL_KEY") or None
-    ssl_verify_cert = (os.getenv("DB_SSL_VERIFY_CERT", "false").strip().lower() in ("1", "true", "yes", "on"))
+connect_kwargs = dict(
+    host=host,
+    user=user,
+    password=password,
+    database=database,
+    port=port,
+    autocommit=False,
+    connection_timeout=10,
 
-    # When no SSL materials are supplied, disable SSL by default.
-    # You can override by setting DB_SSL_DISABLED=false
-    ssl_disabled_env = os.getenv("DB_SSL_DISABLED", "true").strip().lower()
-    ssl_disabled = (ssl_disabled_env in ("1", "true", "yes", "on"))
+    # ✅ VERY IMPORTANT FOR TiDB
+    ssl_disabled=False,
+)
 
-    connect_kwargs = dict(
-        host=host,
-        user=user,
-        password=password,
-        database=database,
-        port=port,
-        autocommit=False,
-        connection_timeout=10,
-    )
-
-    if ssl_ca or ssl_cert or ssl_key:
-        # Use SSL when explicit cert material is provided
-        if ssl_ca:
-            connect_kwargs["ssl_ca"] = ssl_ca
-        if ssl_cert:
-            connect_kwargs["ssl_cert"] = ssl_cert
-        if ssl_key:
-            connect_kwargs["ssl_key"] = ssl_key
-        connect_kwargs["ssl_verify_cert"] = ssl_verify_cert
-        # Some server configs require SSL; in that case do NOT set ssl_disabled.
-    else:
-        # Default safe local behavior
-        connect_kwargs["ssl_ca"] = "/etc/ssl/certs/ca-certificates.crt"
-        connect_kwargs["ssl_verify_cert"] = True
-
-    return mysql.connector.connect(**connect_kwargs)
-
+return mysql.connector.connect(**connect_kwargs)
 
 def _load_atlas_district_names() -> List[str]:
     data_path = FSPath(app.root_path) / "static" / "assets" / "data" / "districts.json"
