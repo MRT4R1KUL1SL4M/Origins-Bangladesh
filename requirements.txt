@@ -1,9 +1,9 @@
-Flask==3.0.3
-python-dotenv==1.0.1
-mysql-connector-python==9.0.0
-reportlab>=4.0.0
-openpyxl>=3.1.2
-gunicorn==22.0.0
-weasyprint>=61.2
 PyMySQL==1.1.1
 cryptography>=42.0.0
+gunicorn==22.0.0
+Flask
+python-dotenv
+reportlab
+openpyxl
+markupsafe
+werkzeug
