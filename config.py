@@ -1,19 +1,24 @@
-import os
+def get_db():
+    host = app.config.get("DB_HOST")
+    user = app.config.get("DB_USER")
+    password = app.config.get("DB_PASSWORD")
+    database = app.config.get("DB_NAME")
+    port = int(app.config.get("DB_PORT") or 4000)
 
+    connect_kwargs = dict(
+        host=host,
+        port=port,
+        user=user,
+        password=password,
+        database=database,
+        autocommit=False,
+        connection_timeout=15,
+        ssl_disabled=False,
+    )
 
-class Config:
-    SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
+    ca_path = os.getenv("DB_SSL_CA", "").strip()
+    if ca_path:
+        connect_kwargs["ssl_ca"] = ca_path
+        connect_kwargs["ssl_verify_cert"] = True
 
-    DB_HOST = os.getenv("DB_HOST")
-    DB_PORT = int(os.getenv("DB_PORT", "4000"))
-    DB_USER = os.getenv("DB_USER")
-    DB_PASSWORD = os.getenv("DB_PASSWORD")
-    DB_NAME = os.getenv("DB_NAME")
-
-    SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
-    SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-    SMTP_USER = os.getenv("SMTP_USER")
-    SMTP_PASS = os.getenv("SMTP_PASS")
-    SMTP_FROM = os.getenv("SMTP_FROM", SMTP_USER)
-
-    BASE_URL = os.getenv("BASE_URL", "")
+    return mysql.connector.connect(**connect_kwargs)
