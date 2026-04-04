@@ -1,15 +1,3 @@
-"""
-Origins Bangladesh - Flask + MySQL (mysql-connector-python)
-
-Goal: Navbar buttons behave realistically:
-- Search -> /shop?q=...
-- Currency change -> /set-currency/<code> (session)
-- Wishlist -> /wishlist (DB-backed)
-- Cart -> /cart (DB-backed)
-- Login/Register -> /auth/login, /auth/register (DB-backed)
-- Category/Subcategory -> /shop?category=...&sub=...
-"""
-
 from __future__ import annotations
 
 import os
