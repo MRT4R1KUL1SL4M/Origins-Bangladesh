@@ -1119,7 +1119,8 @@ def get_db():
         # Some server configs require SSL; in that case do NOT set ssl_disabled.
     else:
         # Default safe local behavior
-        connect_kwargs["ssl_disabled"] = ssl_disabled
+        connect_kwargs["ssl_ca"] = "/etc/ssl/certs/ca-certificates.crt"
+        connect_kwargs["ssl_verify_cert"] = True
 
     return mysql.connector.connect(**connect_kwargs)
 
