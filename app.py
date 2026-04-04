@@ -29,8 +29,8 @@ from types import SimpleNamespace
 from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import urlencode, quote
 
-import mysql.connector
-from mysql.connector import Error as MySQLError
+import pymysql
+from pymysql import MySQLError
 from markupsafe import Markup
 from flask import (
     Flask,
@@ -1069,18 +1069,24 @@ _ATLAS_CACHE_TTL_SECONDS = 300  # 5 minutes
 # DB Helpers (mysql-connector)
 # -----------------------
 def get_db():
-    return mysql.connector.connect(
-        host=app.config["DB_HOST"],
-        user=app.config["DB_USER"],
-        password=app.config["DB_PASSWORD"],
-        database=app.config["DB_NAME"],
-        port=int(app.config["DB_PORT"]),
-        
-        ssl_ca="/etc/ssl/certs/ca-certificates.crt",  # ✅ ADD THIS
-        ssl_verify_cert=True,                         # ✅ ADD THIS
-        
-        connection_timeout=10,
+    """Create a new DB connection using PyMySQL + TLS for TiDB Cloud."""
+    host = app.config.get("DB_HOST")
+    user = app.config.get("DB_USER")
+    password = app.config.get("DB_PASSWORD")
+    database = app.config.get("DB_NAME")
+    port = int(app.config.get("DB_PORT") or 4000)
+
+    return pymysql.connect(
+        host=host,
+        user=user,
+        password=password,
+        database=database,
+        port=port,
+        connect_timeout=10,
+        ssl={"ca": "/etc/ssl/certs/ca-certificates.crt"},
+        autocommit=False,
     )
+
 
 def _load_atlas_district_names() -> List[str]:
     data_path = FSPath(app.root_path) / "static" / "assets" / "data" / "districts.json"
@@ -1134,7 +1140,7 @@ def _ensure_atlas_districts_seeded() -> None:
 def db_fetchall(sql: str, params: Tuple[Any, ...] = ()) -> List[Dict[str, Any]]:
     conn = get_db()
     try:
-        cur = conn.cursor(dictionary=True)
+        cur = conn.cursor(pymysql.cursors.DictCursor)
         cur.execute(sql, params)
         rows = cur.fetchall()
         return rows or []
@@ -1148,7 +1154,7 @@ def db_fetchall(sql: str, params: Tuple[Any, ...] = ()) -> List[Dict[str, Any]]:
 def db_fetchone(sql: str, params: Tuple[Any, ...] = ()) -> Optional[Dict[str, Any]]:
     conn = get_db()
     try:
-        cur = conn.cursor(dictionary=True)
+        cur = conn.cursor(pymysql.cursors.DictCursor)
         cur.execute(sql, params)
         row = cur.fetchone()
         return row
@@ -1193,7 +1199,7 @@ def _next_ob_seq(type_code: str, yymm: str, start_seq: int) -> int:
     """
     conn = get_db()
     try:
-        cur = conn.cursor(dictionary=True)
+        cur = conn.cursor(pymysql.cursors.DictCursor)
         cur.execute(
             """
             INSERT INTO ob_id_sequence (type_code, yymm, last_seq)
@@ -4960,7 +4966,7 @@ def process_checkout():
         return redirect(url_for("cart"))
     conn = get_db()
     try:
-        cur = conn.cursor(dictionary=True)
+        cur = conn.cursor(pymysql.cursors.DictCursor)
         for item in summary["items"]:
             cur.execute("SELECT stock, price_bdt, title FROM product WHERE product_id=%s FOR UPDATE", (item["product_id"],))
             prow = cur.fetchone() or {}
