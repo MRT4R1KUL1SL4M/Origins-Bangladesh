@@ -1,0 +1,125 @@
+<footer class="bg-[#050505] text-[#9ca3af] pt-20 pb-10 border-t border-[#d4a373]/20 font-inter">
+    <!-- Top Section: Newsletter -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 pb-16 border-b border-[#262626]">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+            <div>
+                <h3 class="text-3xl font-serif text-[#d4a373] mb-2 font-bold">Join the Heritage Circle</h3>
+                <p class="text-sm text-[#9ca3af] max-w-md">Subscribe to receive exclusive access to our newest GI
+                    collection drops, artisan stories, and heritage preservation news.</p>
+            </div>
+            <form method="post" action="{{ url_for('newsletter_subscribe') }}" class="flex w-full lg:w-auto gap-2">
+                <input type="hidden" name="next" value="{{ request.full_path }}">
+                <div class="relative w-full lg:w-80">
+                    <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                    <input type="email" name="email" required placeholder="Enter your email address"
+                        class="w-full bg-[#1a1a1a] border border-[#333] rounded-lg py-3 pl-12 pr-4 text-sm text-white focus:outline-none focus:border-[#d4a373] transition h-12">
+                </div>
+                <button type="submit"
+                    class="bg-[#d4a373] text-[#050505] px-6 py-3 rounded-lg font-bold text-sm hover:bg-[#b58556] transition flex items-center gap-2 h-12 whitespace-nowrap btn-animate">
+                    Subscribe <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Middle Section: Links -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <!-- Column 1: Brand -->
+        <div>
+            <div class="mb-6">
+                <span class="text-2xl font-bold text-[#d4a373] tracking-tighter font-serif block">ORIGINS</span>
+                <span
+                    class="text-[10px] tracking-[0.4em] text-[#9ca3af] uppercase font-bold block mt-1">BANGLADESH</span>
+            </div>
+            <p class="text-sm leading-relaxed mb-8 text-[#9ca3af]">Preserving the soul of Bengal, one artifact at a
+                time. We bridge the gap between world-class GI products and master craftsmen.</p>
+            <div class="flex gap-4">
+                <a href="#"
+                    class="w-10 h-10 rounded-full border border-[#333] flex items-center justify-center text-[#9ca3af] hover:text-[#d4a373] hover:border-[#d4a373] transition btn-animate"><i
+                        class="fa-brands fa-twitter"></i></a>
+                <a href="#"
+                    class="w-10 h-10 rounded-full border border-[#333] flex items-center justify-center text-[#9ca3af] hover:text-[#d4a373] hover:border-[#d4a373] transition btn-animate"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="#"
+                    class="w-10 h-10 rounded-full border border-[#333] flex items-center justify-center text-[#9ca3af] hover:text-[#d4a373] hover:border-[#d4a373] transition btn-animate"><i
+                        class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"
+                    class="w-10 h-10 rounded-full border border-[#333] flex items-center justify-center text-[#9ca3af] hover:text-[#d4a373] hover:border-[#d4a373] transition btn-animate"><i
+                        class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+        </div>
+
+        <!-- Column 2: Curated Collection -->
+        <div>
+            <h4 class="text-[#d4a373] text-xs font-bold uppercase tracking-widest mb-6">Curated Collection</h4>
+            <ul class="space-y-4 text-sm">
+                <li><a href="{{ url_for('info_heirlooms') }}" class="footer-link-anim">Heirlooms</a></li>
+                <li><a href="{{ url_for('info_essentials') }}" class="footer-link-anim">Essentials</a></li>
+                <li><a href="{{ url_for('info_curios') }}" class="footer-link-anim">Curios</a></li>
+                <li><a href="{{ url_for('info_masterpieces') }}" class="footer-link-anim">Masterpieces</a></li>
+            </ul>
+        </div>
+
+        <!-- Column 3: Support & Care -->
+        <div>
+            <h4 class="text-[#d4a373] text-xs font-bold uppercase tracking-widest mb-6">Support & Care</h4>
+            <ul class="space-y-4 text-sm">
+                <li><a href="{{ url_for('support_track_order') }}" class="footer-link-anim">Track Your Order</a></li>
+                <li><a href="{{ url_for('support_shipping_returns') }}" class="footer-link-anim">Shipping & Returns</a>
+                </li>
+                <li><a href="{{ url_for('support_help_center') }}" class="footer-link-anim">Help Center</a></li>
+                <li><a href="{{ url_for('business_wholesale') }}" class="footer-link-anim">Wholesale / B2B</a></li>
+            </ul>
+        </div>
+
+        <!-- Column 4: Trust -->
+        <div>
+            <h4 class="text-[#d4a373] text-xs font-bold uppercase tracking-widest mb-6">Trust & Authority</h4>
+            <ul class="space-y-4 text-sm mb-8">
+                <li><a href="{{ url_for('impact_artisan_welfare') }}" class="footer-link-anim">Our Artisan Welfare</a>
+                </li>
+                <li><a href="{{ url_for('impact_sustainability') }}" class="footer-link-anim">Sustainability
+                        Commitment</a></li>
+                <li><a href="{{ url_for('legal_privacy_terms') }}" class="footer-link-anim">Privacy & Terms</a></li>
+            </ul>
+
+            <!-- Badge -->
+            <div
+                class="bg-[#1a1a1a] rounded-lg px-4 py-3 flex items-center gap-3 border border-[#333] hover:border-[#d4a373]/30 transition duration-300 relative">
+
+                <!-- Logo (independent size) -->
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full overflow-hidden">
+                    <img src="/static/assets/img/compile-breakers-logo.png" alt="Compile Breakers Team Logo"
+                        class="w-full h-full object-cover">
+                </div>
+
+                <!-- Text -->
+                <div class="pl-12">
+                    <div class="text-[10px] font-bold text-white uppercase tracking-wider">
+                        Official Partner
+                    </div>
+                    <div class="text-[9px] font-bold text-[#666]">
+                        Compile Breakers Team
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div
+        class="max-w-7xl mx-auto px-6 lg:px-8 pt-8 flex flex-col md:flex-row justify-between items-center border-t border-[#262626] gap-4">
+        <div class="text-[10px] font-bold uppercase tracking-widest text-[#666]">
+            &copy; 2026 Origins Bangladesh. All Rights Reserved. <span class="mx-2 text-[#333]">|</span> <span
+                class="text-[#d4a373]">Woven with Soul — Crafted by Compile Breakers Team</span>
+        </div>
+        <div class="flex items-center gap-4 opacity-60 grayscale hover:grayscale-0 transition duration-500">
+            <i class="fa-brands fa-cc-visa text-2xl text-white"></i>
+            <i class="fa-brands fa-cc-mastercard text-2xl text-white"></i>
+            <!-- Custom text icons for local payment -->
+            <span class="font-bold text-[10px] bg-white text-pink-600 px-1 py-0.5 rounded">bKash</span>
+            <span class="font-bold text-[10px] bg-orange-600 text-white px-1 py-0.5 rounded">Nagad</span>
+        </div>
+    </div>
+</footer>

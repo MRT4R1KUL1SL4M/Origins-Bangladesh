@@ -1,0 +1,29 @@
+{% extends 'emails/_base.html' %}
+
+{% block body %}
+  <h2 style="margin: 0 0 16px 0; font-family: 'Georgia', serif; font-size: 22px; font-weight: normal; color: #111827;">
+    {{ title or 'Your verification code' }}
+  </h2>
+  
+  <div style="color: #4b5563; font-size: 15px; line-height: 1.8; font-weight: 400;">
+    <p style="margin: 0 0 24px 0;">
+      Use the code below to continue. It expires in <strong>{{ expires_minutes or 10 }} minutes</strong>.
+    </p>
+
+    <!-- Verification Code Box -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+      <tr>
+        <td align="center" style="background-color: #111827; border: 1px solid #D4AF37; border-radius: 8px; padding: 24px;">
+          <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; font-size: 32px; font-weight: bold; color: #D4AF37; letter-spacing: 8px; margin-right: -8px;">
+            {{ otp }}
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Helper Text -->
+    <div style="margin-top: 10px; padding-top: 16px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 12px; line-height: 1.6;">
+      If you didn’t request this, you can safely ignore this email.
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Admin Profile Updated - Origins Bangladesh</title>
+  <style>
+    /* Reset & Client-specific fixes */
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; }
+    img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+    table { border-collapse: collapse !important; }
+    body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; }
+    
+    /* Hover effects for links */
+    .footer-link:hover { color: #006A4E !important; text-decoration: underline !important; }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f5f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';">
+  
+  <!-- Hidden Preheader Text -->
+  <div style="display: none; max-height: 0px; overflow: hidden; mso-hide: all; font-size: 0px; line-height: 0px; color: #f4f5f7;">
+    Security Notice: Your admin profile details have been updated. &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f5f7; padding: 40px 15px;">
+    <tr>
+      <td align="center">
+        <!-- Main Container -->
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; width: 100%; margin: auto;">
+          
+          <!-- Header Area -->
+          <tr>
+            <td align="center" style="padding: 20px 0 40px 0;">
+              <h1 style="margin: 0; font-family: 'Georgia', serif; font-size: 28px; font-weight: normal; letter-spacing: 3px; text-transform: uppercase;">
+                <span style="color: #D4AF37; font-weight: bold;">ORIGINS</span> <span style="color: #006A4E;">BANGLA</span><span style="color: #F42A41;">DESH</span>
+              </h1>
+              <p style="margin: 8px 0 0 0; font-size: 11px; color: #888888; letter-spacing: 2px; text-transform: uppercase;">
+                Admin Portal Security Notice
+              </p>
+            </td>
+          </tr>
+
+          <!-- Main Content Area -->
+          <tr>
+            <td style="background-color: #ffffff; border-radius: 8px; padding: 48px 40px; border: 1px solid #e5e7eb; border-top: 4px solid #D4AF37; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);">
+              
+              <h2 style="margin: 0 0 16px 0; font-family: 'Georgia', serif; font-size: 22px; font-weight: normal; color: #111827;">Profile Updated</h2>
+              
+              <div style="color: #4b5563; font-size: 15px; line-height: 1.8; font-weight: 400;">
+                <p style="margin: 0 0 16px 0;">Hello <strong>{{ name }}</strong>,</p>
+                <p style="margin: 0 0 24px 0;">Your admin profile details were recently updated by the Super Admin.</p>
+
+                <!-- Updated Details Box -->
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin-bottom: 30px;">
+                  <tr>
+                    <td style="padding: 12px 16px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-bottom: 1px solid #e5e7eb;">
+                      Updated Details
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 16px; font-size: 14px; color: #4b5563; line-height: 1.8;">
+                      <div style="margin-bottom: 6px;"><strong style="color: #111827; display: inline-block; width: 100px;">Name:</strong> {{ name }}</div>
+                      <div style="margin-bottom: 6px;"><strong style="color: #111827; display: inline-block; width: 100px;">Email:</strong> {{ email }}</div>
+                      <div style="margin-bottom: 6px;"><strong style="color: #111827; display: inline-block; width: 100px;">Phone:</strong> {{ phone }}</div>
+                      <div><strong style="color: #111827; display: inline-block; width: 100px;">Designation:</strong> {{ designation }}</div>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Action Button -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td align="center" style="background-color: #111827; border: 1px solid #D4AF37; border-radius: 4px;">
+                      <a href="{{ login_url }}" target="_blank" style="display: inline-block; padding: 12px 30px; color: #D4AF37; text-decoration: none; font-size: 13px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">Open Admin Portal</a>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Time -->
+                <p style="margin: 25px 0 0 0; font-size: 12px; color: #9ca3af;">
+                  <strong>Time (UTC):</strong> {{ when_utc }}
+                </p>
+
+                <!-- Security Warning Box -->
+                <div style="margin-top: 25px; padding: 16px; background-color: #fffbeb; border-left: 4px solid #D4AF37; font-size: 13px; color: #92400e; border-radius: 0 4px 4px 0;">
+                  <strong>Security Notice:</strong> If you did not expect this change, please contact support immediately.
+                </div>
+              </div>
+              
+            </td>
+          </tr>
+
+          <!-- Footer Area -->
+          <tr>
+            <td align="center" style="padding: 40px 10px 20px 10px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                
+                <!-- Separator Line -->
+                <tr>
+                  <td align="center" style="padding-bottom: 20px;">
+                    <div style="height: 1px; width: 60px; background-color: #d1d5db; margin: 0 auto;"></div>
+                  </td>
+                </tr>
+                
+                <!-- Signature & Copyright -->
+                <tr>
+                  <td align="center" style="padding-top: 15px; color: #9ca3af; font-size: 12px; line-height: 1.6;">
+                    &copy; {{ year or 2026 }} <span style="font-weight: 600;"><span style="color: #D4AF37;">Origins</span> <span style="color: #006A4E;">Bangla</span><span style="color: #F42A41;">desh</span></span>. All rights reserved.
+                    <br/>
+                    <span style="display: inline-block; margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb;">
+                      System notification managed by <strong style="color: #D4AF37;">Compile Breakers Team</strong>
+                    </span>
+                  </td>
+                </tr>
+
+              </table>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

@@ -1,0 +1,627 @@
+{% extends 'base.html' %}
+{% block title %}Secure Checkout | Origins Bangladesh{% endblock %}
+
+{% block content %}
+<div class="bg-[#F8F5F1] min-h-screen pb-24 font-sans selection:bg-[#006A4E] selection:text-white">
+  
+  <!-- JS data storage -->
+  <div id="checkout-data" data-subtotal="{{ subtotal|default(0) }}" data-shipping="{{ shipping_bdt|default(0) }}" data-cod-fee="{{ cod_fee_bdt|default(50) }}" data-discount="{{ discount_bdt|default(0) }}" data-currency="৳" class="hidden"></div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+    
+    <!-- Checkout Form -->
+    <form action="{{ url_for('process_checkout') if process_checkout else '#' }}" method="POST" class="lg:grid lg:grid-cols-12 lg:gap-x-12 xl:gap-x-16" id="checkout-form">
+      
+      <!-- Left Column: Customer Details & Payment -->
+      <div class="lg:col-span-7 space-y-12">
+        
+        <!-- Premium Breadcrumbs -->
+        <nav class="flex items-center text-[10px] font-bold uppercase tracking-widest text-slate-400 space-x-3 mb-8" aria-label="Breadcrumb">
+          <a href="{{ url_for('cart') }}" class="hover:text-[#D4AF37] transition-colors">Bag</a>
+          <svg class="h-3 w-3 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+          <span class="text-[#006A4E]">Information & Payment</span>
+        </nav>
+
+        <!-- Contact Information -->
+        <section class="bg-white rounded-[2rem] p-8 lg:p-10 border border-[#D4AF37]/20 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)]">
+          <div class="mb-8 border-b border-[#D4AF37]/10 pb-6">
+            <h2 class="text-2xl font-normal text-[#006A4E] tracking-wide" style="font-family: 'Georgia', serif;">Contact Information</h2>
+          </div>
+          
+          <div class="space-y-5">
+            <div>
+              <label for="email" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Email Address</label>
+              <input type="email" id="email" name="email" value="{{ buyer_email }}" required placeholder="Enter your email" 
+                     class="w-full px-5 py-3.5 rounded-xl border border-[#D4AF37]/30 bg-[#F8F5F1] text-[#111827] placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all font-medium text-sm" />
+            </div>
+            <div class="flex items-center pt-2">
+              <input id="offers" name="offers" type="checkbox" class="h-4 w-4 rounded border-[#D4AF37]/50 text-[#006A4E] focus:ring-[#006A4E] cursor-pointer bg-[#F8F5F1] transition-colors">
+              <label for="offers" class="ml-3 text-[13px] font-medium text-slate-600 cursor-pointer select-none">Keep me updated on exclusive news and offers</label>
+            </div>
+          </div>
+        </section>
+
+        <!-- Shipping Address -->
+        <section class="bg-white rounded-[2rem] p-8 lg:p-10 border border-[#D4AF37]/20 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)]">
+          <h2 class="text-2xl font-normal text-[#006A4E] tracking-wide mb-8 border-b border-[#D4AF37]/10 pb-6" style="font-family: 'Georgia', serif;">Shipping Address</h2>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <!-- Country Selection -->
+            <div class="sm:col-span-2">
+              <label for="country" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Country/Region</label>
+              <div class="relative">
+                <select id="country" name="country" required
+                        class="w-full px-5 py-3.5 rounded-xl border border-[#D4AF37]/30 bg-[#F8F5F1] text-[#111827] focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all font-medium text-sm appearance-none cursor-pointer">
+                  <option value="BD" data-shipping="100" {% if selected_country == 'BD' %}selected{% endif %}>Bangladesh</option>
+                  <option value="AF" data-shipping="2500">Afghanistan</option>
+                  <option value="AL" data-shipping="3000">Albania</option>
+                  <option value="DZ" data-shipping="3000">Algeria</option>
+                  <option value="AD" data-shipping="3000">Andorra</option>
+                  <option value="AO" data-shipping="3500">Angola</option>
+                  <option value="AG" data-shipping="3000">Antigua and Barbuda</option>
+                  <option value="AR" data-shipping="3500">Argentina</option>
+                  <option value="AM" data-shipping="2500">Armenia</option>
+                  <option value="AU" data-shipping="2800">Australia</option>
+                  <option value="AT" data-shipping="2500">Austria</option>
+                  <option value="AZ" data-shipping="2500">Azerbaijan</option>
+                  <option value="BS" data-shipping="3000">Bahamas</option>
+                  <option value="BH" data-shipping="2000">Bahrain</option>
+                  <option value="BB" data-shipping="3000">Barbados</option>
+                  <option value="BY" data-shipping="2500">Belarus</option>
+                  <option value="BE" data-shipping="2500">Belgium</option>
+                  <option value="BZ" data-shipping="3000">Belize</option>
+                  <option value="BJ" data-shipping="3500">Benin</option>
+                  <option value="BT" data-shipping="1000">Bhutan</option>
+                  <option value="BO" data-shipping="3500">Bolivia</option>
+                  <option value="BA" data-shipping="3000">Bosnia and Herzegovina</option>
+                  <option value="BW" data-shipping="3500">Botswana</option>
+                  <option value="BR" data-shipping="3500">Brazil</option>
+                  <option value="BN" data-shipping="2000">Brunei</option>
+                  <option value="BG" data-shipping="2500">Bulgaria</option>
+                  <option value="BF" data-shipping="3500">Burkina Faso</option>
+                  <option value="BI" data-shipping="3500">Burundi</option>
+                  <option value="CV" data-shipping="3500">Cabo Verde</option>
+                  <option value="KH" data-shipping="2000">Cambodia</option>
+                  <option value="CM" data-shipping="3500">Cameroon</option>
+                  <option value="CA" data-shipping="2600">Canada</option>
+                  <option value="CF" data-shipping="3500">Central African Republic</option>
+                  <option value="TD" data-shipping="3500">Chad</option>
+                  <option value="CL" data-shipping="3500">Chile</option>
+                  <option value="CN" data-shipping="2000">China</option>
+                  <option value="CO" data-shipping="3500">Colombia</option>
+                  <option value="KM" data-shipping="3500">Comoros</option>
+                  <option value="CG" data-shipping="3500">Congo (Congo-Brazzaville)</option>
+                  <option value="CR" data-shipping="3000">Costa Rica</option>
+                  <option value="CI" data-shipping="3500">Côte d'Ivoire</option>
+                  <option value="HR" data-shipping="2500">Croatia</option>
+                  <option value="CU" data-shipping="3500">Cuba</option>
+                  <option value="CY" data-shipping="2500">Cyprus</option>
+                  <option value="CZ" data-shipping="2500">Czechia (Czech Republic)</option>
+                  <option value="DK" data-shipping="2500">Denmark</option>
+                  <option value="DJ" data-shipping="3500">Djibouti</option>
+                  <option value="DM" data-shipping="3000">Dominica</option>
+                  <option value="DO" data-shipping="3000">Dominican Republic</option>
+                  <option value="EC" data-shipping="3500">Ecuador</option>
+                  <option value="EG" data-shipping="2500">Egypt</option>
+                  <option value="SV" data-shipping="3000">El Salvador</option>
+                  <option value="GQ" data-shipping="3500">Equatorial Guinea</option>
+                  <option value="ER" data-shipping="3500">Eritrea</option>
+                  <option value="EE" data-shipping="2500">Estonia</option>
+                  <option value="SZ" data-shipping="3500">Eswatini</option>
+                  <option value="ET" data-shipping="3500">Ethiopia</option>
+                  <option value="FJ" data-shipping="3000">Fiji</option>
+                  <option value="FI" data-shipping="2500">Finland</option>
+                  <option value="FR" data-shipping="2500">France</option>
+                  <option value="GA" data-shipping="3500">Gabon</option>
+                  <option value="GM" data-shipping="3500">Gambia</option>
+                  <option value="GE" data-shipping="2500">Georgia</option>
+                  <option value="DE" data-shipping="2500">Germany</option>
+                  <option value="GH" data-shipping="3500">Ghana</option>
+                  <option value="GR" data-shipping="2500">Greece</option>
+                  <option value="GD" data-shipping="3000">Grenada</option>
+                  <option value="GT" data-shipping="3000">Guatemala</option>
+                  <option value="GN" data-shipping="3500">Guinea</option>
+                  <option value="GW" data-shipping="3500">Guinea-Bissau</option>
+                  <option value="GY" data-shipping="3500">Guyana</option>
+                  <option value="HT" data-shipping="3000">Haiti</option>
+                  <option value="HN" data-shipping="3000">Honduras</option>
+                  <option value="HU" data-shipping="2500">Hungary</option>
+                  <option value="IS" data-shipping="2500">Iceland</option>
+                  <option value="IN" data-shipping="1000">India</option>
+                  <option value="ID" data-shipping="1500">Indonesia</option>
+                  <option value="IR" data-shipping="2000">Iran</option>
+                  <option value="IQ" data-shipping="2000">Iraq</option>
+                  <option value="IE" data-shipping="2500">Ireland</option>
+                  <option value="IL" data-shipping="2000">Israel</option>
+                  <option value="IT" data-shipping="2500">Italy</option>
+                  <option value="JM" data-shipping="3000">Jamaica</option>
+                  <option value="JP" data-shipping="2500">Japan</option>
+                  <option value="JO" data-shipping="2000">Jordan</option>
+                  <option value="KZ" data-shipping="2500">Kazakhstan</option>
+                  <option value="KE" data-shipping="3500">Kenya</option>
+                  <option value="KI" data-shipping="3000">Kiribati</option>
+                  <option value="KW" data-shipping="2000">Kuwait</option>
+                  <option value="KG" data-shipping="2500">Kyrgyzstan</option>
+                  <option value="LA" data-shipping="2000">Laos</option>
+                  <option value="LV" data-shipping="2500">Latvia</option>
+                  <option value="LB" data-shipping="2000">Lebanon</option>
+                  <option value="LS" data-shipping="3500">Lesotho</option>
+                  <option value="LR" data-shipping="3500">Liberia</option>
+                  <option value="LY" data-shipping="3000">Libya</option>
+                  <option value="LI" data-shipping="2500">Liechtenstein</option>
+                  <option value="LT" data-shipping="2500">Lithuania</option>
+                  <option value="LU" data-shipping="2500">Luxembourg</option>
+                  <option value="MG" data-shipping="3500">Madagascar</option>
+                  <option value="MW" data-shipping="3500">Malawi</option>
+                  <option value="MY" data-shipping="1500">Malaysia</option>
+                  <option value="MV" data-shipping="1000">Maldives</option>
+                  <option value="ML" data-shipping="3500">Mali</option>
+                  <option value="MT" data-shipping="2500">Malta</option>
+                  <option value="MH" data-shipping="3000">Marshall Islands</option>
+                  <option value="MR" data-shipping="3500">Mauritania</option>
+                  <option value="MU" data-shipping="3500">Mauritius</option>
+                  <option value="MX" data-shipping="3000">Mexico</option>
+                  <option value="FM" data-shipping="3000">Micronesia</option>
+                  <option value="MD" data-shipping="2500">Moldova</option>
+                  <option value="MC" data-shipping="2500">Monaco</option>
+                  <option value="MN" data-shipping="2500">Mongolia</option>
+                  <option value="ME" data-shipping="2500">Montenegro</option>
+                  <option value="MA" data-shipping="3000">Morocco</option>
+                  <option value="MZ" data-shipping="3500">Mozambique</option>
+                  <option value="MM" data-shipping="1500">Myanmar (Burma)</option>
+                  <option value="NA" data-shipping="3500">Namibia</option>
+                  <option value="NR" data-shipping="3000">Nauru</option>
+                  <option value="NP" data-shipping="1000">Nepal</option>
+                  <option value="NL" data-shipping="2500">Netherlands</option>
+                  <option value="NZ" data-shipping="2800">New Zealand</option>
+                  <option value="NI" data-shipping="3000">Nicaragua</option>
+                  <option value="NE" data-shipping="3500">Niger</option>
+                  <option value="NG" data-shipping="3500">Nigeria</option>
+                  <option value="KP" data-shipping="3000">North Korea</option>
+                  <option value="MK" data-shipping="2500">North Macedonia</option>
+                  <option value="NO" data-shipping="2500">Norway</option>
+                  <option value="OM" data-shipping="2000">Oman</option>
+                  <option value="PK" data-shipping="1500">Pakistan</option>
+                  <option value="PW" data-shipping="3000">Palau</option>
+                  <option value="PS" data-shipping="2000">Palestine State</option>
+                  <option value="PA" data-shipping="3000">Panama</option>
+                  <option value="PG" data-shipping="3000">Papua New Guinea</option>
+                  <option value="PY" data-shipping="3500">Paraguay</option>
+                  <option value="PE" data-shipping="3500">Peru</option>
+                  <option value="PH" data-shipping="1500">Philippines</option>
+                  <option value="PL" data-shipping="2500">Poland</option>
+                  <option value="PT" data-shipping="2500">Portugal</option>
+                  <option value="QA" data-shipping="2000">Qatar</option>
+                  <option value="RO" data-shipping="2500">Romania</option>
+                  <option value="RU" data-shipping="3000">Russia</option>
+                  <option value="RW" data-shipping="3500">Rwanda</option>
+                  <option value="KN" data-shipping="3000">Saint Kitts and Nevis</option>
+                  <option value="LC" data-shipping="3000">Saint Lucia</option>
+                  <option value="VC" data-shipping="3000">Saint Vincent and the Grenadines</option>
+                  <option value="WS" data-shipping="3000">Samoa</option>
+                  <option value="SM" data-shipping="2500">San Marino</option>
+                  <option value="ST" data-shipping="3500">Sao Tome and Principe</option>
+                  <option value="SA" data-shipping="2000">Saudi Arabia</option>
+                  <option value="SN" data-shipping="3500">Senegal</option>
+                  <option value="RS" data-shipping="2500">Serbia</option>
+                  <option value="SC" data-shipping="3500">Seychelles</option>
+                  <option value="SL" data-shipping="3500">Sierra Leone</option>
+                  <option value="SG" data-shipping="1500">Singapore</option>
+                  <option value="SK" data-shipping="2500">Slovakia</option>
+                  <option value="SI" data-shipping="2500">Slovenia</option>
+                  <option value="SB" data-shipping="3000">Solomon Islands</option>
+                  <option value="SO" data-shipping="3500">Somalia</option>
+                  <option value="ZA" data-shipping="3500">South Africa</option>
+                  <option value="KR" data-shipping="2500">South Korea</option>
+                  <option value="SS" data-shipping="3500">South Sudan</option>
+                  <option value="ES" data-shipping="2500">Spain</option>
+                  <option value="LK" data-shipping="1000">Sri Lanka</option>
+                  <option value="SD" data-shipping="3500">Sudan</option>
+                  <option value="SR" data-shipping="3500">Suriname</option>
+                  <option value="SE" data-shipping="2500">Sweden</option>
+                  <option value="CH" data-shipping="2500">Switzerland</option>
+                  <option value="SY" data-shipping="2500">Syria</option>
+                  <option value="TJ" data-shipping="2500">Tajikistan</option>
+                  <option value="TZ" data-shipping="3500">Tanzania</option>
+                  <option value="TH" data-shipping="1500">Thailand</option>
+                  <option value="TL" data-shipping="2000">Timor-Leste</option>
+                  <option value="TG" data-shipping="3500">Togo</option>
+                  <option value="TO" data-shipping="3000">Tonga</option>
+                  <option value="TT" data-shipping="3000">Trinidad and Tobago</option>
+                  <option value="TN" data-shipping="3000">Tunisia</option>
+                  <option value="TR" data-shipping="2000">Turkey</option>
+                  <option value="TM" data-shipping="2500">Turkmenistan</option>
+                  <option value="TV" data-shipping="3000">Tuvalu</option>
+                  <option value="UG" data-shipping="3500">Uganda</option>
+                  <option value="UA" data-shipping="2500">Ukraine</option>
+                  <option value="AE" data-shipping="1500">United Arab Emirates</option>
+                  <option value="UK" data-shipping="2000">United Kingdom</option>
+                  <option value="US" data-shipping="2500">United States of America</option>
+                  <option value="UY" data-shipping="3500">Uruguay</option>
+                  <option value="UZ" data-shipping="2500">Uzbekistan</option>
+                  <option value="VU" data-shipping="3000">Vanuatu</option>
+                  <option value="VE" data-shipping="3500">Venezuela</option>
+                  <option value="VN" data-shipping="1500">Vietnam</option>
+                  <option value="YE" data-shipping="2000">Yemen</option>
+                  <option value="ZM" data-shipping="3500">Zambia</option>
+                  <option value="ZW" data-shipping="3500">Zimbabwe</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-400">
+                  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="sm:col-span-1">
+              <label for="first_name" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">First Name</label>
+              <input type="text" id="first_name" name="first_name" value="{{ buyer_name.split(' ')[0] if buyer_name else '' }}" required placeholder="First name" 
+                     class="w-full px-5 py-3.5 rounded-xl border border-[#D4AF37]/30 bg-[#F8F5F1] text-[#111827] placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all font-medium text-sm" />
+            </div>
+            
+            <div class="sm:col-span-1">
+              <label for="last_name" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Last Name</label>
+              <input type="text" id="last_name" name="last_name" value="{{ ' '.join(buyer_name.split(' ')[1:]) if buyer_name and buyer_name.split(' ')|length > 1 else '' }}" required placeholder="Last name" 
+                     class="w-full px-5 py-3.5 rounded-xl border border-[#D4AF37]/30 bg-[#F8F5F1] text-[#111827] placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all font-medium text-sm" />
+            </div>
+            
+            <div class="sm:col-span-2">
+              <label for="address" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Street Address</label>
+              <input type="text" id="address" name="address" value="{{ buyer_address }}" required placeholder="House, road, area" 
+                     class="w-full px-5 py-3.5 rounded-xl border border-[#D4AF37]/30 bg-[#F8F5F1] text-[#111827] placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all font-medium text-sm" />
+            </div>
+            
+            <div class="sm:col-span-2">
+              <label for="apartment" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Apartment / Suite</label>
+              <input type="text" id="apartment" name="apartment" placeholder="Apartment, suite, etc. (optional)" 
+                     class="w-full px-5 py-3.5 rounded-xl border border-[#D4AF37]/30 bg-[#F8F5F1] text-[#111827] placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all font-medium text-sm" />
+            </div>
+            
+            <div class="sm:col-span-1">
+              <label for="city" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">City</label>
+              <input type="text" id="city" name="city" required placeholder="City" 
+                     class="w-full px-5 py-3.5 rounded-xl border border-[#D4AF37]/30 bg-[#F8F5F1] text-[#111827] placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all font-medium text-sm" />
+            </div>
+            
+            <div class="sm:col-span-1">
+              <label for="postal_code" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Postal Code</label>
+              <input type="text" id="postal_code" name="postal_code" required placeholder="Postal code" 
+                     class="w-full px-5 py-3.5 rounded-xl border border-[#D4AF37]/30 bg-[#F8F5F1] text-[#111827] placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all font-medium text-sm" />
+            </div>
+            
+            <div class="sm:col-span-2">
+              <label for="phone" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Phone Number</label>
+              <input type="tel" id="phone" name="phone" value="{{ buyer_phone }}" required placeholder="For delivery updates" 
+                     class="w-full px-5 py-3.5 rounded-xl border border-[#D4AF37]/30 bg-[#F8F5F1] text-[#111827] placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all font-medium text-sm" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Payment Method -->
+        <section class="bg-white rounded-[2rem] p-8 lg:p-10 border border-[#D4AF37]/20 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)]">
+          <div class="mb-8 border-b border-[#D4AF37]/10 pb-6">
+            <h2 class="text-2xl font-normal text-[#006A4E] tracking-wide mb-2" style="font-family: 'Georgia', serif;">Payment Method</h2>
+            <p class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+              <i class="fa-solid fa-shield-check text-[#D4AF37]"></i> All transactions are secure and encrypted
+            </p>
+          </div>
+          
+          <div class="space-y-4" id="payment-container">
+            
+            <!-- SSLCommerz Option -->
+            <div class="payment-method-block group">
+              <input id="payment_sslcommerz" name="payment_method" type="radio" value="sslcommerz" {% if selected_payment_method == "sslcommerz" %}checked{% endif %} class="peer sr-only">
+              <label for="payment_sslcommerz" class="block p-5 border border-[#D4AF37]/30 rounded-xl cursor-pointer transition-all duration-300 peer-checked:border-[#D4AF37] peer-checked:bg-[#F8F5F1] peer-checked:shadow-sm hover:bg-[#F8F5F1]/50">
+                <div class="flex items-center">
+                  <!-- Custom Radio UI -->
+                  <div class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center peer-checked:border-[#D4AF37] transition-colors">
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#D4AF37] opacity-0 transition-opacity"></div>
+                  </div>
+                  <span class="ml-4 block text-[13px] font-bold text-[#111827] uppercase tracking-wider flex-1">SSLCommerz</span>
+                  <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center justify-center h-5 px-1.5 text-[8px] font-extrabold tracking-wider border border-slate-200 bg-white rounded-sm text-slate-500" title="bKash">bKash</span>
+                    <span class="inline-flex items-center justify-center h-5 px-1.5 text-[8px] font-extrabold tracking-wider border border-slate-200 bg-white rounded-sm text-slate-500" title="Nagad">Nagad</span>
+                    <i class="fa-regular fa-credit-card text-slate-400 text-lg ml-1"></i>
+                  </div>
+                </div>
+              </label>
+              
+              <!-- Details Info -->
+              <div id="details-sslcommerz" class="mt-3 px-2 overflow-hidden transition-all duration-300">
+                <div class="flex flex-col items-center justify-center bg-[#F8F5F1] border border-[#D4AF37]/20 rounded-xl p-6 text-center">
+                  <div class="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-sm mb-3">
+                    <i class="fa-solid fa-lock text-[#D4AF37] text-lg"></i>
+                  </div>
+                  <p class="text-[13px] text-slate-600 font-medium">
+                    You will be redirected securely to <strong>SSLCommerz</strong> to complete your purchase using Cards or Mobile Banking.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Stripe Option -->
+            <div class="payment-method-block group">
+              <input id="payment_stripe" name="payment_method" type="radio" value="stripe" {% if selected_payment_method == "stripe" %}checked{% endif %} class="peer sr-only">
+              <label for="payment_stripe" class="block p-5 border border-[#D4AF37]/30 rounded-xl cursor-pointer transition-all duration-300 peer-checked:border-[#D4AF37] peer-checked:bg-[#F8F5F1] peer-checked:shadow-sm hover:bg-[#F8F5F1]/50">
+                <div class="flex items-center">
+                  <!-- Custom Radio UI -->
+                  <div class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center peer-checked:border-[#D4AF37] transition-colors">
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#D4AF37] opacity-0 transition-opacity"></div>
+                  </div>
+                  <span class="ml-4 block text-[13px] font-bold text-[#111827] uppercase tracking-wider flex-1">Stripe (Intl. Cards)</span>
+                  <div class="flex space-x-2 text-slate-400 text-xl">
+                    <i class="fa-brands fa-cc-visa"></i>
+                    <i class="fa-brands fa-cc-mastercard"></i>
+                    <i class="fa-brands fa-cc-amex"></i>
+                  </div>
+                </div>
+              </label>
+              
+              <!-- Details Info -->
+              <div id="details-stripe" class="mt-3 px-2 hidden overflow-hidden transition-all duration-300">
+                <div class="flex flex-col items-center justify-center bg-[#F8F5F1] border border-[#D4AF37]/20 rounded-xl p-6 text-center">
+                  <div class="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-sm mb-3">
+                    <i class="fa-brands fa-stripe text-[#635BFF] text-xl"></i>
+                  </div>
+                  <p class="text-[13px] text-slate-600 font-medium">
+                    You will be redirected to <strong>Stripe's</strong> secure gateway to complete your transaction with International Cards.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cash on Delivery Option -->
+            <div class="payment-method-block group">
+              <input id="payment_cod" name="payment_method" type="radio" value="cod" {% if selected_payment_method == "cod" %}checked{% endif %} class="peer sr-only">
+              <label for="payment_cod" class="block p-5 border border-[#D4AF37]/30 rounded-xl cursor-pointer transition-all duration-300 peer-checked:border-[#D4AF37] peer-checked:bg-[#F8F5F1] peer-checked:shadow-sm hover:bg-[#F8F5F1]/50">
+                <div class="flex items-center">
+                  <!-- Custom Radio UI -->
+                  <div class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center peer-checked:border-[#D4AF37] transition-colors">
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#D4AF37] opacity-0 transition-opacity"></div>
+                  </div>
+                  <span class="ml-4 block text-[13px] font-bold text-[#111827] uppercase tracking-wider flex-1">Cash on Delivery</span>
+                  <i class="fa-solid fa-truck-fast text-slate-400 text-lg"></i>
+                </div>
+              </label>
+              
+              <!-- Details Info -->
+              <div id="details-cod" class="mt-3 px-2 hidden overflow-hidden transition-all duration-300">
+                <div class="flex items-center gap-4 bg-[#F8F5F1] border border-[#D4AF37]/20 rounded-xl p-5">
+                  <div class="flex-shrink-0 h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-hand-holding-dollar text-[#006A4E] text-lg"></i>
+                  </div>
+                  <p class="text-[13px] text-slate-600 font-medium leading-relaxed">
+                    Pay securely in cash upon delivery. A standard cash handling fee of <strong class="text-[#006A4E]">৳50</strong> will be added to your total.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </section>
+
+        <!-- Submit Button (Mobile view mainly) -->
+        <div class="pt-6 lg:hidden">
+          <button type="submit" class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-[#D4AF37] to-[#B08D28] text-black text-[11px] font-bold tracking-[0.2em] uppercase rounded-xl hover:from-[#E5C354] hover:to-[#C29D33] transition-all duration-300 shadow-[0_4px_15px_rgba(212,175,55,0.3)]">
+            <i class="fa-solid fa-lock text-black/60"></i> Complete Order
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Order Summary -->
+      <div class="lg:col-span-5 mt-12 lg:mt-0">
+        <div class="bg-white rounded-[2rem] border border-[#D4AF37]/30 p-8 lg:p-10 sticky top-10 shadow-[0_15px_40px_-15px_rgba(212,175,55,0.1)]">
+          
+          <h3 class="text-xs font-bold tracking-[0.2em] text-[#006A4E] mb-6 uppercase border-b border-[#D4AF37]/20 pb-5 text-center flex items-center justify-center gap-2">
+            <i class="fa-solid fa-receipt text-[#D4AF37]"></i> Order Summary
+          </h3>
+          
+          <!-- Cart Items -->
+          <ul role="list" class="divide-y divide-[#D4AF37]/10 mb-8 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
+            {% if cart_items %}
+              {% for item in cart_items %}
+              <li class="flex py-5 group">
+                <div class="h-20 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-slate-100 bg-[#F8F5F1]">
+                  <img src="{{ item.image_url }}" alt="{{ item.name }}" class="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="ml-4 flex flex-1 flex-col justify-center">
+                  <div class="flex justify-between items-start text-sm">
+                    <h3 class="font-bold text-[#111827] leading-snug pr-4" style="font-family: 'Georgia', serif;">{{ item.name }}</h3>
+                    <p class="font-bold text-[#006A4E] whitespace-nowrap">{{ item.price_fmt }}</p>
+                  </div>
+                  <p class="mt-2 text-[11px] font-bold uppercase tracking-widest text-slate-400">Qty: {{ item.quantity }}</p>
+                </div>
+              </li>
+              {% endfor %}
+            {% else %}
+              <li class="flex py-5">
+                <div class="h-20 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-slate-100 bg-[#F8F5F1] flex items-center justify-center text-slate-300">
+                  <i class="fa-solid fa-image text-xl"></i>
+                </div>
+                <div class="ml-4 flex flex-1 flex-col justify-center">
+                  <div class="flex justify-between items-start text-sm">
+                    <h3 class="font-bold text-[#111827]" style="font-family: 'Georgia', serif;">Premium Origins Item</h3>
+                    <p class="font-bold text-[#006A4E] whitespace-nowrap" id="item-price">৳5,000</p>
+                  </div>
+                  <p class="mt-2 text-[11px] font-bold uppercase tracking-widest text-slate-400">Qty: 1</p>
+                </div>
+              </li>
+            {% endif %}
+          </ul>
+
+          <!-- Discount Code (Visual match to cart page) -->
+          <details class="group border border-[#D4AF37]/30 rounded-xl overflow-hidden bg-white shadow-sm mb-8">
+            <summary class="flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.2em] cursor-pointer text-[#006A4E] bg-[#F8F5F1] p-4 hover:bg-[#D4AF37]/10 transition-colors">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-tag text-[#D4AF37]"></i> Apply Promo Code</span>
+              <i class="fa-solid fa-plus text-[#D4AF37] text-[10px] transition-transform duration-300 group-open:rotate-45"></i>
+            </summary>
+            <div class="p-4 bg-white border-t border-[#D4AF37]/20">
+              <div class="relative flex items-center">
+                <input type="text" id="discount_code" name="discount_code" value="{{ coupon_code or '' }}" placeholder="Enter VIP code" class="w-full bg-[#F8F5F1] border border-[#D4AF37]/30 rounded-xl pl-4 pr-[90px] py-3 text-sm focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/50 transition-all font-medium text-[#111827]">
+                <button type="button" id="apply-coupon-btn" class="absolute right-1.5 top-1.5 bottom-1.5 px-5 bg-[#006A4E] text-white text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-[#00523b] transition-all shadow-sm">Apply</button>
+              </div>
+            </div>
+          <p id="coupon-feedback" class="mt-3 text-[11px] font-bold {% if coupon_error %}text-red-500{% elif applied_coupon %}text-[#006A4E]{% else %}text-slate-400{% endif %}">{% if coupon_error %}{{ coupon_error }}{% elif applied_coupon %}{{ applied_coupon.code }} applied successfully.{% endif %}</p></details>
+
+          <!-- Price Breakdown -->
+          <div class="space-y-4 text-[13px] font-medium text-slate-500 mb-6">
+            <div class="flex items-center justify-between">
+              <span>Subtotal</span>
+              <span class="font-bold text-[#111827]" id="display-subtotal">{{ subtotal_fmt|default('৳5,000') }}</span>
+            </div>
+            
+            <div class="flex items-center justify-between">
+              <span>Shipping</span>
+              <span class="font-bold text-[#006A4E]" id="display-shipping">{{ shipping_fmt|default('৳0') }}</span>
+            </div>
+
+            <div id="discount-row" class="flex items-center justify-between {% if not discount_bdt %}hidden{% endif %}">
+              <span class="text-[#006A4E]">Discount</span>
+              <span class="font-bold text-[#006A4E]" id="display-discount">-{{ discount_fmt|default('৳0') }}</span>
+            </div>
+            
+            <!-- Dynamic COD Fee Row (Hidden by default) -->
+            <div id="order-summary-cod-fee" class="flex items-center justify-between hidden transition-all">
+              <span class="flex items-center text-[#D4AF37]"><i class="fa-solid fa-plus mr-1.5 text-[10px]"></i> COD Fee</span>
+              <span class="font-bold text-[#D4AF37]">৳50</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col py-5 border-t border-b border-[#D4AF37]/20 mb-8 bg-[#F8F5F1] -mx-8 px-8 lg:-mx-10 lg:px-10">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-[#006A4E] uppercase tracking-[0.2em]">Total</span>
+              <span class="text-3xl font-bold text-[#006A4E]" id="display-total">{{ total_fmt|default("৳0") }}</span>
+            </div>
+            <!-- Dynamic Note for COD -->
+            <div id="cod-total-note" class="text-[10px] font-bold uppercase tracking-widest text-[#D4AF37] text-right hidden mt-1">
+              (Includes ৳50 COD handling)
+            </div>
+          </div>
+
+          <!-- Submit Button (Desktop) -->
+          <button type="submit" class="hidden lg:flex w-full items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-[#D4AF37] to-[#B08D28] text-black text-[11px] font-bold tracking-[0.2em] uppercase rounded-xl hover:from-[#E5C354] hover:to-[#C29D33] transition-all duration-300 shadow-[0_4px_15px_rgba(212,175,55,0.3)] hover:shadow-[0_6px_25px_rgba(212,175,55,0.4)] hover:-translate-y-0.5">
+            <i class="fa-solid fa-lock text-black/60"></i> Complete Order
+          </button>
+          
+        </div>
+      </div>
+    </form>
+    
+  </main>
+</div>
+
+<style>
+  /* Styling to check the custom radio buttons */
+  input[type="radio"]:checked + label .w-2\.5 {
+    opacity: 1;
+  }
+  
+  /* Custom scrollbar for order items if there are many */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #D4AF37;
+    border-radius: 10px;
+    opacity: 0.5;
+  }
+</style>
+
+<!-- Scripts for interactivity (Country & Payment Logic) -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const checkoutData = document.getElementById('checkout-data');
+    const currency = checkoutData.dataset.currency || "৳";
+    const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+    const countrySelect = document.getElementById('country');
+    const discountInput = document.getElementById('discount_code');
+    const applyCouponBtn = document.getElementById('apply-coupon-btn');
+    const feedbackEl = document.getElementById('coupon-feedback');
+    const detailsDivs = {
+      'sslcommerz': document.getElementById('details-sslcommerz'),
+      'stripe': document.getElementById('details-stripe'),
+      'cod': document.getElementById('details-cod')
+    };
+    const codFeeRow = document.getElementById('order-summary-cod-fee');
+    const codTotalNote = document.getElementById('cod-total-note');
+    const displayShipping = document.getElementById('display-shipping');
+    const displayTotal = document.getElementById('display-total');
+    const displayDiscount = document.getElementById('display-discount');
+    const discountRow = document.getElementById('discount-row');
+
+    let pricing = {
+      subtotal_bdt: parseFloat(checkoutData.dataset.subtotal) || 0,
+      shipping_bdt: parseFloat(checkoutData.dataset.shipping) || 0,
+      cod_fee_bdt: parseFloat(checkoutData.dataset.codFee) || 0,
+      discount_bdt: parseFloat(checkoutData.dataset.discount) || 0,
+      total_bdt: 0,
+    };
+
+    function formatMoney(amount) {
+      return currency + Number(amount || 0).toLocaleString('en-IN');
+    }
+
+    function syncSummaryDisplay() {
+      const selectedPayment = document.querySelector('input[name="payment_method"]:checked')?.value || 'sslcommerz';
+      Object.values(detailsDivs).forEach(div => { if(div) div.classList.add('hidden'); });
+      if (detailsDivs[selectedPayment]) detailsDivs[selectedPayment].classList.remove('hidden');
+      const codFee = selectedPayment === 'cod' ? 50 : 0;
+      const shipping = pricing.shipping_bdt || 0;
+      const discount = pricing.discount_bdt || 0;
+      const total = Math.max(0, (pricing.subtotal_bdt || 0) + shipping + codFee - discount);
+      displayShipping.textContent = formatMoney(shipping);
+      displayTotal.textContent = formatMoney(total);
+      if (displayDiscount) displayDiscount.textContent = '-' + formatMoney(discount);
+      if (discountRow) discountRow.classList.toggle('hidden', !(discount > 0));
+      codFeeRow.classList.toggle('hidden', selectedPayment !== 'cod');
+      codTotalNote.classList.toggle('hidden', selectedPayment !== 'cod');
+    }
+
+    async function applyCoupon() {
+      const code = (discountInput?.value || '').trim();
+      feedbackEl.textContent = 'Checking coupon...';
+      feedbackEl.className = 'mt-3 text-[11px] font-bold text-slate-400';
+      try {
+        const res = await fetch('/api/checkout/apply-coupon', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            coupon_code: code,
+            country: countrySelect.value,
+            payment_method: document.querySelector('input[name="payment_method"]:checked')?.value || 'sslcommerz'
+          })
+        });
+        const data = await res.json();
+        if (data.summary) {
+          pricing.subtotal_bdt = data.summary.subtotal_bdt || pricing.subtotal_bdt;
+          pricing.shipping_bdt = data.summary.shipping_bdt || 0;
+          pricing.discount_bdt = data.summary.discount_bdt || 0;
+        }
+        syncSummaryDisplay();
+        if (data.ok) {
+          feedbackEl.textContent = data.message || 'Coupon applied.';
+          feedbackEl.className = 'mt-3 text-[11px] font-bold text-[#006A4E]';
+        } else {
+          feedbackEl.textContent = data.message || 'Coupon could not be applied.';
+          feedbackEl.className = 'mt-3 text-[11px] font-bold text-red-500';
+        }
+      } catch (err) {
+        feedbackEl.textContent = 'Coupon check failed. Please try again.';
+        feedbackEl.className = 'mt-3 text-[11px] font-bold text-red-500';
+      }
+    }
+
+    paymentRadios.forEach(radio => radio.addEventListener('change', syncSummaryDisplay));
+    countrySelect.addEventListener('change', () => {
+      const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+      pricing.shipping_bdt = parseFloat(selectedOption.dataset.shipping) || 0;
+      syncSummaryDisplay();
+    });
+    if (applyCouponBtn) applyCouponBtn.addEventListener('click', applyCoupon);
+    syncSummaryDisplay();
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'emails/_base.html' %}
+
+{% block body %}
+  <h2 style="margin: 0 0 16px 0; font-family: 'Georgia', serif; font-size: 22px; font-weight: normal; color: #111827;">
+    {% if is_reset %}Credentials Reset{% else %}Welcome, {{ name }}{% endif %} 👋
+  </h2>
+  
+  <div style="color: #4b5563; font-size: 15px; line-height: 1.8; font-weight: 400;">
+    <p style="margin: 0 0 24px 0;">
+      You have access to the <strong><span style="color: #D4AF37;">Origins</span> <span style="color: #006A4E;">Bangla</span><span style="color: #F42A41;">desh</span></strong> Admin Portal.
+      {% if designation %}<br/>Role: <strong style="color: #111827;">{{ designation }}</strong>{% endif %}
+    </p>
+
+    <!-- Login URL Box -->
+    <div style="margin-bottom: 24px; padding: 18px 20px; border-radius: 8px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-left: 4px solid #D4AF37;">
+      <div style="font-size: 12px; color: #6b7280; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">Login URL</div>
+      <div style="font-size: 14px; font-weight: 700; color: #111827; word-break: break-all;">
+        <a href="{{ login_url }}" style="color: #D4AF37; text-decoration: none;">{{ login_url }}</a>
+      </div>
+    </div>
+
+    <!-- Secure Credentials Box -->
+    <div style="margin-bottom: 24px; padding: 20px; border-radius: 8px; background-color: #111827; border: 1px solid #D4AF37; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+      <div style="font-size: 12px; color: #D4AF37; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">
+        Your Temporary Credentials
+      </div>
+      <div style="font-size: 14px; line-height: 2.0; color: #f9fafb;">
+        <div style="border-bottom: 1px solid #374151; padding-bottom: 10px; margin-bottom: 10px;">
+          <strong style="display: inline-block; width: 145px; color: #9ca3af;">Email:</strong> 
+          <span style="color: #ffffff;">{{ email }}</span>
+        </div>
+        <div style="border-bottom: 1px solid #374151; padding-bottom: 10px; margin-bottom: 10px;">
+          <strong style="display: inline-block; width: 145px; color: #9ca3af;">Temporary Password:</strong> 
+          <span style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; background-color: #1f2937; padding: 4px 8px; border-radius: 4px; color: #D4AF37; letter-spacing: 1px;">{{ temp_password }}</span>
+        </div>
+        <div>
+          <strong style="display: inline-block; width: 145px; color: #9ca3af;">Security Code:</strong> 
+          <span style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; background-color: #1f2937; padding: 4px 8px; border-radius: 4px; color: #D4AF37; letter-spacing: 1px;">{{ security_code }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security Warning Box -->
+    <div style="margin-top: 25px; padding: 16px; background-color: #fffbeb; border-left: 4px solid #D4AF37; font-size: 13px; color: #92400e; border-radius: 0 4px 4px 0;">
+      <strong>Security Notice:</strong> For your security, please log in and change your password immediately.
+    </div>
+  </div>
+{% endblock %}

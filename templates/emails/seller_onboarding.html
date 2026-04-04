@@ -1,0 +1,44 @@
+{% extends 'emails/_base.html' %}
+
+{% block body %}
+  <h2 style="margin: 0 0 16px 0; font-family: 'Georgia', serif; font-size: 22px; font-weight: normal; color: #111827;">
+    Welcome, {{ name }} 👋
+  </h2>
+  
+  <div style="color: #4b5563; font-size: 15px; line-height: 1.8; font-weight: 400;">
+    <p style="margin: 0 0 24px 0;">
+      Thanks for registering as a seller on <strong><span style="color: #D4AF37;">Origins</span> <span style="color: #006A4E;">Bangla</span><span style="color: #F42A41;">desh</span></strong>. To activate your selling privileges, please submit the required documents for verification.
+    </p>
+
+    <!-- Seller ID Box -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+      <tr>
+        <td align="center" style="background-color: #111827; border: 1px solid #D4AF37; border-radius: 8px; padding: 24px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+          <div style="font-size: 12px; color: #D4AF37; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+            Your Seller ID
+          </div>
+          <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; font-size: 24px; font-weight: bold; color: #ffffff; letter-spacing: 2px;">
+            {{ member_id }}
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Documents Required Box -->
+    <div style="margin-bottom: 24px; padding: 20px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-left: 4px solid #D4AF37; border-radius: 0 4px 4px 0;">
+      <div style="font-weight: 700; color: #111827; margin-bottom: 12px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
+        Documents Required
+      </div>
+      <ul style="margin: 0; padding-left: 20px; color: #4b5563; font-size: 14px; line-height: 1.8;">
+        <li style="margin-bottom: 8px;">NID (Front &amp; Back)</li>
+        <li style="margin-bottom: 8px;">Trade License (If available)</li>
+        <li>Product Authenticity Proof (Photos / Certificate)</li>
+      </ul>
+    </div>
+
+    <!-- Helper Text -->
+    <div style="margin-top: 10px; padding-top: 16px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 12px; line-height: 1.6;">
+      Keep your Seller ID safe for faster support and verification.
+    </div>
+  </div>
+{% endblock %}

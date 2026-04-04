@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% block title %}Shopping Bag | Origins Bangladesh{% endblock %}
+
+{% block content %}
+<style>
+  /* Hide default number input spinners for cleaner UI */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  
+  /* Premium Page transition effect for auto-update */
+  .updating {
+    opacity: 0.4;
+    filter: blur(1px);
+    pointer-events: none;
+    transition: all 0.4s ease-in-out;
+  }
+</style>
+
+<!-- Premium Cart Section -->
+<section class="bg-[#F8F5F1] min-h-[85vh] py-16 lg:py-24 font-sans selection:bg-[#006A4E] selection:text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Ultra-Premium Header with Side Action -->
+    <div class="flex flex-col md:flex-row items-center md:items-end justify-between gap-6 pb-8 mb-10 border-b border-[#D4AF37]/20">
+      <div class="text-center md:text-left">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 mb-4 bg-white/60 backdrop-blur-md text-[#006A4E] text-[10px] font-bold uppercase tracking-[0.2em] rounded-full border border-[#D4AF37]/40 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
+          </svg>
+          Secure Checkout
+        </span>
+        <h1 class="text-3xl lg:text-4xl font-normal text-[#006A4E] tracking-wide" style="font-family: 'Georgia', serif;">
+          Shopping <span class="font-bold text-[#D4AF37] italic">Bag</span>
+        </h1>
+      </div>
+      
+      <!-- Moved Continue Shopping to the Side -->
+      <a href="{{ url_for('shop') }}" class="group inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border border-[#D4AF37]/30 rounded-full text-[11px] font-bold uppercase tracking-widest text-[#006A4E] hover:bg-[#006A4E] hover:text-white hover:border-[#006A4E] transition-all duration-300 shadow-sm hover:shadow-md">
+        <i class="fa-solid fa-arrow-left-long group-hover:-translate-x-1 transition-transform"></i> Continue Shopping
+      </a>
+    </div>
+
+    {% if items|length == 0 %}
+      <!-- Premium Empty Cart State -->
+      <div class="flex flex-col items-center justify-center py-20 max-w-lg mx-auto text-center bg-white rounded-[2rem] border border-[#D4AF37]/20 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] relative overflow-hidden">
+        <!-- Abstract BG Decoration -->
+        <div class="absolute inset-0 pointer-events-none opacity-30 flex justify-center items-center">
+          <svg width="250" height="250" viewBox="0 0 24 24" fill="#D4AF37"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z"/></svg>
+        </div>
+        
+        <div class="relative z-10">
+          <div class="w-20 h-20 bg-[#F8F5F1] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#D4AF37]/30 shadow-inner">
+            <i class="fa-solid fa-bag-shopping text-3xl text-[#D4AF37]"></i>
+          </div>
+          <h3 class="text-2xl font-normal text-[#006A4E] mb-3" style="font-family: 'Georgia', serif;">Your bag is empty</h3>
+          <p class="text-slate-500 text-[13px] mb-8 leading-relaxed max-w-xs mx-auto">Discover our latest arrivals and elevate your personal heritage collection.</p>
+          <a href="{{ url_for('shop') }}" class="group relative inline-flex items-center justify-center px-10 py-3.5 bg-[#006A4E] text-white font-bold uppercase tracking-wider text-xs rounded-full overflow-hidden transition-all hover:scale-105 shadow-[0_4px_15px_rgba(0,106,78,0.3)] hover:shadow-[0_6px_25px_rgba(0,106,78,0.4)]">
+            <span class="relative z-10 flex items-center gap-2">
+              Discover Treasures
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+            </span>
+          </a>
+        </div>
+      </div>
+      
+    {% else %}
+      <!-- Filled Cart State - Single Form Wraps Everything -->
+      <form method="post" action="{{ url_for('cart_update') }}" id="cart-form" class="transition-all duration-400">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          
+          <!-- Left Column: Cart Items -->
+          <div class="lg:col-span-7 xl:col-span-8">
+
+            <div class="flex justify-between text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4AF37] border-b border-[#D4AF37]/20 pb-4 mb-6 hidden sm:flex">
+              <span>Item Details</span>
+              <span class="text-right">Line Total</span>
+            </div>
+
+            <div class="space-y-6">
+              {% for it in items %}
+              <div class="group bg-white rounded-2xl p-4 sm:p-5 border border-[#D4AF37]/10 shadow-sm hover:shadow-md hover:border-[#D4AF37]/30 transition-all duration-300">
+                <div class="flex gap-6 sm:gap-8 relative">
+                  
+                  <!-- Editorial Image -->
+                  <a href="{{ url_for('product_details', product_id=it.product_id) }}" class="relative w-28 sm:w-36 aspect-[3/4] bg-[#F8F5F1] rounded-xl flex-shrink-0 overflow-hidden border border-slate-100">
+                    <img src="{{ it.image_path or '/uploads/products/placeholder.jpg' }}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" alt="{{ it.title }}">
+                  </a>
+
+                  <!-- Product Details -->
+                  <div class="flex-1 flex flex-col justify-between py-1">
+                    
+                    <div class="flex justify-between items-start gap-4">
+                      <div class="pr-4">
+                        <div class="text-[9px] font-bold uppercase tracking-[0.2em] text-[#D4AF37] mb-2">{{ it.category_name }}</div>
+                        <a href="{{ url_for('product_details', product_id=it.product_id) }}" class="block text-base sm:text-lg font-bold text-[#111827] hover:text-[#006A4E] transition-colors leading-snug" style="font-family: 'Georgia', serif;">
+                          {{ it.title }}
+                        </a>
+                        <div class="mt-2 text-[13px] text-slate-500 font-medium">
+                          {{ it.price_fmt }}
+                        </div>
+                        
+                        <!-- Gift Wrap Option (Visual Only) -->
+                        <button type="button" class="mt-4 flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-[#D4AF37] hover:text-[#006A4E] transition-colors bg-[#F8F5F1] px-2.5 py-1.5 rounded-md border border-[#D4AF37]/20 w-fit">
+                          <i class="fa-solid fa-gift"></i> Add Gift Wrap
+                        </button>
+                      </div>
+
+                      <!-- Line Total (Desktop) -->
+                      <div class="hidden sm:block text-lg font-bold text-[#006A4E] text-right">
+                        {{ it.line_total_fmt }}
+                      </div>
+                    </div>
+
+                    <!-- Bottom Actions: Qty & Remove -->
+                    <div class="flex flex-wrap items-end justify-between mt-5 pt-5 border-t border-slate-100 sm:border-none sm:pt-0 sm:mt-auto gap-4">
+                      
+                      <!-- Custom +/- Quantity Control -->
+                      <div class="flex items-center border border-[#D4AF37]/30 rounded-lg overflow-hidden bg-white shadow-sm w-fit">
+                        <button type="button" onclick="updateQty('qty_{{ it.product_id }}', -1)" class="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-[#006A4E] hover:bg-[#F8F5F1] transition-colors">
+                          <i class="fa-solid fa-minus text-[10px]"></i>
+                        </button>
+                        <input id="qty_{{ it.product_id }}" name="qty_{{ it.product_id }}" type="number" min="0" max="99" value="{{ it.quantity }}"
+                               onchange="triggerAutoUpdate()"
+                               class="w-10 bg-transparent text-center text-[13px] font-bold text-[#111827] focus:outline-none border-none p-0 h-9" />
+                        <button type="button" onclick="updateQty('qty_{{ it.product_id }}', 1)" class="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-[#006A4E] hover:bg-[#F8F5F1] transition-colors border-l border-[#D4AF37]/10">
+                          <i class="fa-solid fa-plus text-[10px]"></i>
+                        </button>
+                      </div>
+
+                      <div class="flex flex-col items-end gap-2">
+                        <!-- Line Total (Mobile) -->
+                        <div class="sm:hidden text-base font-bold text-[#006A4E]">
+                          {{ it.line_total_fmt }}
+                        </div>
+                        
+                        <button formmethod="post" formaction="{{ url_for('cart_remove', product_id=it.product_id) }}" onclick="document.body.classList.add('updating')" class="text-[10px] font-bold text-slate-400 hover:text-red-500 uppercase tracking-widest transition-all flex items-center gap-1.5" type="submit" title="Remove Item">
+                          <i class="fa-solid fa-trash-can"></i> Remove
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Right Column: Order Summary Sidebar -->
+          <div class="lg:col-span-5 xl:col-span-4">
+            <div class="bg-white rounded-[2rem] border border-[#D4AF37]/30 p-8 lg:p-10 sticky top-10 shadow-[0_15px_40px_-15px_rgba(212,175,55,0.1)]">
+              
+              <h3 class="text-xs font-bold tracking-[0.2em] text-[#006A4E] mb-6 uppercase border-b border-[#D4AF37]/20 pb-5 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-receipt text-[#D4AF37]"></i> Order Summary
+              </h3>
+              
+              <div class="space-y-4 text-[13px] font-medium text-slate-500 mb-6">
+                <div class="flex items-center justify-between">
+                  <span>Subtotal</span>
+                  <span class="font-bold text-[#111827]">{{ total_fmt }}</span>
+                </div>
+                
+                <!-- Updated Promo / Discount Row (Matched styling with other rows) -->
+                <div class="flex items-center justify-between text-slate-400">
+                  <span>Promo / Discounts</span>
+                  <span class="text-[10px] uppercase tracking-widest">Calculated at checkout</span>
+                </div>
+                
+                <div class="flex items-center justify-between text-slate-400">
+                  <span>Shipping</span>
+                  <span class="text-[10px] uppercase tracking-widest">Calculated at checkout</span>
+                </div>
+                
+                <div class="flex items-center justify-between text-slate-400">
+                  <span>Taxes</span>
+                  <span class="text-[10px] uppercase tracking-widest">Calculated at checkout</span>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between py-5 border-t border-b border-[#D4AF37]/20 mb-8 bg-[#F8F5F1] -mx-8 px-8 lg:-mx-10 lg:px-10">
+                <span class="text-[11px] font-bold text-[#006A4E] uppercase tracking-[0.2em]">Estimated Total</span>
+                <span class="text-2xl font-bold text-[#006A4E]">{{ total_fmt }}</span>
+              </div>
+
+              <div class="flex flex-col gap-4">
+                <!-- Secure Checkout Button -->
+                <a href="{{ url_for('checkout') }}" class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-[#D4AF37] to-[#B08D28] text-black text-[11px] font-bold tracking-[0.2em] uppercase rounded-xl hover:from-[#E5C354] hover:to-[#C29D33] transition-all duration-300 shadow-[0_4px_15px_rgba(212,175,55,0.3)] hover:shadow-[0_6px_25px_rgba(212,175,55,0.4)] hover:-translate-y-0.5">
+                  <i class="fa-solid fa-lock text-black/60"></i> Proceed to Checkout
+                </a>
+              </div>
+              
+              <!-- Trust Badges / Payment Methods -->
+              <div class="mt-8 text-center border-t border-[#D4AF37]/10 pt-6">
+                <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-4 flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-shield-halved text-[#D4AF37]"></i> Secure Payments
+                </p>
+                <div class="flex justify-center items-center gap-3 flex-wrap text-3xl text-slate-300">
+                  <i class="fa-brands fa-cc-visa hover:text-[#1434CB] transition-colors duration-300 cursor-pointer" title="Visa"></i>
+                  <i class="fa-brands fa-cc-mastercard hover:text-[#EB001B] transition-colors duration-300 cursor-pointer" title="Mastercard"></i>
+                  <i class="fa-brands fa-cc-amex hover:text-[#2E77BC] transition-colors duration-300 cursor-pointer" title="American Express"></i>
+                  
+                  <!-- Balanced Custom Badges -->
+                  <span class="inline-flex items-center justify-center h-[22px] px-1.5 text-[9px] font-extrabold tracking-wider border border-slate-300 rounded-sm hover:text-[#E2136E] hover:border-[#E2136E] transition-colors duration-300 cursor-pointer select-none" title="bKash">
+                    bKash
+                  </span>
+                  <span class="inline-flex items-center justify-center h-[22px] px-1.5 text-[9px] font-extrabold tracking-wider border border-slate-300 rounded-sm hover:text-[#F7931E] hover:border-[#F7931E] transition-colors duration-300 cursor-pointer select-none" title="Nagad">
+                    Nagad
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Script for Custom Quantity Selectors & Auto Submit -->
+<script>
+  function triggerAutoUpdate() {
+    // Adds a subtle fade & blur effect to the form to indicate it's loading/updating
+    document.getElementById('cart-form').classList.add('updating');
+    // Automatically submits the form to the backend
+    document.getElementById('cart-form').submit();
+  }
+
+  function updateQty(inputId, change) {
+    const input = document.getElementById(inputId);
+    let currentValue = parseInt(input.value) || 0;
+    let newValue = currentValue + change;
+    
+    // Ensure value stays between min and max
+    if(newValue >= 0 && newValue <= 99) {
+      // Only submit if the value actually changes
+      if(input.value !== newValue.toString()) {
+        input.value = newValue;
+        triggerAutoUpdate();
+      }
+    }
+  }
+</script>
+{% endblock %}

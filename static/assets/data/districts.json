@@ -1,0 +1,833 @@
+[{
+        "zilla": "Bagerhat",
+        "density": "high",
+        "product": "Bagda Shrimp of Bangladesh",
+        "category": "food",
+        "story": "Officially recognized as a GI product of Bangladesh, the Bagda Shrimp from the coastal region (including Bagerhat) is world-famous for its size, taste, and export quality.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Bagerhat",
+        "dot": {
+            "x": 78.8,
+            "y": 59.3
+        }
+    },
+    {
+        "zilla": "Bandarban",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 99.0,
+            "y": 56.8
+        }
+    },
+    {
+        "zilla": "Barguna",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 135.8,
+            "y": 59.6
+        }
+    },
+    {
+        "zilla": "Barishal",
+        "density": "med",
+        "product": "Amra (Hog Plum) of Barishal",
+        "category": "food",
+        "story": "Recently awarded the GI status, the Hog Plum (Amra) of Barishal is renowned across the country for its unique crunch, sweetness, and high yield.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Barishal",
+        "dot": {
+            "x": 149.4,
+            "y": 54.5
+        }
+    },
+    {
+        "zilla": "Bhola",
+        "density": "low",
+        "product": "Bhola's Buffalo Curd",
+        "category": "food",
+        "story": "A traditional delicacy of the island district, Bhola's Buffalo Curd (Mohisher Doi) has officially received GI recognition for its rich, creamy texture and distinct taste.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Bhola",
+        "dot": {
+            "x": 181.8,
+            "y": 52.5
+        }
+    },
+    {
+        "zilla": "Bogura",
+        "density": "low",
+        "product": "Bogura's Curd (Doi)",
+        "category": "food",
+        "story": "The legendary curd of Bogura is a GI-certified product, famous for its special preparation method and an unmatched taste that represents the heritage of North Bengal.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Bogura",
+        "dot": {
+            "x": 201.3,
+            "y": 58.6
+        }
+    },
+    {
+        "zilla": "Brahmanbaria",
+        "density": "med",
+        "product": "Chhanamukhi Sweets",
+        "category": "food",
+        "story": "Officially recognized as a GI product, Chhanamukhi is a hard-crusted sweet made from cottage cheese, originating solely from the Brahmanbaria region.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Brahmanbaria",
+        "dot": {
+            "x": 224.7,
+            "y": 51.2
+        }
+    },
+    {
+        "zilla": "Chandpur",
+        "density": "low",
+        "product": "Ilish of Bangladesh",
+        "category": "food",
+        "story": "While 'Ilish of Bangladesh' is a national GI product, Chandpur is widely celebrated as the 'City of Ilish' and a primary hub for this silver delicacy.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Chandpur",
+        "dot": {
+            "x": 249.6,
+            "y": 57.5
+        }
+    },
+    {
+        "zilla": "Chapainawabganj",
+        "density": "low",
+        "product": "Khirshapat Mango",
+        "category": "food",
+        "story": "One of the first GI products of Bangladesh. Known as the 'King of Mangoes', Khirshapat (Himsagar) from this region is famous for having no fiber and a heavenly aroma.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Chapainawabganj",
+        "dot": {
+            "x": 85.1,
+            "y": 100.6
+        }
+    },
+    {
+        "zilla": "Chattogram",
+        "density": "high",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 113.4,
+            "y": 102.1
+        }
+    },
+    {
+        "zilla": "Chuadanga",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 130.0,
+            "y": 94.8
+        }
+    },
+    {
+        "zilla": "Cox's Bazar",
+        "density": "high",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 155.1,
+            "y": 105.5
+        }
+    },
+    {
+        "zilla": "Cumilla",
+        "density": "med",
+        "product": "Rasmalai & Khadi",
+        "category": "food",
+        "story": "Cumilla boasts two GI products: the mouth-watering Rasmalai sweets and the historic Khadi textile, both symbols of the district's rich cultural heritage.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Cumilla",
+        "dot": {
+            "x": 183.4,
+            "y": 97.4
+        }
+    },
+    {
+        "zilla": "Dhaka",
+        "density": "low",
+        "product": "Dhakai Muslin",
+        "category": "crafts",
+        "story": "A legendary textile revived and recognized as a GI product. Dhakai Muslin represents the pinnacle of Bengal's weaving history.",
+        "image": "",
+        "shop_link": "/shop?category=crafts&origin=Dhaka",
+        "dot": {
+            "x": 204.2,
+            "y": 97.6
+        }
+    },
+    {
+        "zilla": "Dinajpur",
+        "density": "low",
+        "product": "Kataribhog Rice",
+        "category": "food",
+        "story": "A GI-certified aromatic rice variety. Dinajpur's Kataribhog is distinct for its curved tip and is a favorite for special occasions.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Dinajpur",
+        "dot": {
+            "x": 226.7,
+            "y": 98.2
+        }
+    },
+    {
+        "zilla": "Faridpur",
+        "density": "med",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 262.2,
+            "y": 100.7
+        }
+    },
+    {
+        "zilla": "Feni",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 81.8,
+            "y": 139.6
+        }
+    },
+    {
+        "zilla": "Gaibandha",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 107.0,
+            "y": 143.3
+        }
+    },
+    {
+        "zilla": "Gazipur",
+        "density": "high",
+        "product": "Jackfruit (Kathal)",
+        "category": "food",
+        "story": "Gazipur, the hub of Bangladesh's national fruit, has received GI recognition for its high-quality Jackfruit, celebrated for its sweetness and texture.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Gazipur",
+        "dot": {
+            "x": 135.5,
+            "y": 144.9
+        }
+    },
+    {
+        "zilla": "Gopalganj",
+        "density": "low",
+        "product": "Rosogolla",
+        "category": "food",
+        "story": "The Rosogolla of Gopalganj is a GI-recognized sweet, known for its unique preparation and historical significance in the region.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Gopalganj",
+        "dot": {
+            "x": 163.8,
+            "y": 142.5
+        }
+    },
+    {
+        "zilla": "Habiganj",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 183.9,
+            "y": 150.7
+        }
+    },
+    {
+        "zilla": "Jamalpur",
+        "density": "med",
+        "product": "Nakshi Kantha",
+        "category": "crafts",
+        "story": "The embroidered quilts of Jamalpur are GI-certified, protecting the intricate artistry and traditional stitching patterns unique to this district.",
+        "image": "",
+        "shop_link": "/shop?category=crafts&origin=Jamalpur",
+        "dot": {
+            "x": 212.1,
+            "y": 143.5
+        }
+    },
+    {
+        "zilla": "Jashore",
+        "density": "high",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh. (Though famous for Date Molasses, it is not yet officially listed in the DPDT journal).",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 242.0,
+            "y": 147.3
+        }
+    },
+    {
+        "zilla": "Jhalokathi",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 267.6,
+            "y": 142.7
+        }
+    },
+    {
+        "zilla": "Jhenaidah",
+        "density": "med",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 94.4,
+            "y": 191.4
+        }
+    },
+    {
+        "zilla": "Joypurhat",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 110.7,
+            "y": 186.1
+        }
+    },
+    {
+        "zilla": "Khagrachhari",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 135.3,
+            "y": 188.4
+        }
+    },
+    {
+        "zilla": "Khulna",
+        "density": "high",
+        "product": "Bagda Shrimp",
+        "category": "food",
+        "story": "Officially registered as 'Bagda Shrimp of Bangladesh', this export-quality prawn is a GI product primarily cultivated in the Khulna region.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Khulna",
+        "dot": {
+            "x": 160.2,
+            "y": 195.7
+        }
+    },
+    {
+        "zilla": "Kishoreganj",
+        "density": "low",
+        "product": "Austagram Cheese",
+        "category": "food",
+        "story": "The unique, salt-cured cheese from the haor areas of Austagram has received GI recognition, celebrating a century-old culinary tradition.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Kishoreganj",
+        "dot": {
+            "x": 189.7,
+            "y": 192.4
+        }
+    },
+    {
+        "zilla": "Kurigram",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 207.9,
+            "y": 191.7
+        }
+    },
+    {
+        "zilla": "Kushtia",
+        "density": "med",
+        "product": "Tiler Khaja",
+        "category": "food",
+        "story": "A GI-certified crunchy sweet snack made from sesame seeds and sugar. Tiler Khaja is the iconic traditional confectionery of Kushtia.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Kushtia",
+        "dot": {
+            "x": 241.7,
+            "y": 184.6
+        }
+    },
+    {
+        "zilla": "Lakshmipur",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 262.5,
+            "y": 188.4
+        }
+    },
+    {
+        "zilla": "Lalmonirhat",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 94.5,
+            "y": 240.3
+        }
+    },
+    {
+        "zilla": "Madaripur",
+        "density": "high",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 124.4,
+            "y": 230.1
+        }
+    },
+    {
+        "zilla": "Magura",
+        "density": "low",
+        "product": "Hazrapuri Litchi",
+        "category": "food",
+        "story": "A recently recognized GI product, the Hazrapuri Litchi of Magura is famous for its small seed, thick pulp, and extreme sweetness.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Magura",
+        "dot": {
+            "x": 143.8,
+            "y": 234.5
+        }
+    },
+    {
+        "zilla": "Manikganj",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh. (Hazari Gur is famous but not yet officially certified).",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 166.0,
+            "y": 238.1
+        }
+    },
+    {
+        "zilla": "Meherpur",
+        "density": "high",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 196.5,
+            "y": 235.5
+        }
+    },
+    {
+        "zilla": "Moulvibazar",
+        "density": "low",
+        "product": "Agar & Atar",
+        "category": "crafts",
+        "story": "Known as 'Liquid Gold', the Agarwood and Atar (perfume) of Moulvibazar are GI products, representing a centuries-old fragrance heritage.",
+        "image": "",
+        "shop_link": "/shop?category=crafts&origin=Moulvibazar",
+        "dot": {
+            "x": 214.1,
+            "y": 240.1
+        }
+    },
+    {
+        "zilla": "Munshiganj",
+        "density": "low",
+        "product": "Patkhir",
+        "category": "food",
+        "story": "A GI-recognized sweet delicacy from the Bikrampur area. Patkhir is a dense, creamy dessert wrapped in leaves, unique to Munshiganj.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Munshiganj",
+        "dot": {
+            "x": 247.8,
+            "y": 236.0
+        }
+    },
+    {
+        "zilla": "Mymensingh",
+        "density": "med",
+        "product": "Muktagacha Monda",
+        "category": "food",
+        "story": "A historic sweet with a GI tag. The Monda of Muktagacha has been prepared with a secret recipe for over 200 years.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Mymensingh",
+        "dot": {
+            "x": 266.8,
+            "y": 232.9
+        }
+    },
+    {
+        "zilla": "Naogaon",
+        "density": "low",
+        "product": "Nak Fazli Mango",
+        "category": "food",
+        "story": "A GI-certified mango variety. Nak Fazli is prized for its thin skin, fiberless texture, and late-season availability.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Naogaon",
+        "dot": {
+            "x": 90.3,
+            "y": 278.6
+        }
+    },
+    {
+        "zilla": "Narail",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 116.6,
+            "y": 278.2
+        }
+    },
+    {
+        "zilla": "Narayanganj",
+        "density": "med",
+        "product": "Jamdani Saree",
+        "category": "apparel",
+        "story": "Bangladesh's very first GI product. Jamdani is a UNESCO Intangible Cultural Heritage, woven exclusively in Narayanganj.",
+        "image": "",
+        "shop_link": "/shop?category=apparel&origin=Narayanganj",
+        "dot": {
+            "x": 143.8,
+            "y": 284.5
+        }
+    },
+    {
+        "zilla": "Narsingdi",
+        "density": "low",
+        "product": "Latkan (Burmese Grape)",
+        "category": "food",
+        "story": "Narsingdi's Latkan is a GI-certified fruit, famous for its juicy, tangy-sweet taste and massive production in the district.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Narsingdi",
+        "dot": {
+            "x": 174.7,
+            "y": 281.6
+        }
+    },
+    {
+        "zilla": "Natore",
+        "density": "high",
+        "product": "Kachagolla",
+        "category": "food",
+        "story": "A famous GI sweet made from raw cow's milk. Kachagolla is a soft, crumbly delight that has been the signature of Natore for generations.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Natore",
+        "dot": {
+            "x": 195.6,
+            "y": 281.9
+        }
+    },
+    {
+        "zilla": "Netrokona",
+        "density": "high",
+        "product": "Bijoypur White Clay",
+        "category": "crafts",
+        "story": "A GI-recognized mineral product. The white clay (Sada Mati) of Bijoypur is a rare natural resource used for ceramics and pottery.",
+        "image": "",
+        "shop_link": "/shop?category=crafts&origin=Netrokona",
+        "dot": {
+            "x": 218.9,
+            "y": 281.8
+        }
+    },
+    {
+        "zilla": "Nilphamari",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 248.3,
+            "y": 281.6
+        }
+    },
+    {
+        "zilla": "Noakhali",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 265.3,
+            "y": 274.6
+        }
+    },
+    {
+        "zilla": "Pabna",
+        "density": "med",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 96.4,
+            "y": 327.0
+        }
+    },
+    {
+        "zilla": "Panchagarh",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 130.1,
+            "y": 322.6
+        }
+    },
+    {
+        "zilla": "Patuakhali",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 151.8,
+            "y": 330.3
+        }
+    },
+    {
+        "zilla": "Pirojpur",
+        "density": "med",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 169.2,
+            "y": 319.7
+        }
+    },
+    {
+        "zilla": "Rajbari",
+        "density": "low",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 201.7,
+            "y": 329.4
+        }
+    },
+    {
+        "zilla": "Rajshahi",
+        "density": "low",
+        "product": "Rajshahi Silk",
+        "category": "apparel",
+        "story": "Known as the 'Queen of Fibers', Rajshahi Silk is a prestigious GI product, celebrated for its smooth texture and durability.",
+        "image": "",
+        "shop_link": "/shop?category=apparel&origin=Rajshahi",
+        "dot": {
+            "x": 221.4,
+            "y": 329.5
+        }
+    },
+    {
+        "zilla": "Rangamati",
+        "density": "high",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 244.4,
+            "y": 321.5
+        }
+    },
+    {
+        "zilla": "Rangpur",
+        "density": "high",
+        "product": "Shataranji",
+        "category": "crafts",
+        "story": "A GI-recognized traditional rug. Shataranji is woven from jute and cotton chenille, representing the vibrant folk art of Rangpur.",
+        "image": "",
+        "shop_link": "/shop?category=crafts&origin=Rangpur",
+        "dot": {
+            "x": 272.5,
+            "y": 323.9
+        }
+    },
+    {
+        "zilla": "Satkhira",
+        "density": "low",
+        "product": "Sundarbans Honey",
+        "category": "food",
+        "story": "Officially recognized as a GI product, Sundarbans Honey is collected from the deep mangroves, shared by Satkhira and neighboring districts.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Satkhira",
+        "dot": {
+            "x": 101.5,
+            "y": 365.1
+        }
+    },
+    {
+        "zilla": "Shariatpur",
+        "density": "med",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 133.1,
+            "y": 371.6
+        }
+    },
+    {
+        "zilla": "Sherpur",
+        "density": "low",
+        "product": "Tulshimala Rice",
+        "category": "food",
+        "story": "A GI-certified fragrant rice variety. Tulshimala is a premium produce of Sherpur, widely used for pilaf and desserts.",
+        "image": "",
+        "shop_link": "/shop?category=food&origin=Sherpur",
+        "dot": {
+            "x": 158.0,
+            "y": 371.4
+        }
+    },
+    {
+        "zilla": "Sirajganj",
+        "density": "low",
+        "product": "Sirajganj Gamcha",
+        "category": "apparel",
+        "story": "The traditional cotton towel (Gamcha) of Sirajganj is a GI product, recognized for its fine weave, softness, and cultural importance.",
+        "image": "",
+        "shop_link": "/shop?category=apparel&origin=Sirajganj",
+        "dot": {
+            "x": 176.5,
+            "y": 365.9
+        }
+    },
+    {
+        "zilla": "Sunamganj",
+        "density": "med",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 206.0,
+            "y": 370.3
+        }
+    },
+    {
+        "zilla": "Sylhet",
+        "density": "low",
+        "product": "Shital Pati",
+        "category": "crafts",
+        "story": "A UNESCO Intangible Cultural Heritage and GI product. Shital Pati mats are woven from green cane, known for their cooling properties.",
+        "image": "",
+        "shop_link": "/shop?category=crafts&origin=Sylhet",
+        "dot": {
+            "x": 234.2,
+            "y": 372.4
+        }
+    },
+    {
+        "zilla": "Tangail",
+        "density": "low",
+        "product": "Tangail Saree",
+        "category": "apparel",
+        "story": "World-renowned for its fine texture and Jacquard designs, the Tangail Saree is a GI product that represents the excellence of Bengali weavers.",
+        "image": "",
+        "shop_link": "/shop?category=apparel&origin=Tangail",
+        "dot": {
+            "x": 246.3,
+            "y": 375.1
+        }
+    },
+    {
+        "zilla": "Thakurgaon",
+        "density": "high",
+        "product": "No Official GI Product",
+        "category": "N/A",
+        "story": "Currently, this district does not have an officially registered Geographical Indication (GI) product of Bangladesh.",
+        "image": "",
+        "shop_link": "#",
+        "dot": {
+            "x": 271.2,
+            "y": 369.2
+        }
+    }
+]

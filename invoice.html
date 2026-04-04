@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artifact Dispatch Label | Origins Bangladesh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Barcode+39+Text&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #E5E7EB;
+            -webkit-font-smoothing: antialiased;
+        }
+        .serif {
+            font-family: 'Playfair Display', 'Georgia', serif;
+        }
+        .barcode {
+            font-family: 'Libre Barcode 39 Text', cursive;
+            font-size: 42px;
+            line-height: 1;
+        }
+        
+        /* Print Specific Styles */
+        @media print {
+            body {
+                background-color: #FFFFFF !important;
+                padding: 0;
+                margin: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-wrapper {
+                box-shadow: none !important;
+                margin: 0 auto !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+                border: none !important;
+            }
+            .label-container {
+                border: 2px solid #111827 !important; /* Force border on print */
+                break-inside: avoid;
+            }
+            @page {
+                margin: 10mm;
+                size: auto;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+
+        .hairline-b { border-bottom: 1px solid rgba(17, 24, 39, 0.2); }
+        .hairline-r { border-right: 1px solid rgba(17, 24, 39, 0.2); }
+    </style>
+</head>
+<body class="py-12 px-4 sm:px-6 selection:bg-[#D4AF37] selection:text-[#111827]">
+
+    <!-- Action Bar (Hidden in Print) -->
+    <div class="max-w-3xl mx-auto mb-8 flex justify-between items-center gap-4 no-print">
+        <p class="text-sm text-slate-500 font-medium"><i class="fa-solid fa-circle-info text-[#D4AF37] mr-1"></i> Print this label and attach it securely to the artifact box.</p>
+        <button onclick="window.print()" class="px-8 py-3.5 bg-[#111827] text-[#D4AF37] rounded-lg text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-[#006A4E] hover:text-white transition-all shadow-xl flex items-center gap-2 border border-[#D4AF37]/30 cursor-pointer">
+            <i class="fa-solid fa-print pointer-events-none"></i> <span class="pointer-events-none">Print Label</span>
+        </button>
+    </div>
+
+    <!-- Ultra-Premium Label Container -->
+    <!-- Max width set to closely match a standard shipping label or A5 size -->
+    <div class="print-wrapper max-w-3xl mx-auto bg-white shadow-2xl relative overflow-hidden border border-slate-200 p-4 sm:p-6">
+        
+        <!-- The Actual Label Border (Dark outer, thin inner) -->
+        <div class="label-container border-[3px] border-[#111827] p-1.5 relative bg-white">
+            <div class="border border-[#111827] relative z-10 bg-white">
+                
+                <!-- Header Section -->
+                <div class="flex items-center justify-between p-6 hairline-b bg-[#111827] text-white">
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-normal tracking-[0.1em] uppercase serif mb-1">
+                            <span class="text-[#D4AF37]">Origins</span> Bangla<span class="text-[#006A4E]">desh</span>
+                        </h1>
+                        <p class="text-[8px] font-bold uppercase tracking-[0.4em] text-slate-300">
+                            Verified Heritage Artifact • Priority Dispatch
+                        </p>
+                    </div>
+                    <div class="text-right">
+                        <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-[#D4AF37]/40 mb-2 ml-auto">
+                            <i class="fa-solid fa-shield-halved text-[#D4AF37] text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logistics Meta & Barcode -->
+                <div class="flex justify-between items-center p-6 hairline-b bg-[#FDFBF7]">
+                    <div class="flex gap-8">
+                        <div>
+                            <p class="text-[8px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-1">Date of Dispatch</p>
+                            <p class="text-xs text-[#111827] font-bold uppercase tracking-widest">April 03, 2026</p>
+                        </div>
+                        <div>
+                            <p class="text-[8px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-1">Logistics Partner</p>
+                            <p class="text-xs text-[#111827] font-bold uppercase tracking-widest">Origins Premium</p>
+                        </div>
+                        <div>
+                            <p class="text-[8px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-1">Service Type</p>
+                            <p class="text-[10px] text-[#006A4E] font-bold uppercase tracking-widest border border-[#006A4E]/30 px-2 py-0.5 rounded bg-[#006A4E]/5 inline-block">Express Fragile</p>
+                        </div>
+                    </div>
+                    <!-- Barcode Graphic -->
+                    <div class="text-right hidden sm:block">
+                        <p class="barcode text-[#111827] opacity-80">*ORD993821*</p>
+                    </div>
+                </div>
+
+                <!-- Sender & Receiver (2 Columns) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 hairline-b">
+                    
+                    <!-- FROM (Artisan) -->
+                    <div class="p-6 sm:p-8 sm:hairline-r hairline-b sm:border-b-0 bg-white">
+                        <h3 class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#D4AF37] mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Dispatched By (Sender)
+                        </h3>
+                        <p class="font-bold text-xl text-[#111827] serif mb-1">Karim Handicrafts</p>
+                        <p class="text-[9px] text-[#111827] mb-3 font-bold uppercase tracking-widest border border-slate-300 inline-block px-2 py-0.5 rounded bg-slate-50">
+                            ID: ART-8834
+                        </p>
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            Sonargaon Weaver's Colony<br>
+                            Plot 42, Artisan Block<br>
+                            Narayanganj, 1400<br>
+                            Bangladesh
+                        </p>
+                        <p class="text-[10px] text-slate-500 mt-4 uppercase tracking-widest font-bold">Contact: +880 1911-XXXXXX</p>
+                    </div>
+
+                    <!-- TO (Buyer) -->
+                    <div class="p-6 sm:p-8 bg-[#FDFBF7] relative overflow-hidden">
+                        <!-- Abstract watermark in receiver section -->
+                        <i class="fa-solid fa-location-crosshairs absolute -bottom-10 -right-10 text-[10rem] text-[#111827] opacity-[0.03] pointer-events-none"></i>
+                        
+                        <h3 class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#006A4E] mb-4 flex items-center gap-2 relative z-10">
+                            <i class="fa-solid fa-map-location-dot"></i> Deliver To (Recipient)
+                        </h3>
+                        <p class="font-bold text-2xl text-[#111827] serif mb-1 relative z-10">Mr. Shafiqur Rahman</p>
+                        <p class="text-[9px] text-[#111827] mb-3 font-bold uppercase tracking-widest border border-[#D4AF37]/50 inline-block px-2 py-0.5 rounded bg-[#D4AF37]/10 relative z-10">
+                            Guardian ID: OB-73892
+                        </p>
+                        <p class="text-sm text-[#111827] leading-relaxed font-medium relative z-10">
+                            Apartment 4B, House 12, Road 5<br>
+                            Gulshan 1, Dhaka 1212<br>
+                            Bangladesh
+                        </p>
+                        <p class="text-xs text-[#111827] mt-4 font-mono font-bold relative z-10">TEL: +880 1711-000000</p>
+                    </div>
+
+                </div>
+
+                <!-- Artifact Details -->
+                <div class="p-6 sm:p-8 hairline-b bg-white">
+                    <h3 class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#111827] mb-4 border-b border-slate-200 pb-2">Artifact Enclosed</h3>
+                    
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <p class="font-bold text-lg text-[#111827] serif">1x Authentic Nakshi Kantha (Masterpiece Edition)</p>
+                            <div class="flex items-center gap-3 mt-1.5">
+                                <span class="text-[9px] text-[#111827] uppercase tracking-widest font-bold bg-slate-100 px-2 py-0.5 rounded">SKU: NK-001</span>
+                                <span class="text-[9px] text-[#D4AF37] uppercase tracking-widest font-bold border border-[#D4AF37]/40 px-2 py-0.5 rounded"><i class="fa-solid fa-certificate"></i> GI Code: OB-NK-9823</span>
+                            </div>
+                        </div>
+                        
+                        <div class="text-right shrink-0">
+                            <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-1">Declared Value</p>
+                            <!-- Declared value is standard for shipping/customs -->
+                            <p class="text-base text-[#111827] font-bold font-serif">৳ 12,500</p> 
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer / Authentication / QR -->
+                <div class="p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-center gap-8 bg-white">
+                    
+                    <!-- Warning / Handling -->
+                    <div class="flex-1 text-center sm:text-left">
+                        <div class="inline-flex items-center gap-2 border border-[#F42A41]/30 bg-[#F42A41]/5 px-3 py-1.5 rounded-md mb-3">
+                            <i class="fa-solid fa-triangle-exclamation text-[#F42A41] text-xs"></i>
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-[#F42A41]">Extremely Fragile • Handle With Care</span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
+                            Do not accept delivery if the outer cryptographic seal is broken. This package contains a verified heritage artifact curated by Origins Bangladesh.
+                        </p>
+                    </div>
+
+                    <!-- Authenticity QR & ID -->
+                    <div class="shrink-0 flex items-center gap-4">
+                        <div class="text-right">
+                            <p class="text-[8px] font-bold uppercase tracking-[0.4em] text-[#111827] mb-1">Tracking & Provenance</p>
+                            <p class="text-[10px] font-mono text-slate-600 font-bold tracking-widest">ORD-993821</p>
+                            <p class="text-[8px] text-[#006A4E] uppercase font-bold tracking-widest mt-1">Scan to Verify</p>
+                        </div>
+                        <div class="w-20 h-20 p-1 border border-[#111827] bg-white">
+                            <!-- Placeholder QR -->
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://originsbangladesh.com/track/OB-ORD-993821&color=111827&bgcolor=ffffff" alt="Tracking QR" class="w-full h-full">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="text-center mt-4 no-print">
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">✂ - - - - Cut along the outer border - - - - ✂</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

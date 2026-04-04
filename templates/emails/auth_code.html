@@ -1,0 +1,44 @@
+{% extends 'emails/_base.html' %}
+
+{% block body %}
+  <h2 style="margin: 0 0 16px 0; font-family: 'Georgia', serif; font-size: 22px; font-weight: normal; color: #111827;">
+    {{ title }}
+  </h2>
+  
+  <div style="color: #4b5563; font-size: 15px; line-height: 1.8; font-weight: 400;">
+    <p style="margin: 0 0 20px 0;">
+      Please use the following one-time code to proceed securely:
+    </p>
+
+    <!-- Secure OTP Box -->
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+      <tr>
+        <td align="center" style="background-color: #111827; border: 1px solid #D4AF37; border-radius: 8px; padding: 16px 32px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+          <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; font-size: 28px; letter-spacing: 10px; font-weight: bold; color: #D4AF37; margin-right: -10px;">
+            {{ otp }}
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <p style="margin: 0 0 20px 0;">
+      Or continue instantly by clicking the secure link below:
+    </p>
+
+    <!-- Action Button -->
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 30px;">
+      <tr>
+        <td align="center" style="background-color: #111827; border: 1px solid #D4AF37; border-radius: 4px;">
+          <a href="{{ primary_cta_url }}" target="_blank" style="display: inline-block; padding: 12px 30px; color: #D4AF37; text-decoration: none; font-size: 13px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">
+            {{ primary_cta_text }}
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Helper Text -->
+    <div style="margin-top: 10px; padding-top: 16px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 12px; line-height: 1.6;">
+      {{ helper_text }}
+    </div>
+  </div>
+{% endblock %}

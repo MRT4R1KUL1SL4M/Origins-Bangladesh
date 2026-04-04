@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>{{ title or 'Origins Bangladesh' }}</title>
+  <style>
+    /* Reset & Client-specific fixes */
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; }
+    img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+    table { border-collapse: collapse !important; }
+    body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; }
+    
+    /* Hover effects for links */
+    .footer-link:hover { color: #006A4E !important; text-decoration: underline !important; }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f5f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';">
+  
+  <!-- Hidden Preheader Text -->
+  {% if preheader %}
+  <div style="display: none; max-height: 0px; overflow: hidden; mso-hide: all; font-size: 0px; line-height: 0px; color: #f4f5f7;">
+    {{ preheader }} &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+  </div>
+  {% endif %}
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f5f7; padding: 40px 15px;">
+    <tr>
+      <td align="center">
+        <!-- Main Container -->
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; width: 100%; margin: auto;">
+          
+          <!-- Header Area -->
+          <tr>
+            <td align="center" style="padding: 20px 0 40px 0;">
+              <h1 style="margin: 0; font-family: 'Georgia', serif; font-size: 28px; font-weight: normal; letter-spacing: 3px; text-transform: uppercase;">
+                <span style="color: #D4AF37; font-weight: bold;">ORIGINS</span> <span style="color: #006A4E;">BANGLA</span><span style="color: #F42A41;">DESH</span>
+              </h1>
+              <p style="margin: 8px 0 0 0; font-size: 11px; color: #888888; letter-spacing: 2px; text-transform: uppercase;">
+                Elegance & Heritage
+              </p>
+            </td>
+          </tr>
+
+          <!-- Main Content Area -->
+          <tr>
+            <td style="background-color: #ffffff; border-radius: 8px; padding: 48px 40px; border: 1px solid #e5e7eb; border-top: 4px solid #D4AF37; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);">
+              
+              <!-- Dynamic Body Block for Jinja/Nunjucks -->
+              <div style="color: #4b5563; font-size: 15px; line-height: 1.8; font-weight: 400;">
+                {% block body %}
+                <!-- Default Placeholder Content (Will be replaced by your backend) -->
+                <p style="margin: 0 0 16px 0;">Dear Customer,</p>
+                <p style="margin: 0 0 16px 0;">Welcome to the world of <strong><span style="color: #D4AF37;">Origins</span> <span style="color: #006A4E;">Bangla</span><span style="color: #F42A41;">desh</span></strong>. We are delighted to present you with a curated experience of unparalleled craftsmanship and style.</p>
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin: 35px auto;">
+                  <tr>
+                    <td align="center" style="background-color: #111827; border: 1px solid #D4AF37; border-radius: 4px;">
+                      <a href="#" target="_blank" style="display: inline-block; padding: 14px 36px; color: #D4AF37; text-decoration: none; font-size: 13px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;">Discover More</a>
+                    </td>
+                  </tr>
+                </table>
+                {% endblock %}
+              </div>
+              
+            </td>
+          </tr>
+
+          <!-- Footer Area -->
+          <tr>
+            <td align="center" style="padding: 40px 10px 20px 10px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                
+                <!-- Separator Line -->
+                <tr>
+                  <td align="center" style="padding-bottom: 20px;">
+                    <div style="height: 1px; width: 60px; background-color: #d1d5db; margin: 0 auto;"></div>
+                  </td>
+                </tr>
+
+                <!-- Footer Notes -->
+                <tr>
+                  <td align="center" style="color: #6b7280; font-size: 12px; line-height: 1.6;">
+                    {{ email_footer_note or "You are receiving this email because you opted in via our website." }}
+                  </td>
+                </tr>
+                
+                <!-- Signature & Copyright -->
+                <tr>
+                  <td align="center" style="padding-top: 15px; color: #9ca3af; font-size: 12px; line-height: 1.6;">
+                    &copy; {{ year or 2026 }} <span style="font-weight: 600;"><span style="color: #D4AF37;">Origins</span> <span style="color: #006A4E;">Bangla</span><span style="color: #F42A41;">desh</span></span>. All rights reserved.
+                    <br/>
+                    {% if email_signature_title %}
+                      <span>{{ email_signature_title }}</span><br/>
+                    {% endif %}
+                    <span style="display: inline-block; margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb;">
+                      A luxury brand by <strong style="color: #D4AF37;">Compile Breakers Team</strong>
+                    </span>
+                  </td>
+                </tr>
+
+              </table>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

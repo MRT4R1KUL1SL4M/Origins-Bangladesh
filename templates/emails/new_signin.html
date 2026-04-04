@@ -1,0 +1,69 @@
+{% extends 'emails/_base.html' %}
+
+{% block body %}
+  <h2 style="margin: 0 0 16px 0; font-family: 'Georgia', serif; font-size: 22px; font-weight: normal; color: #111827;">
+    New Sign-in Detected
+  </h2>
+  
+  <div style="color: #4b5563; font-size: 15px; line-height: 1.8; font-weight: 400;">
+    <p style="margin: 0 0 24px 0;">
+      Hi{% if name %} <strong>{{ name }}</strong>{% endif %},<br/>
+      We noticed a new sign-in to your <strong><span style="color: #D4AF37;">Origins</span> <span style="color: #006A4E;">Bangla</span><span style="color: #F42A41;">desh</span></strong> account.
+    </p>
+
+    <!-- Login Details Table -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin-bottom: 30px;">
+      <tr>
+        <td style="padding: 12px 16px; width: 100px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb;">
+          Email
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; color: #4b5563; border-bottom: 1px solid #e5e7eb;">
+          {{ email }}
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb;">
+          When
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; color: #4b5563; border-bottom: 1px solid #e5e7eb;">
+          {{ when }}
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb;">
+          IP
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; color: #4b5563; border-bottom: 1px solid #e5e7eb;">
+          {{ ip }}
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-right: 1px solid #e5e7eb;">
+          Device
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; color: #4b5563;">
+          {{ user_agent }}
+        </td>
+      </tr>
+    </table>
+
+    {% if revoke_url %}
+    <!-- Security Alert Box -->
+    <div style="margin-top: 10px; padding: 20px; background-color: #fffbeb; border-left: 4px solid #D4AF37; font-size: 14px; color: #92400e; border-radius: 0 4px 4px 0;">
+      <p style="margin: 0 0 16px 0; font-weight: bold; color: #111827;">Unrecognized activity?</p>
+      <p style="margin: 0 0 20px 0; font-size: 13px; color: #4b5563;">If this wasn't you, please secure your account by revoking access to this device immediately.</p>
+      
+      <!-- Action Button -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="center" style="background-color: #111827; border: 1px solid #D4AF37; border-radius: 4px;">
+            <a href="{{ revoke_url }}" target="_blank" style="display: inline-block; padding: 12px 24px; color: #D4AF37; text-decoration: none; font-size: 12px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">
+              Revoke Access
+            </a>
+          </td>
+        </tr>
+      </table>
+    </div>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Origins | Authentic Bangladesh GI Heritage{% endblock %}</title>
+
+<meta name="description" content="{% block meta_description %}Authentic Bangladesh GI heritage marketplace — discover verified crafts, artisan stories, and provenance-led collections.{% endblock %}" />
+<link rel="canonical" href="{% block canonical_url %}{{ request.base_url }}{% endblock %}" />
+
+<!-- Open Graph / Social -->
+<meta property="og:type" content="{% block og_type %}website{% endblock %}" />
+<meta property="og:title" content="{% block og_title %}{{ self.title()|striptags }}{% endblock %}" />
+<meta property="og:description" content="{% block og_description %}{{ self.meta_description()|striptags }}{% endblock %}" />
+<meta property="og:url" content="{% block og_url %}{{ request.url }}{% endblock %}" />
+<meta property="og:image" content="{% block og_image %}{% endblock %}" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{% block twitter_title %}{{ self.title()|striptags }}{% endblock %}" />
+<meta name="twitter:description" content="{% block twitter_description %}{{ self.meta_description()|striptags }}{% endblock %}" />
+<meta name="twitter:image" content="{% block twitter_image %}{% endblock %}" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8f5f1; 
+            color: #1a3c34; 
+            overflow-x: hidden;
+        }
+
+        /* Prevent sticky navbar from covering anchor targets */
+        section[id] { scroll-margin-top: 140px; }
+        
+        h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; }
+        .font-tech { font-family: 'Rajdhani', sans-serif; }
+        
+        /* Custom Heritage Colors */
+        .text-heritage-green { color: #153a30; }
+        .bg-heritage-green { background-color: #153a30; }
+        .bg-heritage-maroon { background-color: #3f2e2e; } 
+        .bg-heritage-clay { background-color: #eae5db; } 
+        .text-heritage-gold { color: #d4a373; }
+        .bg-heritage-gold { background-color: #d4a373; }
+        .border-heritage-gold { border-color: #d4a373; }
+        .border-heritage-green { border-color: #153a30; }
+        
+        /* Off-White Replacement */
+        .bg-pearl { background-color: #fffaf5; }
+        .text-cream { color: #fefce8; }
+
+        /* Premium Card Shadow */
+        .card-shadow { box-shadow: 0 15px 35px -5px rgba(21, 58, 48, 0.08); }
+        
+        /* --- CINEMATIC ANIMATIONS --- */
+        .reveal-up { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal-up.active { opacity: 1; transform: translateY(0); }
+        .reveal-left { opacity: 0; transform: translateX(-40px); transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal-right { opacity: 0; transform: translateX(40px); transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal-left.active, .reveal-right.active { opacity: 1; transform: translateX(0); }
+        .reveal-scale { opacity: 0; transform: scale(0.95); transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal-scale.active { opacity: 1; transform: scale(1); }
+
+        .img-pan-container { overflow: hidden; }
+        .img-pan-container img { transition: transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); transform: scale(1.05); }
+        .group:hover .img-pan-container img { transform: scale(1.15); }
+
+        .btn-animate { transition: all 0.3s ease; }
+        .btn-animate:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.3); }
+
+        .header-btn-premium { position: relative; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .header-btn-premium:hover { color: #d4a373; transform: translateY(-2px); }
+        .header-btn-premium::after { content: ''; position: absolute; bottom: -5px; left: 50%; width: 0; height: 2px; background-color: #d4a373; transition: all 0.3s ease; transform: translateX(-50%); }
+        .header-btn-premium:hover::after { width: 80%; }
+
+        .footer-link-anim { display: inline-block; position: relative; }
+        .footer-link-anim::after { content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 1px; bottom: -2px; left: 0; background-color: #d4a373; transform-origin: bottom right; transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1); }
+        .footer-link-anim:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+        .footer-link-anim:hover { color: #d4a373; }
+
+        .group:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-menu { opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; }
+
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f8f5f1; }
+        ::-webkit-scrollbar-thumb { background: #153a30; border-radius: 4px; }
+
+        /* --- MAP SECTION SPECIFIC STYLES --- */
+        :root {
+            --bg-map-deep: #052e16; 
+            --gold-primary: #d4af37;
+            --gold-secondary: #f3e5ab;
+            --gold-glow: rgba(212, 175, 55, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-surface: rgba(10, 15, 30, 0.65);
+        }
+
+        .glass-panel {
+            background: var(--glass-surface);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        #mapHost svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 0 20px rgba(0,0,0,0.5)); }
+        #mapHost svg path { fill: rgba(255, 255, 255, 0.03); stroke: rgba(255, 255, 255, 0.15); stroke-width: 0.5; cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); vector-effect: non-scaling-stroke; }
+        #mapHost svg path:hover { fill: rgba(212, 175, 55, 0.15); stroke: var(--gold-primary); stroke-width: 1; filter: drop-shadow(0 0 8px var(--gold-glow)); transform: translateY(-2px); }
+        #mapHost svg path.active { fill: rgba(212, 175, 55, 0.25); stroke: var(--gold-secondary); stroke-width: 1.5; filter: drop-shadow(0 0 15px var(--gold-glow)); z-index: 10; }
+
+        .district-label { font-family: 'Manrope', sans-serif; font-size: 10px; fill: #cbd5e1; pointer-events: none; user-select: none; text-shadow: 0 2px 4px rgba(0,0,0,0.9); font-weight: 500; opacity: 0; transition: opacity 0.4s ease; letter-spacing: 0.05em; }
+        .labels-visible .district-label { opacity: 1; }
+
+        .btn-premium { background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0)); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; }
+        .btn-premium:hover { background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02)); border-color: var(--gold-primary); box-shadow: 0 0 15px var(--gold-glow); }
+
+        .bg-grid { background-size: 50px 50px; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px); mask-image: linear-gradient(to bottom, black 40%, transparent 100%); }
+
+        /* --- GLOBAL REACH MAP STYLES --- */
+        .text-metal {
+            background: linear-gradient(to bottom, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+        .globe-overlay {
+            background: radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.03) 0%, rgba(0, 0, 0, 0.6) 80%, #000 100%);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+            pointer-events: none;
+        }
+        .scan-grid {
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(circle at center, black 30%, transparent 70%);
+        }
+        .connection-line {
+            fill: none;
+            stroke: url(#lineGradient);
+            stroke-width: 1;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: drawLine 2s ease-out forwards;
+            opacity: 0.4;
+        }
+        .data-packet {
+            offset-path: path(var(--path));
+            offset-rotate: auto;
+            animation: travelPath 3s linear infinite;
+        }
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+        @keyframes travelPath {
+            0% { offset-distance: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { offset-distance: 100%; opacity: 0; }
+        }
+        .radar-sweep {
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(0, 240, 255, 0.1) 60deg, transparent 60deg);
+            border-radius: 50%;
+            animation: radar 4s linear infinite;
+        }
+        @keyframes radar {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .glass-panel-global {
+            background: rgba(5, 7, 10, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        .glass-panel-global:hover {
+            background: rgba(10, 15, 25, 0.8);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+        }
+    </style>
+    <!-- Lucide (used by dashboards / menus) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+{#
+  NOTE:
+  The marketing footer (partials/footer.html) is intentionally tall.
+  On dashboard pages we use a 1-page "app shell" layout (header + footer
+  visible, middle scroll). A tall footer can consume most of the viewport
+  and make the middle content appear blank.
+
+  We therefore allow pages to override the footer via a block.
+#}
+<body class="antialiased {% if app_shell %}h-screen flex flex-col overflow-hidden{% endif %}">
+    {% include 'partials/navbar.html' %}
+    {% include 'partials/gi-auth-bar.html' %}
+
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 mt-4">
+        {% for category, message in messages %}
+          {% set tone = 'bg-heritage-green text-white' if category in ['success'] else ('bg-red-600 text-white' if category in ['danger','error'] else 'bg-[#d4a373] text-white') %}
+          <div class="mb-3 px-4 py-3 rounded-xl shadow-sm {{ tone }}">
+            <div class="text-sm font-semibold">{{ message }}</div>
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+
+    <main class="{% if app_shell %}flex-1 min-h-0 overflow-y-auto overflow-x-hidden{% else %}overflow-x-hidden{% endif %}">
+      {% block content %}{% endblock %}
+    </main>
+
+    {% block footer %}
+      {% include 'partials/footer.html' %}
+    {% endblock %}
+
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block title %}Flash Deals | Origins Bangladesh{% endblock %}
+
+{% block content %}
+<!-- Premium Midnight Flash Deals Section -->
+<section class="py-20 lg:py-28 bg-[#0B111A] text-white font-sans relative overflow-hidden selection:bg-[#D4AF37] selection:text-black">
+  
+  <!-- Ambient Luxury Lighting -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <div class="absolute -top-[10%] -right-[10%] w-[600px] h-[600px] rounded-full bg-[#006A4E] opacity-20 blur-[120px] mix-blend-screen"></div>
+    <div class="absolute top-[40%] -left-[10%] w-[500px] h-[500px] rounded-full bg-[#D4AF37] opacity-10 blur-[100px] mix-blend-screen"></div>
+    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    
+    <!-- Hero Header Area -->
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-10 mb-16 border-b border-white/10 pb-12">
+      <div class="max-w-2xl">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 mb-6 bg-[#D4AF37]/10 backdrop-blur-md text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.3em] rounded-full border border-[#D4AF37]/30 shadow-[0_0_15px_rgba(212,175,55,0.1)]">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D4AF37] opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-[#D4AF37]"></span>
+          </span>
+          Limited-Time Sovereignty
+        </span>
+        <h1 class="text-4xl md:text-6xl font-normal tracking-tight leading-tight" style="font-family: 'Georgia', serif;">
+          Midnight <span class="font-bold text-[#D4AF37] italic">Flash Deals</span>
+        </h1>
+        <p class="text-slate-400 mt-5 text-sm md:text-base leading-relaxed max-w-lg font-medium">
+          Curated heritage pieces offered with exclusive limited-time considerations. A rare opportunity to acquire excellence at a preferred value.
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap gap-4 shrink-0">
+        <a href="{{ url_for('shop') }}" class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/10 text-[10px] font-bold tracking-[0.2em] uppercase shadow-sm">
+          Browse Shop
+        </a>
+        <a href="{{ url_for('home') }}" class="px-8 py-4 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#B08D28] text-black text-[10px] font-bold tracking-[0.2em] uppercase hover:from-[#E5C354] hover:to-[#C29D33] transition-all shadow-[0_4px_20px_rgba(212,175,55,0.2)]">
+          Back Home
+        </a>
+      </div>
+    </div>
+
+    <!-- Master Countdown Timer -->
+    <div class="mb-20 flex flex-col items-center">
+      <div class="bg-black/40 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative group">
+        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#006A4E]/30 via-[#D4AF37]/30 to-[#F42A41]/30 rounded-[2.5rem] blur opacity-50 group-hover:opacity-100 transition duration-1000"></div>
+        
+        <div class="relative flex flex-col items-center">
+          <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-[#D4AF37] mb-8">Offer Window Closes In</p>
+          
+          <div id="countdown" class="flex items-center gap-4 md:gap-8" 
+               data-end-at="{{ end_time_iso }}" 
+               data-fallback="2h 00m 00s">
+            
+            <div class="flex flex-col items-center">
+              <div class="w-16 h-16 md:w-24 md:h-24 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center shadow-inner">
+                <span class="text-3xl md:text-5xl font-bold tracking-tighter" data-unit="hours" style="font-family: ui-monospace, monospace;">00</span>
+              </div>
+              <span class="text-[9px] font-bold uppercase tracking-widest text-slate-500 mt-4">Hours</span>
+            </div>
+
+            <span class="text-2xl md:text-4xl font-bold text-white/20 mb-10">:</span>
+
+            <div class="flex flex-col items-center">
+              <div class="w-16 h-16 md:w-24 md:h-24 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center shadow-inner">
+                <span class="text-3xl md:text-5xl font-bold tracking-tighter" data-unit="minutes" style="font-family: ui-monospace, monospace;">00</span>
+              </div>
+              <span class="text-[9px] font-bold uppercase tracking-widest text-slate-500 mt-4">Minutes</span>
+            </div>
+
+            <span class="text-2xl md:text-4xl font-bold text-white/20 mb-10">:</span>
+
+            <div class="flex flex-col items-center">
+              <div class="w-16 h-16 md:w-24 md:h-24 bg-[#D4AF37]/10 rounded-2xl border border-[#D4AF37]/30 flex items-center justify-center shadow-inner relative overflow-hidden">
+                <span class="text-3xl md:text-5xl font-bold tracking-tighter text-[#D4AF37]" data-unit="seconds" style="font-family: ui-monospace, monospace;">00</span>
+                <!-- Pulse effect behind seconds -->
+                <div class="absolute inset-0 bg-[#D4AF37]/5 animate-pulse"></div>
+              </div>
+              <span class="text-[9px] font-bold uppercase tracking-widest text-[#D4AF37] mt-4">Seconds</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 lg:gap-8" id="flashDealsGrid">
+      {% for item in flash_products %}
+      <div class="group bg-[#111827] rounded-[2rem] border border-white/5 p-3 hover:border-[#D4AF37]/40 transition-all duration-500 flex flex-col shadow-lg hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]">
+        
+        <!-- Image Section -->
+        <div class="relative overflow-hidden rounded-[1.5rem] aspect-[4/5] bg-[#0B111A]">
+          <img src="{{ item.img }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 ease-out" alt="{{ item.name }}">
+          
+          <!-- Discount Badge -->
+          <div class="absolute top-3 left-3 bg-[#F42A41] text-white text-[9px] font-black px-2.5 py-1 rounded-full z-20 shadow-lg tracking-tighter">
+            {{ item.off }} OFF
+          </div>
+
+          <!-- Luxury Overlay Actions -->
+          <div class="absolute inset-0 bg-[#006A4E]/80 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center gap-3 z-10">
+            <form method="post" action="{{ url_for('cart_add', product_id=item.product_id) }}" class="w-full px-6">
+              <input type="hidden" name="next" value="{{ request.full_path }}">
+              <button type="submit" class="w-full bg-[#D4AF37] text-black py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#E5C354] transition-all transform translate-y-4 group-hover:translate-y-0 duration-500 delay-75 shadow-lg">
+                Add to Bag
+              </button>
+            </form>
+            <a href="{{ url_for('product_details', product_id=item.product_id) }}" class="w-full px-6 text-center">
+              <div class="bg-white/10 hover:bg-white/20 border border-white/20 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all transform translate-y-4 group-hover:translate-y-0 duration-500 delay-150">
+                View Piece
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Details -->
+        <div class="px-3 pt-5 pb-2 flex flex-col flex-grow">
+          <p class="text-[9px] text-[#D4AF37] font-bold uppercase tracking-widest mb-1">{{ item.cat }}</p>
+          <h3 class="font-bold text-sm text-slate-100 line-clamp-2 leading-snug group-hover:text-white transition-colors flex-grow" style="font-family: 'Georgia', serif;">{{ item.name }}</h3>
+          
+          <div class="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+            <span class="text-[#D4AF37] font-bold text-base">{{ item.price_fmt }}</span>
+            <span class="text-xs text-slate-500 line-through font-medium">{{ item.old_price_fmt }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Empty State -->
+    {% if not flash_products %}
+      <div class="py-20 text-center flex flex-col items-center">
+        <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-8 border border-white/10">
+          <i class="fa-solid fa-moon text-2xl text-slate-600"></i>
+        </div>
+        <h3 class="text-2xl font-normal text-slate-300" style="font-family: 'Georgia', serif;">No active deals at this hour</h3>
+        <p class="text-slate-500 mt-3 max-w-sm mx-auto">Please check back soon for our next curated selection of heritage treasures.</p>
+        <a href="{{ url_for('shop') }}" class="mt-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#D4AF37] border-b border-[#D4AF37] pb-1 hover:text-white hover:border-white transition-all">
+          Explore Main Shop
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<script>
+  // Advanced Countdown Logic for Flash Deals
+  document.addEventListener('DOMContentLoaded', () => {
+    const countdownEl = document.getElementById('countdown');
+    if (!countdownEl) return;
+
+    const endTime = new Date(countdownEl.dataset.endAt || new Date().getTime() + 7200000).getTime();
+    const hDisplay = countdownEl.querySelector('[data-unit="hours"]');
+    const mDisplay = countdownEl.querySelector('[data-unit="minutes"]');
+    const sDisplay = countdownEl.querySelector('[data-unit="seconds"]');
+
+    function updateTimer() {
+      const now = new Date().getTime();
+      const distance = endTime - now;
+
+      if (distance < 0) {
+        countdownEl.innerHTML = `<span class="text-[11px] font-bold uppercase tracking-widest text-[#F42A41]">Offer Expired</span>`;
+        return;
+      }
+
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      hDisplay.textContent = hours.toString().padStart(2, '0');
+      mDisplay.textContent = minutes.toString().padStart(2, '0');
+      sDisplay.textContent = seconds.toString().padStart(2, '0');
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% block title %}Verify GI Tag | Origins Bangladesh{% endblock %}
+{% block content %}
+
+<section class="py-20 bg-heritage-maroon text-cream relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#d4a373 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start relative z-10">
+    <div class="pt-2">
+      <div class="w-16 h-16 border border-[#d4a373]/30 rounded-2xl flex items-center justify-center mb-8 bg-white/5 backdrop-blur">
+        <i class="fa-solid fa-shield-halved text-3xl text-[#d4a373]"></i>
+      </div>
+      <h1 class="text-5xl lg:text-6xl font-bold mb-6 text-cream leading-tight">
+        Verify a GI Tag<br>
+        <span class="text-[#fca5a5] italic">in seconds</span>
+      </h1>
+      <p class="text-[#e2e8f0] text-lg leading-relaxed max-w-lg">
+        Enter the GI code printed on your product tag (or scan the QR). We’ll confirm the registry match,
+        artisan provenance, and verification history — instantly.
+      </p>
+
+      <div class="mt-10 space-y-4 text-sm text-[#e2e8f0]/90">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-emerald-400"></i>
+          <span>Registry-backed verification (active / revoked / not found)</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-emerald-400"></i>
+          <span>Artisan + region context when available</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-emerald-400"></i>
+          <span>Audit trail for authenticity monitoring</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-pearl rounded-[2.5rem] p-10 lg:p-12 text-slate-900 shadow-2xl border-4 border-[#fff5f5]">
+      <h2 class="text-3xl font-bold mb-2 text-heritage-green">Verify Your GI Tag</h2>
+      <p class="text-slate-500 text-sm mb-8">Enter the alphanumeric code found on the tag.</p>
+
+      <form method="post" action="{{ url_for('verify_submit') }}" class="space-y-5">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">GI Tag Code</label>
+          <input
+            name="code"
+            value="{{ initial_code }}"
+            type="text"
+            placeholder="E.G., BD-JAM-2024-X982"
+            class="w-full bg-[#f8f5f1] border border-stone-200 rounded-2xl px-6 py-5 text-base font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-heritage-green transition"
+            autocomplete="off"
+            required
+          >
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-heritage-gold hover:bg-[#b58556] text-cream font-bold py-5 rounded-2xl transition shadow-xl shadow-orange-500/20 transform hover:scale-[1.02] active:scale-95 btn-animate flex items-center justify-center gap-2"
+        >
+          <i class="fa-solid fa-badge-check"></i>
+          Verify Authenticity
+        </button>
+      </form>
+
+      {% if result %}
+        {% if result.ok %}
+          <div class="mt-8 p-5 rounded-2xl border {% if result.suspicious %}bg-amber-50 border-amber-200 text-amber-900{% else %}bg-emerald-50 border-emerald-200 text-emerald-900{% endif %}">
+            <div class="flex items-start gap-3">
+              <div class="mt-0.5">
+                {% if result.suspicious %}
+                  <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+                {% else %}
+                  <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                {% endif %}
+              </div>
+              <div class="flex-1">
+                <div class="font-extrabold text-base">Verified</div>
+                <div class="text-sm font-semibold mt-1">{{ result.message }}</div>
+
+                {% set d = result.data %}
+                <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div class="sm:col-span-1">
+                    <img src="{{ d.product.image }}" class="w-full h-28 object-cover rounded-xl border border-black/5" alt="Product">
+                  </div>
+                  <div class="sm:col-span-2">
+                    <div class="text-lg font-bold text-heritage-green">{{ d.product.title }}</div>
+                    <div class="text-xs font-bold uppercase tracking-widest text-slate-500 mt-1">
+                      {{ d.product.category }}{% if d.product.subcategory %} • {{ d.product.subcategory }}{% endif %}{% if d.product.district %} • {{ d.product.district }}{% endif %}
+                    </div>
+
+                    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                      <div class="bg-white/70 rounded-xl p-3 border border-black/5">
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Tag Code</div>
+                        <div class="font-mono font-bold mt-1">{{ d.tag_code }}</div>
+                      </div>
+                      <div class="bg-white/70 rounded-xl p-3 border border-black/5">
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Verification Count</div>
+                        <div class="font-bold mt-1">{{ d.verification.verify_count }}</div>
+                      </div>
+                      <div class="bg-white/70 rounded-xl p-3 border border-black/5">
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-slate-500">First Verified</div>
+                        <div class="font-semibold mt-1">{{ d.verification.first_verified_at or '—' }}</div>
+                      </div>
+                      <div class="bg-white/70 rounded-xl p-3 border border-black/5">
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Last Verified</div>
+                        <div class="font-semibold mt-1">{{ d.verification.last_verified_at or '—' }}</div>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 text-sm text-slate-700">
+                      <span class="font-bold">Maker:</span>
+                      {{ d.maker.artisan_name or d.maker.owner_name or '—' }}
+                      {% if d.maker.artisan_location %}
+                        <span class="text-slate-500">• {{ d.maker.artisan_location }}</span>
+                      {% endif %}
+                      {% if d.maker.shop_name %}
+                        <div class="text-slate-500 text-xs mt-1">Seller: {{ d.maker.shop_name }}</div>
+                      {% endif %}
+                    </div>
+
+                    <div class="mt-5 flex flex-wrap gap-3">
+                      <a href="{{ url_for('shop', q=d.product.title) }}"
+                         class="inline-flex items-center gap-2 bg-heritage-green text-cream px-5 py-3 rounded-xl text-xs font-bold uppercase tracking-widest shadow hover:bg-[#0f2e26] transition btn-animate">
+                        View Product
+                        <i class="fa-solid fa-arrow-right"></i>
+                      </a>
+                      <a href="{{ url_for('verify_page') }}"
+                         class="inline-flex items-center gap-2 bg-transparent border-2 border-heritage-green text-heritage-green px-5 py-3 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-heritage-green hover:text-cream transition btn-animate">
+                        Verify Another
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <div class="mt-8 p-5 rounded-2xl border bg-rose-50 border-rose-200 text-rose-900">
+            <div class="flex items-start gap-3">
+              <i class="fa-solid fa-circle-xmark text-rose-600 mt-0.5"></i>
+              <div>
+                <div class="font-extrabold text-base">
+                  {% if result.status == 'revoked' %}Revoked{% elif result.status == 'invalid_format' %}Invalid Code{% else %}Not Found{% endif %}
+                </div>
+                <div class="text-sm font-semibold mt-1">{{ result.message }}</div>
+                <div class="text-xs text-rose-800/80 mt-3">
+                  Tip: If you scanned a QR, it should open a link like <span class="font-mono">/verify?code=...</span>.
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+
+      <div class="mt-8 text-xs text-slate-500">
+        Demo codes: <span class="font-mono font-bold">BD-JAM-2024-X982</span>, <span class="font-mono font-bold">BD-SIL-2024-A1F4</span> (revoked: <span class="font-mono font-bold">BD-AMR-2024-Q0M7</span>)
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

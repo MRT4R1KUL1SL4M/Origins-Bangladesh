@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}{{ (meta.title if meta and meta.title) or "The GI Journal | Origins Bangladesh" }}{% endblock %}
+{% block meta_description %}{{ (meta.description if meta and meta.description) or "Long-form chapters on craft, place, and provenance — curated to deepen every discovery." }}{% endblock %}
+{% block canonical_url %}{{ request.base_url }}{% endblock %}
+{% block og_type %}website{% endblock %}
+{% block og_title %}{{ (meta.title if meta and meta.title) or "The GI Journal | Origins Bangladesh" }}{% endblock %}
+{% block og_description %}{{ (meta.description if meta and meta.description) or "Long-form chapters on craft, place, and provenance — curated to deepen every discovery." }}{% endblock %}
+{% block og_url %}{{ request.url }}{% endblock %}
+{% block og_image %}{{ (meta.image if meta and meta.image) or "" }}{% endblock %}
+{% block twitter_title %}{{ (meta.title if meta and meta.title) or "The GI Journal | Origins Bangladesh" }}{% endblock %}
+{% block twitter_description %}{{ (meta.description if meta and meta.description) or "Long-form chapters on craft, place, and provenance — curated to deepen every discovery." }}{% endblock %}
+{% block twitter_image %}{{ (meta.image if meta and meta.image) or "" }}{% endblock %}
+
+{% block content %}
+<section class="py-20 bg-[#eae5db]">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <!-- Header -->
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-10">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-widest text-[#d4a373] block mb-3">Chronicles of the Delta</span>
+        <h1 class="text-5xl font-bold text-heritage-green">The GI Journal</h1>
+        <p class="text-heritage-green/70 mt-4 max-w-2xl">Long-form chapters on craft, place, and provenance — curated to deepen every discovery.</p>
+      </div>
+
+      <div class="text-sm text-heritage-green/70">
+        {% if pager.total %}
+          Showing <span class="font-semibold text-heritage-green">{{ (pager.page - 1) * pager.per_page + 1 }}</span>–
+          <span class="font-semibold text-heritage-green">{{ [pager.page * pager.per_page, pager.total] | min }}</span>
+          of <span class="font-semibold text-heritage-green">{{ pager.total }}</span> chapters
+        {% else %}
+          No chapters found.
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="flex flex-col lg:flex-row gap-6 mb-12">
+      <div class="flex flex-wrap items-center gap-3">
+        <a href="{{ url_for('journal_index') }}"
+           class="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full border transition
+                  {{ 'bg-heritage-green text-white border-heritage-green' if not pager.category and not pager.archive else 'bg-white/60 text-heritage-green border-white/0 hover:bg-white' }}">
+          All
+        </a>
+        {% for c in categories %}
+          <a href="{{ url_for('journal_index', category=c.category) }}"
+             class="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full border transition
+                    {{ 'bg-heritage-green text-white border-heritage-green' if pager.category==c.category else 'bg-white/60 text-heritage-green border-white/0 hover:bg-white' }}">
+            {{ c.category }} <span class="opacity-70">({{ c.count }})</span>
+          </a>
+        {% endfor %}
+      </div>
+
+      <div class="lg:ml-auto flex items-center gap-3 text-sm">
+        {% if pager.category or pager.archive %}
+          <a href="{{ url_for('journal_index') }}" class="text-heritage-green/70 hover:text-[#d4a373] font-semibold uppercase tracking-widest text-xs">
+            Clear filters
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <!-- Main -->
+      <div class="lg:col-span-9 space-y-10">
+        <!-- Featured -->
+        {% if featured and featured.slug %}
+        <a href="{{ url_for('journal_article', slug=featured.slug) }}"
+           class="group block rounded-[2rem] overflow-hidden shadow-2xl bg-white/60 backdrop-blur-sm hover:shadow-[0_30px_80px_-20px_rgba(21,58,48,0.35)] transition">
+          <div class="relative h-[420px]">
+            <img src="{{ featured.hero_image_url }}" alt="{{ featured.title }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute top-6 left-6 flex items-center gap-3">
+              <span class="bg-[#d4a373] text-white text-xs font-bold uppercase px-4 py-2 rounded-full">{{ featured.category or 'Culture' }}</span>
+              {% if featured.read_minutes %}<span class="text-white/80 text-xs font-medium flex items-center gap-2"><i class="fa-regular fa-clock"></i> {{ featured.read_minutes }} MIN READ</span>{% endif %}
+              <span class="text-white/80 text-xs font-bold uppercase tracking-widest">Featured</span>
+            </div>
+            <div class="absolute bottom-0 left-0 p-10">
+              <h2 class="text-4xl md:text-5xl font-bold text-white leading-tight">{{ featured.title }}</h2>
+              {% if featured.subtitle %}<p class="text-white/80 mt-4 max-w-2xl">{{ featured.subtitle }}</p>{% endif %}
+              {% if featured.teaser %}<p class="text-white/80 mt-4 max-w-2xl">{{ featured.teaser }}</p>{% endif %}
+            </div>
+          </div>
+        </a>
+        {% endif %}
+
+        <!-- Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {% for a in pager.items %}
+          <a href="{{ url_for('journal_article', slug=a.slug) }}"
+             class="group bg-white/60 backdrop-blur-sm rounded-[2rem] overflow-hidden shadow-xl hover:shadow-2xl transition">
+            <div class="relative h-56">
+              <img src="{{ a.thumb_image_url or a.hero_image_url }}" alt="{{ a.title }}"
+                   class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+              <div class="absolute top-5 left-5 flex items-center gap-3">
+                <span class="bg-[#d4a373] text-white text-xs font-bold uppercase px-4 py-2 rounded-full">{{ a.category or 'Culture' }}</span>
+                {% if a.read_minutes %}<span class="text-white/80 text-xs font-medium flex items-center gap-2"><i class="fa-regular fa-clock"></i> {{ a.read_minutes }} MIN</span>{% endif %}
+              </div>
+              {% if a.published_at %}
+                <div class="absolute bottom-5 left-5 text-white/80 text-xs font-semibold">
+                  {{ a.published_at.strftime('%b %Y') if a.published_at.__class__.__name__ != 'str' else a.published_at }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="p-8">
+              <h3 class="text-2xl font-bold text-heritage-green group-hover:text-[#d4a373] transition">{{ a.title }}</h3>
+              {% if a.subtitle %}<p class="text-heritage-green/70 mt-3 line-clamp-2">{{ a.subtitle }}</p>{% endif %}
+              {% if a.teaser %}<p class="text-heritage-green/70 mt-3 line-clamp-2">{{ a.teaser }}</p>{% endif %}
+              <div class="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-heritage-green/80 group-hover:text-[#d4a373] transition">
+                Read chapter <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </div>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if pager.total_pages > 1 %}
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-6">
+          <div class="text-sm text-heritage-green/70">
+            Page <span class="font-semibold text-heritage-green">{{ pager.page }}</span> of <span class="font-semibold text-heritage-green">{{ pager.total_pages }}</span>
+          </div>
+
+          <div class="flex items-center gap-2 flex-wrap">
+            {# Jinja does not support **kwargs expansion in calls; build URLs via simple conditionals. #}
+
+            {% if pager.page > 1 %}
+              <a class="px-4 py-2 rounded-full bg-white/70 hover:bg-white text-heritage-green font-bold text-xs uppercase tracking-widest transition"
+                 href="{% if pager.category and pager.archive %}{{ url_for('journal_index', page=pager.page-1, category=pager.category, archive=pager.archive) }}{% elif pager.category %}{{ url_for('journal_index', page=pager.page-1, category=pager.category) }}{% elif pager.archive %}{{ url_for('journal_index', page=pager.page-1, archive=pager.archive) }}{% else %}{{ url_for('journal_index', page=pager.page-1) }}{% endif %}">
+                Prev
+              </a>
+            {% else %}
+              <span class="px-4 py-2 rounded-full bg-white/30 text-heritage-green/40 font-bold text-xs uppercase tracking-widest cursor-not-allowed">Prev</span>
+            {% endif %}
+
+            {% for p in range(1, pager.total_pages + 1) %}
+              {% if p == pager.page %}
+                <span class="px-4 py-2 rounded-full bg-heritage-green text-white font-bold text-xs uppercase tracking-widest">{{ p }}</span>
+              {% else %}
+                <a class="px-4 py-2 rounded-full bg-white/60 hover:bg-white text-heritage-green font-bold text-xs uppercase tracking-widest transition"
+                   href="{% if pager.category and pager.archive %}{{ url_for('journal_index', page=p, category=pager.category, archive=pager.archive) }}{% elif pager.category %}{{ url_for('journal_index', page=p, category=pager.category) }}{% elif pager.archive %}{{ url_for('journal_index', page=p, archive=pager.archive) }}{% else %}{{ url_for('journal_index', page=p) }}{% endif %}">{{ p }}</a>
+              {% endif %}
+            {% endfor %}
+
+            {% if pager.page < pager.total_pages %}
+              <a class="px-4 py-2 rounded-full bg-white/70 hover:bg-white text-heritage-green font-bold text-xs uppercase tracking-widest transition"
+                 href="{% if pager.category and pager.archive %}{{ url_for('journal_index', page=pager.page+1, category=pager.category, archive=pager.archive) }}{% elif pager.category %}{{ url_for('journal_index', page=pager.page+1, category=pager.category) }}{% elif pager.archive %}{{ url_for('journal_index', page=pager.page+1, archive=pager.archive) }}{% else %}{{ url_for('journal_index', page=pager.page+1) }}{% endif %}">
+                Next
+              </a>
+            {% else %}
+              <span class="px-4 py-2 rounded-full bg-white/30 text-heritage-green/40 font-bold text-xs uppercase tracking-widest cursor-not-allowed">Next</span>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="lg:col-span-3 space-y-8">
+        <!-- Archive -->
+        <div class="bg-white/60 backdrop-blur-sm rounded-[2rem] p-7 shadow-xl">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-heritage-green">Archive</h3>
+            {% if pager.archive %}
+              <a class="text-xs font-bold uppercase tracking-widest text-heritage-green/70 hover:text-[#d4a373] transition"
+                 href="{{ url_for('journal_index', category=pager.category) if pager.category else url_for('journal_index') }}">Clear</a>
+            {% endif %}
+          </div>
+          <div class="space-y-2">
+            {% for a in archives %}
+              {% set key = "%04d-%02d"|format(a.y, a.m) %}
+              <a href="{{ url_for('journal_index', archive=key, category=pager.category) if pager.category else url_for('journal_index', archive=key) }}"
+                 class="flex items-center justify-between px-4 py-3 rounded-2xl transition
+                        {{ 'bg-heritage-green text-white' if pager.archive==key else 'bg-white/50 hover:bg-white text-heritage-green' }}">
+                <span class="font-semibold">{{ ("%04d-%02d"|format(a.y, a.m)) }}</span>
+                <span class="text-xs font-bold uppercase tracking-widest opacity-70">{{ a.count }}</span>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Editor's Note -->
+        <div class="bg-heritage-green text-white rounded-[2rem] p-7 shadow-xl">
+          <h3 class="text-lg font-bold mb-3">Editor’s Note</h3>
+          <p class="text-white/80 text-sm leading-relaxed">
+            Every chapter is curated with provenance in mind — grounded in place, craft-process, and the people who carry it forward.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block title %}Reset Password | Origins Bangladesh{% endblock %}
+{% block content %}
+<section class="min-h-[85vh] flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8 bg-slate-50/50">
+  
+  <!-- Premium Card Container -->
+  <div class="w-full max-w-[540px] bg-white rounded-[2rem] shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)] border border-slate-100 p-8 sm:p-10 relative overflow-hidden">
+    
+    <!-- Subtle top decorative gradient -->
+    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#d4a373] to-heritage-green opacity-90"></div>
+
+    <!-- Header Section -->
+    <div class="text-center mb-8">
+      <div class="mx-auto w-12 h-12 bg-[#fff7ed] rounded-full flex items-center justify-center mb-4 border border-[#d4a373]/20">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-[#d4a373]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+        </svg>
+      </div>
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Reset Password</h1>
+      <p class="mt-3 text-sm text-slate-500 leading-relaxed">Enter the 6-digit code from your email and set a new secure password.</p>
+    </div>
+
+    <!-- Form Section -->
+    <form class="space-y-5" method="post" action="{{ url_for('reset_password') }}">
+      
+      <!-- Email Field -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Email Address</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" /></svg>
+          </div>
+          <input name="email" type="email" value="{{ email or '' }}" required placeholder="compilebreakers@gmail.com"
+                 class="w-full bg-slate-50 rounded-xl border border-slate-200 pl-11 pr-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-heritage-green focus:ring-4 focus:ring-heritage-green/10 outline-none transition-all duration-200">
+        </div>
+      </div>
+
+      <!-- OTP Field -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Reset OTP Code</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+          </div>
+          <input name="otp" type="text" inputmode="numeric" maxlength="6" required placeholder="123456"
+                 class="w-full bg-slate-50 rounded-xl border border-slate-200 pl-11 pr-4 py-3.5 text-slate-900 tracking-widest font-medium placeholder:tracking-normal placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:border-heritage-green focus:ring-4 focus:ring-heritage-green/10 outline-none transition-all duration-200">
+        </div>
+      </div>
+
+      <!-- Password Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+        <!-- New Password -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">New Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            </div>
+            <input name="password" type="password" required placeholder="••••••••" data-password-field
+                   class="w-full bg-slate-50 rounded-xl border border-slate-200 pl-11 pr-12 py-3.5 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-heritage-green focus:ring-4 focus:ring-heritage-green/10 outline-none transition-all duration-200">
+            <button type="button" onclick="togglePasswordVisibility(this)" class="absolute inset-y-0 right-1 px-3 flex items-center text-slate-400 hover:text-slate-600 transition-colors z-10" aria-label="Toggle password visibility">
+              <svg data-eye-open xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg data-eye-closed class="hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.733 5.076A10.744 10.744 0 0 1 12 5c7 0 10 7 10 7a18.07 18.07 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/><path d="M14.12 14.12a3 3 0 0 1-4.24-4.24"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Repeat Password -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Repeat Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            </div>
+            <input name="confirm" type="password" required placeholder="••••••••" data-password-field
+                   class="w-full bg-slate-50 rounded-xl border border-slate-200 pl-11 pr-12 py-3.5 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-heritage-green focus:ring-4 focus:ring-heritage-green/10 outline-none transition-all duration-200">
+            <button type="button" onclick="togglePasswordVisibility(this)" class="absolute inset-y-0 right-1 px-3 flex items-center text-slate-400 hover:text-slate-600 transition-colors z-10" aria-label="Toggle password visibility">
+              <svg data-eye-open xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg data-eye-closed class="hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.733 5.076A10.744 10.744 0 0 1 12 5c7 0 10 7 10 7a18.07 18.07 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/><path d="M14.12 14.12a3 3 0 0 1-4.24-4.24"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-3">
+        <button class="w-full py-3.5 rounded-xl bg-heritage-green text-white font-semibold text-lg hover:bg-heritage-green/90 focus:ring-4 focus:ring-heritage-green/20 transition-all duration-200 shadow-lg shadow-heritage-green/20" type="submit">
+          Update Password
+        </button>
+      </div>
+
+      <div class="pt-4 text-center text-sm text-slate-500">
+        Remembered your password? <a class="font-semibold text-heritage-green hover:underline ml-1" href="{{ url_for('login') }}">Back to Login</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+// === Password Visibility Toggle Logic ===
+function togglePasswordVisibility(button) {
+  const container = button.closest('.relative');
+  if (!container) return;
+
+  const passField = container.querySelector('[data-password-field]');
+  const eyeOpen = button.querySelector('[data-eye-open]');
+  const eyeClosed = button.querySelector('[data-eye-closed]');
+
+  if (passField) {
+    if (passField.type === 'password') {
+      passField.type = 'text';
+      if(eyeOpen) eyeOpen.classList.add('hidden');
+      if(eyeClosed) eyeClosed.classList.remove('hidden');
+    } else {
+      passField.type = 'password';
+      if(eyeOpen) eyeOpen.classList.remove('hidden');
+      if(eyeClosed) eyeClosed.classList.add('hidden');
+    }
+  }
+}
+</script>
+{% endblock %}

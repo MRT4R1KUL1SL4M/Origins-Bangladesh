@@ -1,0 +1,66 @@
+{% extends 'emails/_base.html' %}
+
+{% block body %}
+  <h2 style="margin: 0 0 16px 0; font-family: 'Georgia', serif; font-size: 22px; font-weight: normal; color: #111827;">Account Status Update</h2>
+  
+  <div style="color: #4b5563; font-size: 15px; line-height: 1.8; font-weight: 400;">
+    <p style="margin: 0 0 24px 0;">
+      Hi{% if name %} <strong>{{ name }}</strong>{% endif %},<br/>
+      Your admin account status has been updated by the Super Admin.
+    </p>
+
+    <!-- Status Details Box -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin-bottom: 30px;">
+      <tr>
+        <td style="padding: 12px 16px; width: 140px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb;">
+          Action
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; color: #111827; font-weight: bold; border-bottom: 1px solid #e5e7eb;">
+          {{ action_label }}
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb;">
+          Email
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; color: #4b5563; border-bottom: 1px solid #e5e7eb;">
+          {{ email }}
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; {% if not reason %}border-bottom: none;{% else %}border-bottom: 1px solid #e5e7eb;{% endif %} border-right: 1px solid #e5e7eb;">
+          When (UTC)
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; color: #4b5563; {% if not reason %}border-bottom: none;{% else %}border-bottom: 1px solid #e5e7eb;{% endif %}">
+          {{ when_utc }}
+        </td>
+      </tr>
+      {% if reason %}
+      <tr>
+        <td style="padding: 12px 16px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-right: 1px solid #e5e7eb;">
+          Reason
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; color: #4b5563;">
+          {{ reason }}
+        </td>
+      </tr>
+      {% endif %}
+    </table>
+
+    {% if login_url and can_login %}
+    <!-- Action Button -->
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+      <tr>
+        <td align="center" style="background-color: #111827; border: 1px solid #D4AF37; border-radius: 4px;">
+          <a href="{{ login_url }}" target="_blank" style="display: inline-block; padding: 12px 30px; color: #D4AF37; text-decoration: none; font-size: 13px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">Access Admin Portal</a>
+        </td>
+      </tr>
+    </table>
+    {% endif %}
+
+    <!-- Support Notice Box -->
+    <div style="margin-top: 25px; padding: 16px; background-color: #f9fafb; border-left: 4px solid #D4AF37; font-size: 13px; color: #6b7280; border-radius: 0 4px 4px 0;">
+      If you believe this was a mistake, please contact platform support immediately.
+    </div>
+  </div>
+{% endblock %}

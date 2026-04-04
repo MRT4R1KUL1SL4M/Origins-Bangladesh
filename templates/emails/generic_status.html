@@ -1,0 +1,17 @@
+{% extends 'emails/_base.html' %}
+
+{% block body %}
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #333333;">
+  
+  <!-- Premium Header -->
+  <h2 style="margin: 0 0 24px 0; font-family: 'Playfair Display', 'Didot', 'Georgia', serif; font-size: 26px; font-weight: normal; color: #111827; text-align: center; letter-spacing: 0.5px; border-bottom: 1px solid #EAEAEA; padding-bottom: 16px;">
+    {{ title or 'Account Update' }}
+  </h2>
+
+  <!-- Main Content (Dynamic) -->
+  <div style="color: #4b5563; font-size: 16px; line-height: 1.8; font-weight: 400; padding: 16px 8px;">
+    {{ body_html|safe }}
+  </div>
+  
+</div>
+{% endblock %}

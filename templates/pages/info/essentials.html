@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Premium Essentials Section -->
+<section class="relative bg-[#F8F5F1] py-20 lg:py-28 overflow-hidden font-sans border-y border-[#D4AF37]/20">
+  
+  <!-- Subtle Background Pattern / Gradient -->
+  <div class="absolute inset-0 pointer-events-none opacity-40">
+    <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-[#D4AF37]/10 to-transparent rounded-full blur-[100px] mix-blend-multiply"></div>
+    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-[#006A4E]/10 to-transparent rounded-full blur-[100px] mix-blend-multiply"></div>
+  </div>
+
+  <div class="relative max-w-6xl mx-auto px-6 lg:px-8 z-10">
+    
+    <!-- Hero Header Area -->
+    <div class="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+      <span class="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-white/60 backdrop-blur-md text-[#006A4E] text-[11px] font-bold uppercase tracking-[0.2em] rounded-full border border-[#D4AF37]/40 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 2a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 2zM5.5 5.5A.75.75 0 016.5 5h7a.75.75 0 010 1.5H6.5A.75.75 0 015.5 5.5zM2 10a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5A.75.75 0 012 10zm14 0a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM5.5 14.5a.75.75 0 011-.05l5.5 4.5a.75.75 0 01-.95 1.15l-5.5-4.5a.75.75 0 01-.05-1.1zm9 0a.75.75 0 01.05 1.1l-5.5 4.5a.75.75 0 01-.95-1.15l5.5-4.5a.75.75 0 011 .05z" clip-rule="evenodd" />
+        </svg>
+        Everyday Heritage Collection
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-normal text-[#006A4E] mb-6 leading-tight" style="font-family: 'Georgia', serif;">
+        The <span class="font-bold text-[#D4AF37] italic">Essentials</span>
+      </h1>
+      <div class="h-px w-24 bg-[#D4AF37] mx-auto mb-6"></div>
+      <p class="text-[15px] md:text-lg text-slate-600 leading-relaxed font-medium">
+        Rooted in tradition, our Essentials bring the warmth of everyday heritage to modern life. Crafted with care and practical precision, these timeless pieces are designed to be lived in, loved, and relied upon as your daily staples.
+      </p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
+      
+      <!-- Box 1 -->
+      <div class="group bg-white rounded-[2rem] p-8 lg:p-10 border border-[#D4AF37]/20 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_50px_-15px_rgba(212,175,55,0.15)] hover:border-[#D4AF37]/40 transition-all duration-500 relative overflow-hidden">
+        <!-- Abstract Decoration -->
+        <div class="absolute -right-10 -top-10 text-[#F8F5F1] opacity-50 group-hover:scale-110 transition-transform duration-700">
+          <svg width="150" height="150" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15 9H22L16.5 13.5L18.5 21L12 16.5L5.5 21L7.5 13.5L2 9H9L12 2Z"/></svg>
+        </div>
+        
+        <div class="relative z-10">
+          <h3 class="text-xl md:text-2xl font-bold text-[#006A4E] mb-6" style="font-family: 'Georgia', serif;">What you’ll find</h3>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-4">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/30 mt-0.5">
+                <span class="w-1.5 h-1.5 bg-[#D4AF37] rounded-full"></span>
+              </span>
+              <span class="text-slate-600 leading-relaxed text-[15px]">Comfort-first textiles and thoughtfully crafted daily-wear pieces.</span>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/30 mt-0.5">
+                <span class="w-1.5 h-1.5 bg-[#D4AF37] rounded-full"></span>
+              </span>
+              <span class="text-slate-600 leading-relaxed text-[15px]">Highly functional items enriched with authentic heritage detailing.</span>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/30 mt-0.5">
+                <span class="w-1.5 h-1.5 bg-[#D4AF37] rounded-full"></span>
+              </span>
+              <span class="text-slate-600 leading-relaxed text-[15px]">Perfectly suited as meaningful gifts or your own daily staples.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Box 2 -->
+      <div class="group bg-white rounded-[2rem] p-8 lg:p-10 border border-[#D4AF37]/20 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_50px_-15px_rgba(212,175,55,0.15)] hover:border-[#D4AF37]/40 transition-all duration-500 relative overflow-hidden">
+        <!-- Abstract Decoration -->
+        <div class="absolute -right-10 -bottom-10 text-[#F8F5F1] opacity-50 group-hover:scale-110 transition-transform duration-700">
+          <svg width="150" height="150" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z"/></svg>
+        </div>
+        
+        <div class="relative z-10">
+          <h3 class="text-xl md:text-2xl font-bold text-[#006A4E] mb-6" style="font-family: 'Georgia', serif;">How we curate</h3>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-4">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-[#006A4E]/5 flex items-center justify-center border border-[#006A4E]/20 mt-0.5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#006A4E]" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+              </span>
+              <span class="text-slate-600 leading-relaxed text-[15px]">Rigorous comfort and durability checks for everyday reliability.</span>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-[#006A4E]/5 flex items-center justify-center border border-[#006A4E]/20 mt-0.5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#006A4E]" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+              </span>
+              <span class="text-slate-600 leading-relaxed text-[15px]">Fair and ethical sourcing directly from skilled artisan communities.</span>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-[#006A4E]/5 flex items-center justify-center border border-[#006A4E]/20 mt-0.5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#006A4E]" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+              </span>
+              <span class="text-slate-600 leading-relaxed text-[15px]">Impeccable design consistency and quality across all batches.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Call to Action Banner -->
+    <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-r from-[#006A4E] to-[#0a4233] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
+      <!-- Decorative BG elements for banner -->
+      <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-64 h-64 bg-[#D4AF37] opacity-20 rounded-full blur-3xl"></div>
+      
+      <div class="relative z-10 text-center md:text-left">
+        <h3 class="text-2xl md:text-3xl font-bold text-white mb-2" style="font-family: 'Georgia', serif;">Ready to browse?</h3>
+        <p class="text-[#D4AF37] font-medium opacity-90 text-[15px] md:text-base">Explore the full catalog and discover the beauty of everyday heritage.</p>
+      </div>
+      
+      <div class="relative z-10 shrink-0">
+        <a href="{{ url_for('shop') }}" class="group relative inline-flex items-center justify-center px-8 py-4 bg-[#D4AF37] text-black font-bold uppercase tracking-wider text-sm rounded-full overflow-hidden transition-all hover:scale-105 shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:shadow-[0_0_30px_rgba(212,175,55,0.6)]">
+          <span class="relative z-10 flex items-center gap-2">
+            Explore Collection
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+          </span>
+          <div class="absolute inset-0 h-full w-full bg-gradient-to-r from-[#E5C354] to-[#B08D28] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

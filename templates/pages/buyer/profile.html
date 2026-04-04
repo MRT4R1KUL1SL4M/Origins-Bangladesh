@@ -1,0 +1,56 @@
+{% extends 'layouts/dashboard_base.html' %}
+
+{% block title %}Profile | Origins Bangladesh{% endblock %}
+
+{% block dashboard_content %}
+  <div class="flex items-start justify-between gap-6 mb-8">
+    <div>
+      <h1 class="text-3xl font-extrabold text-heritage-green">Profile</h1>
+      <p class="mt-2 text-slate-600">Account details from the database.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+    <div class="xl:col-span-2 bg-white rounded-2xl border border-[#d4a373]/15 shadow-sm overflow-hidden">
+      <div class="px-6 py-5 bg-[#fffaf5] border-b border-[#d4a373]/15">
+        <div class="text-sm font-extrabold tracking-widest uppercase text-slate-600">Account</div>
+      </div>
+      <div class="p-6">
+        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <dt class="text-[11px] font-bold uppercase tracking-widest text-slate-500">Name</dt>
+            <dd class="mt-1 text-lg font-extrabold text-heritage-green">{{ buyer.name or '-' }}</dd>
+          </div>
+          <div>
+            <dt class="text-[11px] font-bold uppercase tracking-widest text-slate-500">Role</dt>
+            <dd class="mt-1 text-lg font-extrabold text-heritage-green">{{ buyer.role or NAV_ROLE }}</dd>
+          </div>
+          <div>
+            <dt class="text-[11px] font-bold uppercase tracking-widest text-slate-500">Email</dt>
+            <dd class="mt-1 text-slate-700 font-semibold">{{ buyer.email or '-' }}</dd>
+          </div>
+          <div>
+            <dt class="text-[11px] font-bold uppercase tracking-widest text-slate-500">Phone</dt>
+            <dd class="mt-1 text-slate-700 font-semibold">{{ buyer.phone or '-' }}</dd>
+          </div>
+          <div>
+            <dt class="text-[11px] font-bold uppercase tracking-widest text-slate-500">Member Since</dt>
+            <dd class="mt-1 text-slate-700 font-semibold">{{ buyer.created_at_fmt or '-' }}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-[#d4a373]/15 shadow-sm overflow-hidden">
+      <div class="px-6 py-5 bg-[#fffaf5] border-b border-[#d4a373]/15">
+        <div class="text-sm font-extrabold tracking-widest uppercase text-slate-600">Quick Actions</div>
+      </div>
+      <div class="p-6 space-y-3">
+        <a href="{{ url_for('buyer_orders') }}" class="block w-full text-center px-4 py-3 rounded-xl border border-[#d4a373]/20 hover:border-[#d4a373]/60 hover:bg-[#f8f5f1] transition font-bold text-slate-700">View Orders</a>
+        <a href="{{ url_for('wishlist') }}" class="block w-full text-center px-4 py-3 rounded-xl border border-[#d4a373]/20 hover:border-[#d4a373]/60 hover:bg-[#f8f5f1] transition font-bold text-slate-700">Open Wishlist</a>
+        <a href="{{ url_for('buyer_authenticity_vault') }}" class="block w-full text-center px-4 py-3 rounded-xl border border-[#d4a373]/20 hover:border-[#d4a373]/60 hover:bg-[#f8f5f1] transition font-bold text-slate-700">Open Vault</a>
+        <a href="{{ url_for('logout') }}" class="block w-full text-center px-4 py-3 rounded-xl bg-heritage-green text-white font-extrabold tracking-widest uppercase text-[11px] hover:bg-[#0f2a24] transition">Logout</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

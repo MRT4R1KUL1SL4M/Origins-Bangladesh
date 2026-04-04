@@ -1,0 +1,62 @@
+{% extends 'emails/_base.html' %}
+
+{% block body %}
+  <h2 style="margin: 0 0 16px 0; font-family: 'Georgia', serif; font-size: 22px; font-weight: normal; color: #111827;">
+    <span style="color: #F42A41;">🚨</span> {{ title or 'Security Alert' }}
+  </h2>
+  
+  <div style="color: #4b5563; font-size: 15px; line-height: 1.8; font-weight: 400;">
+    <p style="margin: 0 0 24px 0;">
+      We detected unusual sign-in activity that requires your immediate attention.
+    </p>
+
+    <!-- Alert Details Table -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #e5e7eb; border-top: 4px solid #F42A41; border-radius: 8px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);">
+      <tr>
+        <td style="padding: 12px 16px; width: 130px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb;">
+          Failed attempts
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; font-weight: bold; color: #F42A41; border-bottom: 1px solid #e5e7eb;">
+          {{ count }}
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb;">
+          Window
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; color: #4b5563; border-bottom: 1px solid #e5e7eb;">
+          {{ window_minutes }} minutes
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb;">
+          Email
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb;">
+          {{ actor_email or 'Unknown' }}
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb;">
+          IP
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; color: #111827; border-bottom: 1px solid #e5e7eb;">
+          {{ ip }}
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-size: 14px; background-color: #f9fafb; font-weight: 700; color: #111827; border-right: 1px solid #e5e7eb;">
+          Time (UTC)
+        </td>
+        <td style="padding: 12px 16px; font-size: 14px; color: #4b5563;">
+          {{ when_utc }}
+        </td>
+      </tr>
+    </table>
+
+    <!-- Action Notice Box -->
+    <div style="margin-top: 10px; padding: 16px; background-color: #fffbeb; border-left: 4px solid #F42A41; font-size: 13px; color: #92400e; border-radius: 0 4px 4px 0;">
+      <strong>Recommended Actions:</strong> Rotate the superadmin secret code, review recent audit logs, and block suspicious IPs immediately.
+    </div>
+  </div>
+{% endblock %}

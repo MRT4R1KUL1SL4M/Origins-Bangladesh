@@ -1,0 +1,18 @@
+{% extends 'emails/_base.html' %}
+
+{% block body %}
+  <h2 style="margin: 0 0 16px 0; font-family: 'Georgia', serif; font-size: 22px; font-weight: normal; color: #111827;">
+    Welcome to the Heritage Circle, {{ name }} ✨
+  </h2>
+  <div style="color: #4b5563; font-size: 15px; line-height: 1.8; font-weight: 400;">
+    <p style="margin: 0 0 18px 0;">
+      Thanks for subscribing to Origins Bangladesh.
+    </p>
+    <p style="margin: 0 0 18px 0;">
+      You’ll now receive updates about new GI collection drops, artisan stories, and heritage preservation highlights.
+    </p>
+    <div style="margin-top: 10px; padding-top: 16px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 12px; line-height: 1.6;">
+      If you didn’t subscribe intentionally, please ignore this email.
+    </div>
+  </div>
+{% endblock %}

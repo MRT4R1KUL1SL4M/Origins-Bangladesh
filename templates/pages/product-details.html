@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.title }} | Origins Bangladesh{% endblock %}
+
+{% block content %}
+<style>
+  /* Hide default number input spinners for cleaner UI */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+</style>
+
+<!-- Premium Product Details Section -->
+<section class="bg-[#F8F5F1] min-h-[85vh] py-12 lg:py-20 font-sans selection:bg-[#006A4E] selection:text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      
+      <!-- Left Column: Product Image Gallery -->
+      <div class="lg:col-span-6 xl:col-span-7 sticky top-8">
+        <div class="bg-white rounded-[2rem] border border-[#D4AF37]/20 overflow-hidden shadow-[0_15px_50px_-15px_rgba(0,0,0,0.05)] group relative">
+          
+          <!-- Image Container with Zoom Effect -->
+          <div class="aspect-[4/3] lg:aspect-square bg-[#F8F5F1] overflow-hidden relative flex items-center justify-center">
+            <img src="{{ product.image_path or '/uploads/products/placeholder.jpg' }}" 
+                 alt="{{ product.title }}" 
+                 class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
+                 
+            <!-- Ambient Glow Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-tr from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+          </div>
+          
+          <!-- Quick Share/Expand Overlay (Visual) -->
+          <button class="absolute top-6 right-6 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-slate-500 hover:text-[#006A4E] hover:bg-white shadow-sm transition-all transform opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-300">
+            <i class="fa-solid fa-expand text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Product Information & Actions -->
+      <div class="lg:col-span-6 xl:col-span-5 flex flex-col pt-4 lg:pt-8">
+        
+        <!-- Breadcrumbs / Tags -->
+        <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4AF37] mb-4 flex flex-wrap gap-2 items-center">
+          <span class="hover:text-[#006A4E] transition-colors cursor-pointer">{{ product.category_name }}</span>
+          
+          {% if product.subcategory_name %} 
+            <span class="text-slate-300">•</span> 
+            <span class="text-slate-500">{{ product.subcategory_name }}</span>
+          {% endif %}
+          
+          {% if product.district_name %} 
+            <span class="text-slate-300">•</span> 
+            <span class="inline-flex items-center gap-1 bg-[#D4AF37]/10 text-[#006A4E] px-2 py-1 rounded-sm border border-[#D4AF37]/20 tracking-widest">
+              <i class="fa-solid fa-location-dot text-[8px]"></i> {{ product.district_name }}
+            </span>
+          {% endif %}
+        </div>
+        
+        <!-- Product Title -->
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-normal text-[#111827] leading-[1.15] mb-6" style="font-family: 'Georgia', serif;">
+          {{ product.title }}
+        </h1>
+        
+        <!-- Price & Stock Status -->
+        <div class="flex items-center gap-6 mb-8 pb-8 border-b border-[#D4AF37]/20">
+          <div class="text-2xl md:text-3xl font-bold text-[#006A4E]">{{ product.price_fmt }}</div>
+          
+          <div class="h-8 w-px bg-[#D4AF37]/30"></div>
+          
+          <div>
+            {% if product.stock > 0 %}
+              <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#006A4E]/5 text-[#006A4E] text-[10px] font-bold uppercase tracking-widest border border-[#006A4E]/10 shadow-sm">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#006A4E] opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-[#006A4E]"></span>
+                </span>
+                In Stock & Ready to Ship
+              </span>
+            {% else %}
+              <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-red-50 text-red-600 text-[10px] font-bold uppercase tracking-widest border border-red-100 shadow-sm">
+                <i class="fa-solid fa-clock-rotate-left"></i> Currently Unavailable
+              </span>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="prose prose-slate prose-sm sm:prose-base max-w-none text-slate-600 leading-relaxed mb-10 font-medium">
+          <p>
+            {{ product.description or "This exceptional piece celebrates Bangladesh’s living heritage. Forged with authentic craftsmanship and premium native materials, it stands as a testament to the skill and legacy of our master artisans." }}
+          </p>
+        </div>
+
+        <!-- Actions (Add to Cart & Wishlist) -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-12">
+          
+          <!-- Add to Cart Form -->
+          <form method="post" action="{{ url_for('cart_add', product_id=product.product_id) }}" class="flex-1 flex gap-4">
+            <input type="hidden" name="next" value="{{ request.path }}">
+            
+            <!-- Custom Premium Quantity Selector -->
+            <div class="flex items-center border border-[#D4AF37]/40 rounded-xl overflow-hidden bg-white shadow-sm shrink-0 h-14">
+              <button type="button" onclick="const qty = document.getElementById('qty_input'); if(qty.value > 1) qty.value--;" class="w-12 h-full flex items-center justify-center text-slate-400 hover:text-[#006A4E] hover:bg-[#F8F5F1] transition-colors">
+                <i class="fa-solid fa-minus text-xs"></i>
+              </button>
+              <input id="qty_input" name="qty" value="1" min="1" max="99" type="number" 
+                     class="w-12 h-full bg-transparent text-center text-sm font-bold text-[#111827] focus:outline-none border-none p-0" />
+              <button type="button" onclick="const qty = document.getElementById('qty_input'); if(qty.value < 99) qty.value++;" class="w-12 h-full flex items-center justify-center text-slate-400 hover:text-[#006A4E] hover:bg-[#F8F5F1] transition-colors border-l border-[#D4AF37]/20">
+                <i class="fa-solid fa-plus text-xs"></i>
+              </button>
+            </div>
+            
+            <!-- Add to Cart Button -->
+            <button {% if product.stock <= 0 %}disabled{% endif %} 
+                    class="flex-1 h-14 rounded-xl flex items-center justify-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] transition-all duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.1)] 
+                    {% if product.stock > 0 %} bg-gradient-to-r from-[#111827] to-[#1F2937] text-white hover:from-[#006A4E] hover:to-[#0a4233] hover:shadow-[0_6px_20px_rgba(0,106,78,0.3)] transform hover:-translate-y-0.5 {% else %} bg-slate-200 text-slate-400 cursor-not-allowed {% endif %}" 
+                    type="submit">
+              <i class="fa-solid fa-bag-shopping"></i> Add to Bag
+            </button>
+          </form>
+
+          <!-- Wishlist Form -->
+          <form method="post" action="{{ url_for('wishlist_toggle', product_id=product.product_id) }}" class="shrink-0">
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button class="w-full sm:w-14 h-14 rounded-xl border border-[#D4AF37]/40 bg-white flex items-center justify-center group transition-all duration-300 hover:border-[#D4AF37] hover:bg-[#F8F5F1] shadow-sm" 
+                    type="submit" title="{% if is_wished %}Remove from Wishlist{% else %}Add to Wishlist{% endif %}">
+              {% if is_wished %}
+                <i class="fa-solid fa-heart text-[#D4AF37] text-xl group-hover:scale-110 transition-transform"></i>
+              {% else %}
+                <i class="fa-regular fa-heart text-slate-400 text-xl group-hover:text-[#D4AF37] group-hover:scale-110 transition-all"></i>
+              {% endif %}
+              <span class="ml-3 text-[11px] font-bold uppercase tracking-widest text-slate-600 sm:hidden">
+                {% if is_wished %}Wishlisted{% else %}Save Item{% endif %}
+              </span>
+            </button>
+          </form>
+        </div>
+
+        <!-- The Origins Guarantee Box -->
+        <div class="bg-white rounded-2xl border border-[#D4AF37]/30 p-8 shadow-[0_10px_30px_-15px_rgba(212,175,55,0.15)] relative overflow-hidden">
+          <!-- Abstract bg icon -->
+          <i class="fa-solid fa-certificate absolute -right-6 -bottom-6 text-[#F8F5F1] text-9xl transform rotate-12 opacity-50"></i>
+          
+          <div class="relative z-10">
+            <h3 class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#006A4E] mb-6 flex items-center gap-2">
+              <i class="fa-solid fa-shield-check text-[#D4AF37] text-sm"></i> The Origins Guarantee
+            </h3>
+            
+            <ul class="space-y-4">
+              <li class="flex items-start gap-3">
+                <div class="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#006A4E]/5 flex items-center justify-center border border-[#006A4E]/10">
+                  <i class="fa-solid fa-check text-[#006A4E] text-[9px]"></i>
+                </div>
+                <div>
+                  <h4 class="text-[13px] font-bold text-[#111827]">Artisanal Authenticity</h4>
+                  <p class="text-xs text-slate-500 mt-1">Craft-led sourcing & Geographical Indication (GI) inspired storytelling.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#006A4E]/5 flex items-center justify-center border border-[#006A4E]/10">
+                  <i class="fa-solid fa-check text-[#006A4E] text-[9px]"></i>
+                </div>
+                <div>
+                  <h4 class="text-[13px] font-bold text-[#111827]">Transparent Provenance</h4>
+                  <p class="text-xs text-slate-500 mt-1">Verified listing with precise district and category metadata.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#006A4E]/5 flex items-center justify-center border border-[#006A4E]/10">
+                  <i class="fa-solid fa-check text-[#006A4E] text-[9px]"></i>
+                </div>
+                <div>
+                  <h4 class="text-[13px] font-bold text-[#111827]">Secure Global Commerce</h4>
+                  <p class="text-xs text-slate-500 mt-1">Seamless global transactions with auto-converted dynamic pricing.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+{% endblock %}

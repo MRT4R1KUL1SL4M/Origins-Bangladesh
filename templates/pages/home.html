@@ -1,0 +1,883 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- 2. HERO SECTION -->
+    <section class="relative py-12 lg:py-24 overflow-hidden bg-[#f8f5f1]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <!-- Left Content -->
+            <div class="order-2 lg:order-1 relative z-10">
+                <div class="reveal-up delay-100">
+                    <span class="inline-block px-4 py-1.5 bg-[#eae5db] text-heritage-green text-[10px] font-bold uppercase tracking-widest rounded-full mb-6 border border-[#d4a373]/30">
+                        <span class="w-2 h-2 rounded-full bg-red-600 inline-block mr-2 animate-pulse"></span>Bangladesh's GI Heritage
+                    </span>
+                </div>
+                <h1 class="text-6xl lg:text-7xl font-bold mb-6 leading-[1.1] text-heritage-green reveal-up delay-200 whitespace-pre-line">{{ (site_experience.hero_headline if site_experience else 'Threads of\nTradition,\nWoven with Soul.') }}</h1>
+                <p class="text-lg text-slate-700 mb-10 max-w-lg leading-relaxed reveal-up delay-300">{{ (site_experience.hero_subtext if site_experience else 'Discover the authenticity of Bengal. From the legendary Muslin to the royal Jamdani, bring home artifacts that carry a millennium of history.') }}</p>
+                <div class="flex flex-wrap gap-4 reveal-up delay-300">
+                    <a href="{{ url_for('shop') }}" class="px-8 py-4 bg-heritage-green text-cream font-medium rounded-full hover:bg-[#0f2e26] transition shadow-xl shadow-emerald-900/20 flex items-center gap-2 group btn-animate">
+                        Explore Collection <i class="fa-solid fa-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                    <a href="{{ url_for('register', role='seller') }}" class="px-8 py-4 bg-transparent border-2 border-heritage-green text-heritage-green font-bold rounded-full hover:bg-heritage-green hover:text-cream transition shadow-sm flex items-center gap-3 group btn-animate">
+                        <span class="w-6 h-6 rounded-full bg-heritage-green text-cream flex items-center justify-center text-[10px] group-hover:bg-[#f8f5f1] group-hover:text-heritage-green transition"><i class="fa-solid fa-hammer ml-0.5"></i></span>
+                        Become an Artisan
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Image -->
+            <div class="order-1 lg:order-2 relative reveal-scale delay-200">
+                <div class="aspect-[4/5] md:aspect-square lg:aspect-[4/5] relative rounded-[3rem] overflow-hidden shadow-2xl border-4 border-[#fffaf5] img-pan-container">
+                    <img src="{{ (site_experience.hero_image if site_experience else '/static/assets/img/hero.png?auto=format&fit=crop&q=80&w=1200') }}" 
+     alt="Homepage hero" class="absolute inset-0 w-full h-full object-cover">
+                    <!-- Texture Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. STATS SECTION -->
+    <section class="py-8 bg-[#eae5db]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-stone-400/20">
+                <div class="text-center p-2 group reveal-up delay-100">
+                    <div class="w-12 h-12 bg-pink-100/50 rounded-full mx-auto flex items-center justify-center text-pink-700 mb-3 group-hover:scale-110 transition duration-500">
+                        <i class="fa-solid fa-users text-xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-heritage-green mb-1 counter" data-target="{{ home_stats.total_artisans|int }}">0</div>
+                    <div class="text-[9px] font-bold uppercase tracking-widest text-slate-700">Total Artisans</div>
+                </div>
+                <div class="text-center p-2 group reveal-up delay-200">
+                    <div class="w-12 h-12 bg-emerald-100/50 rounded-full mx-auto flex items-center justify-center text-emerald-700 mb-3 group-hover:scale-110 transition duration-500">
+                        <i class="fa-solid fa-certificate text-xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-heritage-green mb-1 counter" data-target="{{ home_stats.gi_products|int }}">0</div>
+                    <div class="text-[9px] font-bold uppercase tracking-widest text-slate-700">GI Products</div>
+                </div>
+                <div class="text-center p-2 group reveal-up delay-300">
+                    <div class="w-12 h-12 bg-blue-100/50 rounded-full mx-auto flex items-center justify-center text-blue-700 mb-3 group-hover:scale-110 transition duration-500">
+                        <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-heritage-green mb-1 counter" data-target="{{ home_stats.orders_k|int }}">0</div>
+                    <div class="text-[9px] font-bold uppercase tracking-widest text-slate-700">Orders (K)</div>
+                </div>
+                <div class="text-center p-2 group reveal-up delay-300">
+                    <div class="w-12 h-12 bg-orange-100/50 rounded-full mx-auto flex items-center justify-center text-orange-700 mb-3 group-hover:scale-110 transition duration-500">
+                        <i class="fa-solid fa-globe text-xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-heritage-green mb-1 counter" data-target="{{ home_stats.countries|int }}">0</div>
+                    <div class="text-[9px] font-bold uppercase tracking-widest text-slate-700">Countries</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if home_slider_products or home_active_coupons %}
+    <style>
+        .home-showcase-slide {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(12px) scale(1.02);
+            transition: opacity .7s ease, transform .7s ease, visibility .7s ease;
+            pointer-events: none;
+        }
+        .home-showcase-slide.is-active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .home-product-slide img { transform: scale(1); transition: transform 1.8s ease; }
+        .home-product-slide.is-active img { transform: scale(1.03); }
+        .home-coupon-card {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .home-coupon-body {
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+        .coupon-copy-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (max-width: 767px) {
+            .home-showcase-section { padding-top: 4rem; padding-bottom: 4rem; }
+        }
+    </style>
+    <section class="home-showcase-section py-20 bg-[#f8f5f1]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 items-stretch">
+                <div class="reveal-right">
+                    <div class="rounded-[2.5rem] overflow-hidden bg-white border border-[#d4a373]/15 shadow-2xl h-full min-h-[500px] relative">
+                        <div class="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/20 pointer-events-none"></div>
+                        <div class="absolute top-6 left-6 z-20">
+                            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/85 backdrop-blur text-[10px] font-bold uppercase tracking-[0.22em] text-heritage-green shadow-lg">
+                                <span class="w-2 h-2 rounded-full bg-[#d4a373] animate-pulse"></span> Product Showcase
+                            </span>
+                        </div>
+
+                        <div id="homeProductShowcase" class="relative h-full min-h-[500px] overflow-hidden">
+                            {% for item in home_slider_products %}
+                            <a href="{{ url_for('product_details', product_id=item.product_id) }}" class="home-showcase-slide home-product-slide {% if loop.first %}is-active{% endif %} absolute inset-0 block group" data-slide-index="{{ loop.index0 }}" aria-label="{{ item.name }}">
+                                <img src="{{ item.img }}" alt="{{ item.name }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+                                <div class="absolute inset-x-0 bottom-0 p-8 md:p-10 text-white z-10">
+                                    <p class="text-[10px] font-bold uppercase tracking-[0.28em] text-[#f5d7b2] mb-3">Origins Bangladesh</p>
+                                    <h3 class="text-2xl md:text-3xl font-bold max-w-xl leading-tight">{{ item.name }}</h3>
+                                    <div class="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white text-heritage-green text-[11px] font-bold uppercase tracking-[0.2em] shadow-lg">
+                                        View Product <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                    </div>
+                                </div>
+                            </a>
+                            {% endfor %}
+
+                            {% if not home_slider_products %}
+                            <div class="absolute inset-0 flex items-center justify-center p-8 text-center text-slate-500">
+                                <div>
+                                    <div class="text-5xl mb-4 text-[#d4a373]"><i class="fa-regular fa-image"></i></div>
+                                    <p class="text-sm font-semibold uppercase tracking-[0.2em]">No product image available yet</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-left">
+                    <div class="rounded-[2.5rem] bg-heritage-maroon text-cream border border-[#d4a373]/15 shadow-2xl h-full min-h-[500px] p-8 md:p-10 flex flex-col relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-[0.07]" style="background-image: radial-gradient(#d4a373 1px, transparent 1px); background-size: 18px 18px;"></div>
+                        <div class="relative z-10 h-full flex flex-col">
+                            <div class="mb-6 md:mb-8">
+                                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-[10px] font-bold uppercase tracking-[0.22em] text-[#f5d7b2] border border-white/10">
+                                    <i class="fa-solid fa-ticket"></i> Active Offers
+                                </span>
+                                <h3 class="text-3xl md:text-4xl font-bold mt-5 leading-tight">Use these coupon codes before they expire.</h3>
+                                <p class="text-sm text-white/70 mt-3 max-w-lg">Don’t miss out! Use these limited-time coupons and save big today.</p>
+                            </div>
+
+                            <div id="homeCouponShowcase" class="relative flex-1 min-h-[260px] overflow-hidden">
+                                {% for coupon in home_active_coupons %}
+                                <div class="home-showcase-slide home-coupon-slide {% if loop.first %}is-active{% endif %} absolute inset-0" data-coupon-index="{{ loop.index0 }}">
+                                    <div class="home-coupon-card h-full rounded-[2rem] bg-white text-heritage-green p-6 md:p-8 shadow-xl">
+                                        <div class="home-coupon-body overflow-y-auto pr-1">
+                                            <div class="flex items-start justify-between gap-4 mb-5">
+                                                <div class="min-w-0">
+                                                    <p class="text-[10px] font-bold uppercase tracking-[0.24em] text-[#d4a373] mb-2">Coupon Code</p>
+                                                    <h4 class="text-3xl md:text-4xl font-black tracking-[0.12em] break-words">{{ coupon.code }}</h4>
+                                                </div>
+                                                {% if coupon.is_new_user_only %}
+                                                <span class="shrink-0 px-3 py-2 rounded-full bg-[#fff3e6] text-[#b36a00] text-[10px] font-bold uppercase tracking-[0.18em]">New User</span>
+                                                {% endif %}
+                                            </div>
+
+                                            <p class="text-xl md:text-2xl font-bold mb-4">{{ coupon.discount_text }}</p>
+                                            <div class="space-y-2 text-sm text-slate-600 break-words">
+                                                <p><span class="font-semibold text-heritage-green">Type:</span> {{ coupon.type }}</p>
+                                                <p><span class="font-semibold text-heritage-green">Expires:</span> {{ coupon.expires_text }}</p>
+                                                <p><span class="font-semibold text-heritage-green">Availability:</span> {{ coupon.remaining_text }}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-6 pt-5 border-t border-slate-200 flex flex-wrap gap-3 items-center">
+                                            <button type="button" class="copy-coupon-btn px-5 py-3 rounded-full bg-heritage-green text-white text-[11px] font-bold uppercase tracking-[0.18em] hover:bg-[#0f2e26] transition" data-code="{{ coupon.code }}">Copy Code</button>
+                                            <a href="{{ url_for('shop') }}" class="px-5 py-3 rounded-full border border-heritage-green text-heritage-green text-[11px] font-bold uppercase tracking-[0.18em] hover:bg-[#f8f5f1] transition">Shop Now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                                {% if not home_active_coupons %}
+                                <div class="h-full rounded-[2rem] border border-white/10 bg-white/5 flex items-center justify-center text-center p-8">
+                                    <div>
+                                        <div class="text-5xl mb-4 text-[#f5d7b2]"><i class="fa-regular fa-ticket"></i></div>
+                                        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#f5d7b2]">No active coupon right now</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <div id="couponCopyStatus" class="coupon-copy-toast pointer-events-none fixed right-6 bottom-6 z-[80] px-5 py-3 rounded-full bg-heritage-green text-white text-xs font-bold uppercase tracking-[0.18em] shadow-2xl opacity-0 translate-y-3 transition-all duration-300">Code copied</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+
+    <!-- 4. FLASH SALE -->
+    {% if flash_products %}
+<style>
+.flash-countdown { flex-wrap: nowrap; }
+.flash-time-group { min-width: 74px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.flash-time-value { min-width: 74px; padding: 0.6rem 0.75rem; border-radius: 18px; background: rgba(248,245,241,0.1); border: 1px solid rgba(254,215,170,0.16); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 1.45rem; line-height: 1; font-weight: 800; letter-spacing: 0.06em; display:flex; align-items:center; justify-content:center; transform: translateY(0); transition: transform .24s ease, background-color .24s ease, box-shadow .24s ease; }
+.flash-time-value.flash-tick { transform: translateY(-2px) scale(1.04); background: rgba(212,163,115,0.22); box-shadow: 0 0 0 1px rgba(254,215,170,0.10), 0 10px 25px rgba(0,0,0,0.16); }
+.flash-time-label { margin-top: 0.45rem; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(254,215,170,0.74); }
+.flash-time-separator { font-size: 1.45rem; font-weight: 800; color: rgba(254,215,170,0.7); margin-top: -1rem; }
+@media (max-width: 640px) { .flash-time-group { min-width: 60px; } .flash-time-value { min-width: 60px; font-size: 1.1rem; padding: 0.5rem 0.55rem; } .flash-time-separator { font-size: 1.1rem; margin-top: -0.8rem; } .flash-time-label { font-size: 0.52rem; letter-spacing: 0.16em; } }
+</style>
+    <section id="flash-sale" class="py-20 bg-[#f8f5f1]">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 reveal-left">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-[#d4a373] mb-3 block">Limited Opportunity</span>
+                    <h2 class="text-5xl font-bold text-heritage-green">Timeless Treasures: Flash Sale</h2>
+                </div>
+                <!-- Countdown Pill -->
+                <div class="bg-heritage-maroon text-cream px-6 md:px-8 py-4 rounded-[24px] flex items-center gap-4 shadow-xl transition duration-300 border border-orange-200/10">
+                    <i class="fa-regular fa-clock text-orange-200 animate-pulse text-lg"></i>
+                    <div class="text-left min-w-0">
+                        <div class="text-[10px] font-bold uppercase tracking-[0.25em] text-orange-200/80 mb-2">Total Duration</div>
+                        <div
+                            id="countdown"
+                            class="flash-countdown flex items-center gap-2 md:gap-3"
+                            data-live="{{ '1' if site_experience.artisan_hour_live else '0' }}"
+                            data-start-at="{{ site_experience.artisan_hour_start_at or '' }}"
+                            data-end-at="{{ site_experience.artisan_hour_end_at or '' }}"
+                            data-start-date="{{ site_experience.artisan_hour_start_date or '' }}"
+                            data-end-date="{{ site_experience.artisan_hour_end_date or '' }}"
+                            data-start-time="{{ site_experience.artisan_hour_start or '' }}"
+                            data-end-time="{{ site_experience.artisan_hour_end or '' }}"
+                            data-fallback-text="{{ site_experience.artisan_hour_total_hours_display or '2h 00m 00s' }}"
+                            data-duration-seconds="{{ site_experience.artisan_hour_duration_seconds or 0 }}"
+                            data-remaining-seconds="{{ site_experience.artisan_hour_remaining_seconds or 0 }}"
+                            data-live-started-at="{{ site_experience.artisan_hour_live_started_at or '' }}"
+                            aria-label="Flash sale countdown"
+                        >
+                            <div class="flash-time-group">
+                                <span class="flash-time-value" data-unit="hours">00</span>
+                                <span class="flash-time-label">Hours</span>
+                            </div>
+                            <span class="flash-time-separator">:</span>
+                            <div class="flash-time-group">
+                                <span class="flash-time-value" data-unit="minutes">00</span>
+                                <span class="flash-time-label">Minutes</span>
+                            </div>
+                            <span class="flash-time-separator">:</span>
+                            <div class="flash-time-group">
+                                <span class="flash-time-value" data-unit="seconds">00</span>
+                                <span class="flash-time-label">Seconds</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                {% for item in flash_products %}
+                <div class="bg-pearl p-3 rounded-2xl border border-[#d4a373]/20 card-shadow group cursor-pointer relative reveal-up" style="transition-delay: {{ loop.index0 * 50 }}ms">
+                    <div class="relative overflow-hidden rounded-xl aspect-[4/5] mb-3 img-pan-container">
+                        <img src="{{ item.img }}" class="w-full h-full object-cover">
+                        <span class="absolute top-2 left-2 bg-heritage-maroon text-cream text-[9px] font-bold px-2 py-1 rounded-full z-20">-{{ item.off }}</span>
+
+                        <!-- OVERLAY with ANIMATED BUTTONS -->
+                        <div class="absolute inset-0 bg-heritage-green/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-2 z-10">
+                            <form method="post" action="{{ url_for('cart_add', product_id=item.product_id) }}">
+                                <input type="hidden" name="next" value="{{ request.full_path }}">
+                                <button type="submit" class="bg-heritage-gold text-cream px-4 py-2 rounded-full text-[9px] font-bold uppercase tracking-widest hover:bg-[#b58556] transition shadow-lg w-28 btn-animate transform translate-y-4 group-hover:translate-y-0 duration-500 delay-100">Add to Cart</button>
+                            </form>
+                            <a href="{{ url_for('product_details', product_id=item.product_id) }}" class="bg-[#f8f5f1] text-heritage-green px-4 py-2 rounded-full text-[9px] font-bold uppercase tracking-widest hover:bg-[#eae5db] transition shadow-lg w-28 btn-animate transform translate-y-4 group-hover:translate-y-0 duration-500 delay-200 text-center">View Details</a>
+                        </div>
+                    </div>
+                    <div class="px-1 pb-1">
+                        <div class="text-[9px] font-bold uppercase tracking-widest text-slate-500 mb-1">{{ item.cat }}</div>
+                        <h3 class="text-sm font-bold text-heritage-green mb-1 truncate group-hover:text-[#d4a373] transition">{{ item.name }}</h3>
+                        <div class="flex items-baseline gap-2 mb-2">
+                            <span class="text-lg font-bold text-heritage-green">{{ item.price_fmt }}</span>
+                            <span class="text-xs text-slate-400 line-through decoration-slate-400">{{ item.old_price_fmt }}</span>
+                        </div>
+                        <div class="w-full bg-[#eae5db] rounded-full h-1 overflow-hidden">
+                            <div class="bg-heritage-maroon h-1 rounded-full w-[70%]"></div>
+                        </div>
+                        <div class="mt-1 text-[8px] font-bold uppercase tracking-wider text-slate-600 text-right">
+                            <span class="text-heritage-green">Few Left</span>
+                        </div>
+                    </div>
+                </div>
+{% endfor %}
+            </div>
+
+            <!-- Explore Button -->
+            {% if flash_products_total > 12 %}
+            <div class="text-center mt-12 reveal-up delay-300">
+                <a href="{{ url_for('flash_deals') }}" class="bg-heritage-green text-cream px-12 py-4 rounded-full font-bold text-sm hover:bg-[#0f2e26] transition duration-300 uppercase tracking-widest shadow-xl btn-animate inline-block">Explore All Flash Deals</a>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- HERITAGE MAP SECTION (UPDATED) -->
+    <section id="heritage-map" class="py-20 bg-[#052e16] text-[#e2e8f0] relative overflow-hidden font-manrope selection:bg-yellow-500/30 selection:text-yellow-200" style="background-image: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 25%), radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.05) 0%, transparent 25%);">
+        
+        <!-- Aesthetic Grid Overlay -->
+        <div class="absolute inset-0 bg-grid pointer-events-none z-0"></div>
+
+        <div class="w-full max-w-[1400px] mx-auto z-10 relative px-6 lg:px-8">
+            <!-- Main Header -->
+            <div class="flex flex-col md:flex-row items-end justify-between mb-8 pb-6 border-b border-white/5 gap-4 reveal-up">
+                <div>
+                    <h4 class="text-[#d4a373]/80 text-xs font-bold tracking-[0.2em] uppercase mb-2">Interactive Archive</h4>
+                    <h1 class="text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400 drop-shadow-sm leading-tight font-playfair">
+                        Heritage Map
+                        <span class="block text-2xl md:text-3xl font-light text-slate-500 mt-1 italic font-sans">Bangladesh GI Products</span>
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Main Grid Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch h-auto lg:h-[750px]">
+                <!-- LEFT: MAP CARD -->
+                <div class="lg:col-span-8 glass-panel rounded-3xl overflow-hidden flex flex-col relative group reveal-scale delay-100">
+                    <!-- Top Bar -->
+                    <div class="px-6 py-5 border-b border-white/5 flex items-center justify-between bg-black/20">
+                        <div class="flex items-center gap-4">
+                            <span class="flex h-3 w-3 relative">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                            </span>
+                            <span class="text-xs text-slate-400 font-mono tracking-wider">LIVE VIEW</span>
+                        </div>
+                        <div class="flex items-center gap-6">
+                            <label class="group flex items-center gap-3 cursor-pointer select-none">
+                                <span class="text-[10px] uppercase tracking-wider font-bold text-slate-500 group-hover:text-slate-300 transition-colors">Labels</span>
+                                <div class="relative">
+                                    <input type="checkbox" id="toggleLabels" class="peer sr-only" />
+                                    <div class="w-10 h-5 bg-white/5 rounded-full border border-white/10 peer-checked:border-[#d4a373]/50 peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-400 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:bg-[#d4a373] peer-checked:bg-[#d4a373]/10"></div>
+                                </div>
+                            </label>
+                            <button id="resetBtn" class="btn-premium px-4 py-1.5 rounded-full text-xs font-semibold text-slate-300 tracking-wide uppercase hover:text-white">
+                                Reset Camera
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Map Stage -->
+                    <div class="relative flex-grow bg-gradient-to-b from-[#052e16] to-[#022c22] p-6 flex items-center justify-center overflow-hidden">
+                        <!-- Decorative Markers -->
+                        <div class="absolute top-4 left-4 w-4 h-4 border-l border-t border-white/20"></div>
+                        <div class="absolute top-4 right-4 w-4 h-4 border-r border-t border-white/20"></div>
+                        <div class="absolute bottom-4 left-4 w-4 h-4 border-l border-b border-white/20"></div>
+                        <div class="absolute bottom-4 right-4 w-4 h-4 border-r border-b border-white/20"></div>
+
+                        <div id="mapHost" class="w-full h-full flex items-center justify-center transition-all duration-700">
+                            <!-- SVG Placeholder loaded via JS -->
+                        </div>
+
+                        <!-- Bottom Legend -->
+                        <div class="absolute bottom-6 left-6 flex items-center gap-3 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/5">
+                            <div class="w-2 h-2 rounded-full bg-slate-600"></div>
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider mr-2">N/A</span>
+                            <div class="w-2 h-2 rounded-full bg-[#d4a373] shadow-[0_0_10px_#d4a373]"></div>
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider">Selected</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: INFO CARD -->
+                <aside class="lg:col-span-4 flex flex-col h-full reveal-left delay-200">
+                    <div class="glass-panel rounded-3xl p-8 h-full flex flex-col relative overflow-hidden">
+                        <div class="absolute -top-24 -right-24 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="relative z-10 flex flex-col h-full">
+                            
+                            <!-- Empty State -->
+                            <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-center transition-all duration-500">
+                                <div class="w-24 h-24 mb-6 rounded-full bg-gradient-to-tr from-white/5 to-transparent border border-white/10 flex items-center justify-center shadow-2xl relative overflow-hidden group">
+                                    <div class="absolute inset-0 bg-[#d4a373]/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                    <svg class="text-slate-500 w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 7m0 13V7m0 0L9 4" /></svg>
+                                </div>
+                                <h3 class="text-2xl text-white font-serif italic mb-2">Explore the Map</h3>
+                                <p class="text-slate-500 text-sm font-light leading-relaxed max-w-[240px]">Select any district from the map to reveal its geographical indication history.</p>
+                            </div>
+
+                            <!-- Active Content -->
+                            <div id="contentState" class="flex flex-col h-full opacity-0 translate-x-8 pointer-events-none transition-all duration-500">
+                                <div class="flex items-center justify-between mb-6">
+                                    <div class="px-3 py-1 rounded-full bg-gradient-to-r from-[#d4a373]/10 to-transparent border border-[#d4a373]/20">
+                                        <span id="categoryBadge" class="text-[10px] font-bold text-[#d4a373] uppercase tracking-widest">GI Certified</span>
+                                    </div>
+                                    <span class="text-[10px] text-slate-600 font-mono" id="districtIdDisplay">ID: 001</span>
+                                </div>
+
+                                <h2 id="districtTitle" class="text-4xl md:text-5xl text-white mb-2 leading-none">District</h2>
+                                <p id="giTitle" class="text-lg text-[#f3e5ab]/80 font-serif italic mb-8 pb-4 border-b border-white/5">Product Name</p>
+
+                                <div class="flex-grow overflow-y-auto pr-4 -mr-4 h-64">
+                                    <p id="giStory" class="text-slate-300 font-light text-base leading-relaxed">
+                                        Loading description...
+                                    </p>
+                                </div>
+
+                                <div class="mt-8 grid grid-cols-2 gap-4 border-t border-white/5 pt-6">
+                                    <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                        <p class="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Status</p>
+                                        <p class="text-sm text-white">Active</p>
+                                    </div>
+                                    <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                        <p class="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Category</p>
+                                        <p id="giCategory" class="text-sm text-white capitalize">Traditional</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Added Button for Viewing Products -->
+                                <div id="viewProductsContainer" class="mt-6 pt-4 border-t border-white/5 hidden">
+                                    <button class="w-full btn-premium py-3 rounded-xl text-xs font-bold uppercase tracking-widest text-[#d4a373] hover:text-white flex items-center justify-center gap-2">
+                                        View <span id="btnDistrictName">Regional</span> Collection <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. VERIFY PRODUCT SECTION (ID ADDED) -->
+    <section id="verify" class="py-24 bg-heritage-maroon text-cream relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#d4a373 1px, transparent 1px); background-size: 20px 20px;"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative z-10">
+            <div class="reveal-right">
+                <div class="w-16 h-16 border border-[#d4a373]/30 rounded-2xl flex items-center justify-center mb-8 bg-white/5 backdrop-blur">
+                    <i class="fa-solid fa-shield-halved text-3xl text-[#d4a373]"></i>
+                </div>
+                <h2 class="text-5xl lg:text-6xl font-bold mb-8 text-cream">The Seal of Ancestry: <br> <span class="text-[#fca5a5] italic">Verify Authenticity</span></h2>
+                <p class="text-[#e2e8f0] text-lg mb-10 leading-relaxed max-w-md">Every GI product from Bangladesh comes with a unique, encrypted tracking code. Scan to know the story.</p>
+                <div class="space-y-5">
+                    <div class="flex items-center gap-4">
+                        <i class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>
+                        <span class="text-base font-medium">100% Genuine GI Certified</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <i class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>
+                        <span class="text-base font-medium">Artisan Identification</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification Card -->
+            <div class="bg-pearl rounded-[2.5rem] p-10 lg:p-14 text-slate-900 shadow-2xl relative z-10 reveal-left delay-200 border-4 border-[#fff5f5]">
+                <h3 class="text-3xl font-bold mb-3 text-heritage-green">Verify Your GI Tag</h3>
+                <p class="text-slate-500 text-sm mb-10">Enter the 12-digit alphanumeric code found on the tag.</p>
+                <div class="relative mb-8">
+                    <input id="giCodeInput" name="code" type="text" placeholder="E.G., BD-JAM-2024-X982, BD-SIL-2024-A1F4"
+                           class="w-full bg-[#f8f5f1] border border-stone-200 rounded-2xl px-6 py-5 text-base font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-heritage-green transition" autocomplete="off">
+                </div>
+                <!-- GOLD BUTTON -->
+                <button onclick="verifyProduct()" class="w-full bg-heritage-gold hover:bg-[#b58556] text-cream font-bold py-5 rounded-2xl transition shadow-xl shadow-orange-500/20 transform hover:scale-[1.02] active:scale-95 btn-animate">
+                    Verify Authenticity
+                </button>
+                <div id="verify-result" class="mt-6 hidden p-4 rounded-xl text-center border text-sm font-semibold">
+                    <span id="verify-result-icon" class="mr-2"></span><span id="verify-result-text"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. TODAYS ARTISAN -->
+    <section class="py-24 bg-[#f8f5f1]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-up">
+                <span class="text-xs font-bold uppercase tracking-widest text-[#d4a373]">Craftsman Spotlight</span>
+                <h2 class="text-5xl font-bold text-heritage-green mt-4">Custodians of Legacy: Artisan Spotlight</h2>
+            </div>
+
+            <div class="bg-pearl rounded-[3.5rem] shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 min-h-[600px] group reveal-scale delay-100 border border-[#d4a373]/10">
+                <!-- Image Side -->
+                <div class="relative h-[500px] md:h-full overflow-hidden">
+                    <img src="{{ featured_artisan.hero_image if featured_artisan and featured_artisan.hero_image else 'https://images.unsplash.com/photo-1541944743827-e04aa6427c33?auto=format&fit=crop&q=80&w=1000' }}" class="absolute inset-0 w-full h-full object-cover transition duration-[1.5s] ease-in-out group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-12 left-12 text-cream">
+                        <span class="bg-[#d4a373] text-heritage-green text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider rounded-lg mb-4 inline-block shadow-lg">{{ featured_artisan.badge_text if featured_artisan and featured_artisan.badge_text else 'Verified Master' }}</span>
+                        <h3 class="text-4xl font-bold mb-2">{{ featured_artisan.name if featured_artisan and featured_artisan.name else 'Sufia Begum' }}</h3>
+                        <p class="text-sm opacity-90"><i class="fa-solid fa-location-dot mr-1"></i> {{ featured_artisan.location_text if featured_artisan and featured_artisan.location_text else 'Jamalpur, Bangladesh' }}</p>
+                    </div>
+                </div>
+                
+                <!-- Content Side -->
+                <div class="p-12 lg:p-20 flex flex-col justify-center">
+                    <div class="flex items-center gap-3 mb-8">
+                         <div class="w-10 h-10 rounded-full bg-[#d4a373]/20 flex items-center justify-center text-[#d4a373]"><i class="fa-solid fa-medal"></i></div>
+                         <span class="text-xs font-bold uppercase tracking-widest text-[#d4a373]">{{ featured_artisan.tag if featured_artisan and featured_artisan.tag else 'Artisan Story' }}</span>
+                    </div>
+                    <h3 class="text-4xl font-bold text-heritage-green mb-8 leading-tight">"{{ featured_artisan.specialty_title if featured_artisan and featured_artisan.specialty_title else 'Master Artisan' }}"</h3>
+                    <p class="text-slate-600 leading-relaxed mb-10 italic text-lg border-l-4 border-[#d4a373] pl-6">
+                        "{{ featured_artisan.quote_text if featured_artisan and featured_artisan.quote_text else 'This artisan\'s story will be featured soon.' }}"
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-5 mb-12">
+    <!-- High Contrast Green -->
+    <button
+        id="artisanViewCollectionBtn"
+        data-artisan-id="{{ featured_artisan.artisan_id if featured_artisan else '' }}"
+        class="bg-heritage-green text-cream px-10 py-4 rounded-2xl text-sm font-bold shadow-xl hover:bg-[#0f2e26] transition hover:-translate-y-1 btn-animate"
+        type="button"
+    >
+        View Collection
+    </button>
+    <!-- CHANGED: Dark Border & Text -->
+    <button
+        id="artisanWatchStoryBtn"
+        data-video-url="{{ featured_artisan.story_video_url if featured_artisan else '' }}"
+        class="bg-transparent border-2 border-heritage-green text-heritage-green px-10 py-4 rounded-2xl text-sm font-bold hover:bg-heritage-green hover:text-cream transition shadow-sm btn-animate"
+        type="button"
+    >
+        Watch Story
+    </button>
+</div>
+
+                    <div class="flex justify-between border-t border-[#d4a373]/20 pt-10">
+                        <div>
+                            <div class="text-3xl font-bold text-heritage-green">{{ featured_artisan.years_mastery_display if featured_artisan and featured_artisan.years_mastery_display else '--' }}</div>
+                            <div class="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Years Mastery</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-heritage-green">{{ featured_artisan.pieces_created_display if featured_artisan and featured_artisan.pieces_created_display else '--' }}</div>
+                            <div class="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Pieces Created</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+<!-- Artisan Story Modal (opens video player; shows "No story found" if missing) -->
+<div id="artisanStoryModal" class="hidden fixed inset-0 z-[9999]">
+    <div id="artisanStoryBackdrop" class="absolute inset-0 bg-black/70"></div>
+    <div class="relative w-full h-full flex items-center justify-center p-6">
+        <div class="w-full max-w-4xl bg-pearl rounded-[2rem] shadow-2xl overflow-hidden border border-[#d4a373]/20">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-[#d4a373]/20">
+                <div class="text-sm font-bold text-heritage-green">
+                    {{ featured_artisan.name if featured_artisan and featured_artisan.name else 'Artisan Story' }}
+                </div>
+                <button id="artisanStoryCloseBtn" type="button" class="w-10 h-10 rounded-xl bg-[#f8f5f1] hover:bg-[#eae5db] text-heritage-green font-bold transition">
+                    ×
+                </button>
+            </div>
+            <div id="artisanStoryContent" class="p-6 bg-[#f8f5f1]">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+    <!-- 7. JOURNAL (ID ADDED) -->
+    <section id="journal" class="py-20 bg-[#eae5db]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal-up">
+                <div>
+                     <span class="text-xs font-bold uppercase tracking-widest text-[#d4a373] block mb-3">The Chronicles of Bengal</span>
+                    <h2 class="text-5xl font-bold text-heritage-green">Chronicles of the Delta: The GI Journal</h2>
+                </div>
+                <div class="hidden md:block text-right">
+                    <a href="{{ url_for('journal_index') }}" class="text-xs font-bold uppercase tracking-widest text-heritage-green border-b border-heritage-green pb-1 hover:text-[#d4a373] hover:border-[#d4a373] transition">Explore all chapters <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Main Featured Article -->
+                <a href="{{ url_for('journal_article', slug=journal_featured.slug) }}" class="lg:col-span-7 group cursor-pointer relative rounded-[2rem] overflow-hidden min-h-[500px] reveal-right delay-100 img-pan-container shadow-2xl">
+                    <img src="{{ journal_featured.hero_image_url }}" class="absolute inset-0 w-full h-full object-cover img-pan transition-transform duration-[2000ms] ease-out group-hover:scale-110" alt="{{ journal_featured.title }}" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-10">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="bg-[#d4a373] text-white text-xs font-bold uppercase px-4 py-2 rounded-full">{{ journal_featured.category or 'Culture' }}</span>
+                            {% if journal_featured.read_minutes %}
+                            <span class="text-white/80 text-xs font-medium flex items-center gap-2"><i class="fa-regular fa-clock"></i> {{ journal_featured.read_minutes }} MIN READ</span>
+                            {% endif %}
+                        </div>
+                        <h3 class="text-4xl font-bold text-white leading-tight">{{ journal_featured.title }}</h3>
+                    </div>
+                </a>
+
+                <div class="lg:col-span-5 space-y-8">
+                    <!-- Secondary Article -->
+                    <a href="{{ url_for('journal_article', slug=journal_side.slug) }}" class="group cursor-pointer bg-white/60 backdrop-blur-sm rounded-[2rem] p-8 flex items-start gap-6 reveal-left delay-200 shadow-xl">
+                        <img src="{{ journal_side.thumb_image_url or journal_side.hero_image_url }}" class="w-24 h-24 rounded-2xl object-cover transition-transform duration-500 group-hover:scale-105" alt="{{ journal_side.title }}" />
+                        <div>
+                            <h4 class="text-2xl font-bold text-heritage-green group-hover:text-[#d4a373] transition">{{ journal_side.title }}</h4>
+                            <p class="text-sm text-heritage-green/70 mt-2">{{ journal_side.subtitle or journal_side.teaser or '' }}</p>
+                        </div>
+                    </a>
+
+                    <!-- Quote Block -->
+                    <div class="bg-heritage-green rounded-[2rem] p-10 text-white reveal-left delay-300 shadow-2xl">
+                        <div class="relative">
+                            <i class="fa-solid fa-quote-left text-5xl text-white/10 absolute -top-4 -left-2"></i>
+                            <p class="text-xl font-medium italic leading-relaxed">{{ journal_quote.quote_text }}</p>
+                        </div>
+                        <div class="mt-8 pt-8 border-t border-white/20 flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold">
+                                {{ (journal_quote.quote_author or 'OB')[:2] | upper }}
+                            </div>
+                            <div class="text-sm font-semibold uppercase tracking-wider">{{ journal_quote.quote_author or 'Origins Bangladesh' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:hidden text-center mt-12">
+                <a href="{{ url_for('journal_index') }}" class="text-xs font-bold uppercase tracking-widest text-heritage-green border-b border-heritage-green pb-1 hover:text-[#d4a373] hover:border-[#d4a373] transition">Explore all chapters <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>
+            </div>
+        </div>
+    </section>
+
+<!-- 8. VOICE OF HERITAGE -->
+    <section class="py-24 bg-[#050505] text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+            <!-- Left Text & Playlist -->
+            <div class="reveal-right">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#10b981] text-[#10b981] text-[10px] font-bold uppercase tracking-widest mb-6">
+                    <i class="fa-solid fa-volume-high"></i> Heritage Soundscape
+                </span>
+                <h2 class="text-5xl font-bold mb-6 font-serif leading-tight">Hear the Heartbeat of <br> <span class="italic text-[#10b981]">Bangladesh</span></h2>
+                <p class="text-stone-400 text-sm mb-10 max-w-md leading-relaxed">
+                    Close your eyes and immerse yourself in the sounds that define our crafts. Each recording is a high-fidelity capture of authentic artisan workspaces.
+                </p>
+
+                <!-- Playlist (DB-backed) -->
+                <div id="soundTrackList" class="space-y-4">
+                    {% for t in sound_tracks %}
+                    <div
+                      class="sound-track {{ 'bg-[#064e3b] border-[#065f46] hover:bg-[#065f46]' if loop.first else 'border-white/10 hover:bg-white/5' }} p-4 rounded-xl border flex items-center justify-between cursor-pointer group transition"
+                      role="button"
+                      tabindex="0"
+                      data-track-id="{{ t.track_id }}"
+                      data-audio-url="{{ t.audio_url }}"
+                      data-cover-url="{{ t.cover_image_url }}"
+                      data-title="{{ t.title | e }}"
+                      data-subtitle="{{ t.subtitle | e }}"
+                      data-duration-sec="{{ t.duration_sec }}"
+                    >
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full {{ 'bg-[#10b981] text-white' if loop.first else 'border border-white/20 text-white/60 group-hover:text-[#10b981] group-hover:border-[#10b981]' }} flex items-center justify-center transition">
+                                <i class="fa-solid fa-music"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm {{ 'text-white' if loop.first else 'text-white/80 group-hover:text-white' }} transition">{{ t.title }}</h4>
+                                <p class="text-[10px] {{ 'text-emerald-200' if loop.first else 'text-stone-500 group-hover:text-stone-400' }} transition">{{ t.subtitle }}</p>
+                            </div>
+                        </div>
+                        <span class="sound-duration text-xs font-mono {{ 'text-emerald-200' if loop.first else 'text-stone-500' }}">{{ t.duration_fmt }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Right Visualizer -->
+            <div class="relative flex items-center justify-center reveal-left">
+                <!-- Ripples -->
+                <div class="absolute w-[400px] h-[400px] rounded-full border border-[#10b981]/20 animate-[ping_3s_linear_infinite]"></div>
+                <div class="absolute w-[300px] h-[300px] rounded-full border border-[#10b981]/30 animate-[ping_3s_linear_infinite_1s]"></div>
+                <div class="absolute w-[200px] h-[200px] rounded-full border border-[#10b981]/40"></div>
+                
+                <!-- Center Image/Button (single global player) -->
+                <div id="soundVisualizer" class="w-48 h-48 rounded-full overflow-hidden relative group cursor-pointer border-4 border-[#064e3b] shadow-[0_0_50px_rgba(16,185,129,0.3)]">
+                    <img id="soundCoverImg" src="{{ (sound_tracks[0].cover_image_url if sound_tracks and sound_tracks[0].cover_image_url else 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&q=80&w=400') }}" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition duration-700">
+                    <!-- Progress ring (no layout change) -->
+                    <svg class="absolute inset-0" viewBox="0 0 100 100" aria-hidden="true">
+                        <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(16,185,129,0.25)" stroke-width="4"></circle>
+                        <circle id="soundProgressCircle" cx="50" cy="50" r="46" fill="none" stroke="rgba(16,185,129,0.95)" stroke-width="4" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289" transform="rotate(-90 50 50)"></circle>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div id="soundPlayBtn" class="w-16 h-16 bg-[#10b981] rounded-full flex items-center justify-center text-white pl-1 shadow-lg group-hover:scale-110 transition">
+                            <i id="soundPlayIcon" class="fa-solid fa-play text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. MORE TO LOVE -->
+    <section class="py-24 bg-[#f8f5f1]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-up">
+                 <span class="text-xs font-bold uppercase tracking-widest text-[#d4a373]">Discovery Engine</span>
+                <h2 class="text-5xl font-bold text-heritage-green mt-4">Curated Heirlooms: The Collection</h2>
+                <p class="text-slate-600 mt-4 text-sm max-w-md mx-auto">Handpicked items that celebrate the diversity of Bangladeshi craftsmanship.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 reveal-up delay-200">
+                {% for product in discovery_products %}
+                <div class="group cursor-pointer relative">
+                    <div class="rounded-[1.5rem] overflow-hidden aspect-[3/4] mb-5 relative img-pan-container shadow-md border border-[#d4a373]/20">
+                        <img src="{{ product.img }}" class="w-full h-full object-cover">
+                        <form method="post" action="{{ url_for('wishlist_toggle', product_id=product.product_id) }}" class="absolute top-4 right-4 z-20">
+                            <input type="hidden" name="next" value="{{ request.full_path }}">
+                            <button type="submit" class="w-9 h-9 bg-pearl/90 backdrop-blur rounded-full flex items-center justify-center transition shadow-sm hover:scale-110 {% if product.is_wished %}text-red-500{% else %}text-slate-400 hover:text-red-500{% endif %}" aria-label="Wishlist">
+                                {% if product.is_wished %}
+                                    <i class="fa-solid fa-heart"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-heart"></i>
+                                {% endif %}
+                            </button>
+                        </form>
+
+                        <!-- HOVER OVERLAY - FIXED BUTTONS (NO WHITE) -->
+                        <div class="absolute inset-0 bg-heritage-green/80 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-3 z-10">
+                            <form method="post" action="{{ url_for('cart_add', product_id=product.product_id) }}">
+                                <input type="hidden" name="next" value="{{ request.full_path }}">
+                                <button type="submit" class="bg-heritage-gold text-cream px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-wider hover:bg-[#b58556] transition shadow-lg w-32 btn-animate transform translate-y-4 group-hover:translate-y-0 duration-500 delay-100">Add to Cart</button>
+                            </form>
+                            <a href="{{ url_for('product_details', product_id=product.product_id) }}" class="bg-[#f8f5f1] text-heritage-green px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-wider hover:bg-[#eae5db] transition shadow-lg w-32 btn-animate transform translate-y-4 group-hover:translate-y-0 duration-500 delay-200 text-center">View Details</a>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">{{ product.cat }}</span>
+                        <h4 class="text-xl font-bold text-heritage-green font-serif mt-1 group-hover:text-[#d4a373] transition">{{ product.name }}</h4>
+                        <div class="text-base font-bold text-slate-700 mt-1">{{ product.price_fmt }}</div>
+                    </div>
+                </div>
+{% endfor %}
+            </div>
+
+            {% if discovery_products_total > 20 %}
+            <div class="text-center mt-16 reveal-up">
+                <a href="{{ url_for('shop') }}" class="bg-heritage-green text-cream px-10 py-4 rounded-full font-bold text-sm hover:bg-[#0f2e26] transition duration-300 shadow-xl btn-animate inline-block">View All Artifacts <i class="fa-solid fa-cart-shopping ml-2 text-[#d4a373]"></i></a>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- 10. GLOBAL HERITAGE REACH (New Section) -->
+    <section class="py-24 bg-[#020202] text-white font-tech relative overflow-hidden">
+        <!-- Visual effects -->
+        <div class="absolute inset-0 bg-grid opacity-40 z-0"></div>
+        <div class="globe-overlay absolute inset-0 z-10"></div>
+        
+        <div class="w-full max-w-[1400px] mx-auto z-20 relative px-6 lg:px-8">
+            
+            <!-- Headline -->
+            <div class="text-center mb-12 pointer-events-none relative z-30">
+                <h1 class="font-serif text-5xl md:text-6xl tracking-widest text-metal opacity-95">GLOBAL HERITAGE</h1>
+                <div class="h-[1px] w-24 bg-[#D4AF37]/50 mx-auto mt-4 mb-2"></div>
+                <p class="text-[#D4AF37] tracking-[0.4em] text-xs uppercase opacity-80 font-bold shadow-black drop-shadow-md">Supply Chain Velocity</p>
+            </div>
+
+            <!-- Map Container -->
+            <div class="relative w-full aspect-video max-h-[700px] group overflow-hidden rounded-sm shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/5 bg-black">
+                
+                <!-- Base Map Image -->
+                <div class="absolute inset-0 z-0 scale-105 transition-transform duration-[10s] ease-in-out group-hover:scale-110">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000" 
+                         alt="World Map" 
+                         class="w-full h-full object-cover opacity-50 brightness-75 contrast-125 saturate-0 mix-blend-lighten">
+                </div>
+
+                <!-- SVG Interactive Layer -->
+                <svg id="interactive-global-map" viewBox="0 0 1000 600" class="absolute inset-0 w-full h-full z-30 pointer-events-none select-none overflow-hidden" preserveAspectRatio="xMidYMid meet">
+                    <defs>
+                        <clipPath id="global-map-safe-area">
+                            <rect x="36" y="36" width="928" height="528" rx="18" ry="18"></rect>
+                        </clipPath>
+                        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#00F0FF" stop-opacity="0" />
+                            <stop offset="50%" stop-color="#00F0FF" stop-opacity="0.8" />
+                            <stop offset="100%" stop-color="#00F0FF" stop-opacity="0" />
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <g id="global-map-connections" clip-path="url(#global-map-safe-area)"></g>
+
+                    <!-- Radar Scanner at Dhaka -->
+                    <foreignObject x="400" y="200" width="200" height="200" class="pointer-events-none">
+                        <div class="w-full h-full flex items-center justify-center">
+                            <div class="w-[180px] h-[180px] radar-sweep opacity-20"></div>
+                        </div>
+                    </foreignObject>
+
+                    <!-- Dhaka Hub Marker -->
+                    <g>
+                        <circle cx="500" cy="300" r="60" fill="none" stroke="#D4AF37" stroke-width="0.5" stroke-opacity="0.2" class="animate-pulse" />
+                        <circle cx="500" cy="300" r="4" fill="#D4AF37" filter="url(#glow)" />
+                        <text x="500" y="330" fill="#D4AF37" font-size="10" text-anchor="middle" letter-spacing="2" class="font-tech font-bold uppercase">Dhaka Hub</text>
+                    </g>
+                </svg>
+
+                <!-- Floating Stats -->
+                <div class="absolute bottom-12 left-12 z-40 flex flex-col gap-4 w-64 pointer-events-auto">
+                    
+                    <!-- Stat 1: Exports -->
+                    <div class="glass-panel-global p-5 rounded-xl border-l-2 border-l-[#D4AF37] relative overflow-hidden group/stat">
+                        <div class="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/10 to-transparent translate-x-[-100%] group-hover/stat:translate-x-0 transition-transform duration-500"></div>
+                        <div class="relative z-10">
+                            <h4 class="text-[#D4AF37]/90 text-[10px] tracking-[0.2em] mb-2 uppercase font-bold flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-[#D4AF37] rounded-full animate-pulse"></span>
+                                Total Exports
+                            </h4>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-4xl font-bold font-tech text-white">64</span>
+                                <span class="text-gray-400 text-sm font-medium tracking-wide">Districts</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stat 2: Active Routes -->
+                    <div class="glass-panel-global p-5 rounded-xl border-l-2 border-l-[#00F0FF] relative overflow-hidden group/stat">
+                        <div class="absolute inset-0 bg-gradient-to-r from-[#00F0FF]/10 to-transparent translate-x-[-100%] group-hover/stat:translate-x-0 transition-transform duration-500"></div>
+                        <div class="relative z-10">
+                            <h4 class="text-[#00F0FF]/90 text-[10px] tracking-[0.2em] mb-2 uppercase font-bold flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-[#00F0FF] rounded-full animate-pulse"></span>
+                                Active Routes
+                            </h4>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-4xl font-bold font-tech text-white">15+</span>
+                                <span class="text-gray-400 text-sm font-medium tracking-wide">Global Nations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. GIFT GENIE (NEW BACKGROUND COLOR: #eae5db) -->
+    <section id="gift" class="py-24 mb-10 bg-[#eae5db]">
+        <div class="max-w-4xl mx-auto px-6 reveal-scale">
+            <div class="bg-pearl rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[450px] border border-[#d4a373]/20">
+                <!-- Left Side -->
+                <div class="w-full md:w-5/12 bg-[#e11d48] p-12 text-cream flex flex-col justify-center relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-32 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition duration-1000"></div>
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mb-8 backdrop-blur">
+                        <i class="fa-solid fa-wand-magic-sparkles text-2xl animate-pulse"></i>
+                    </div>
+                    <!-- TITLE CHANGED -->
+                    <h2 class="text-4xl font-bold font-serif mb-2">Royal Patronage: <br>Gift Concierge</h2>
+                    <p class="text-xs text-cream/80 mt-6 leading-relaxed">Our AI understands the personality of your loved ones and pairs them with the perfect Bangladeshi GI masterpiece.</p>
+                </div>
+                <!-- Right Side Form -->
+                <div class="w-full md:w-7/12 p-12 flex flex-col justify-center bg-pearl">
+                    <label class="block text-sm font-bold text-heritage-green mb-5">Tell me about the recipient</label>
+                    <textarea class="w-full h-36 border border-stone-200 rounded-2xl p-5 text-base bg-[#f8f5f1] focus:outline-none focus:ring-2 focus:ring-[#e11d48] resize-none mb-4 transition" placeholder="Describe their personality, hobbies, or the occasion..."></textarea>
+                    <!-- CHANGED: High Contrast Green Button -->
+                    <button class="w-full bg-heritage-green hover:bg-[#0f2e26] text-cream font-bold py-5 rounded-2xl transition flex items-center justify-center gap-3 mt-4 hover:scale-[1.02] shadow-xl btn-animate">
+                        <i class="fa-solid fa-gift"></i> Get GI Recommendations
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER (New Design with Animated Links) -->
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='assets/js/home.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/atlas.js') }}"></script>
+{% endblock %}

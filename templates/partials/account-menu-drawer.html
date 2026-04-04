@@ -1,0 +1,53 @@
+{# Off-canvas menu drawer that mirrors dashboard sidebar options.
+   Triggered by elements with data-ob-open-drawer="account-menu".
+#}
+
+<div id="account-menu" data-ob-drawer-host class="hidden fixed inset-0 z-[60]">
+  <div data-ob-drawer-backdrop class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-200"></div>
+
+  <aside data-ob-drawer-panel class="absolute right-0 top-0 h-full w-[86%] max-w-sm bg-white border-l border-[#d4a373]/20 shadow-2xl translate-x-full transition-transform duration-200">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-[#d4a373]/15 bg-[#fffaf5]">
+      <div class="text-sm font-extrabold tracking-widest uppercase text-heritage-green">Menu</div>
+      <button type="button" data-ob-close-drawer="account-menu" class="p-2 rounded-lg hover:bg-[#f8f5f1] text-slate-600" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="p-5">
+      {% if IS_LOGGED_IN %}
+        <div class="text-xs font-bold text-slate-500 mb-3">Quick Links</div>
+
+        {% if NAV_ROLE == 'buyer' %}
+          <nav class="space-y-1">
+            <a href="{{ url_for('buyer_dashboard') }}" class="block px-4 py-3 rounded-xl border border-[#d4a373]/15 hover:border-[#d4a373]/40 hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Dashboard</a>
+            <a href="{{ url_for('buyer_orders') }}" class="block px-4 py-3 rounded-xl border border-[#d4a373]/15 hover:border-[#d4a373]/40 hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">My Orders</a>
+            <a href="{{ url_for('wishlist') }}" class="block px-4 py-3 rounded-xl border border-[#d4a373]/15 hover:border-[#d4a373]/40 hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Wishlist</a>
+            <a href="{{ url_for('buyer_authenticity_vault') }}" class="block px-4 py-3 rounded-xl border border-[#d4a373]/15 hover:border-[#d4a373]/40 hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Authenticity Vault</a>
+            <a href="{{ url_for('buyer_profile') }}" class="block px-4 py-3 rounded-xl border border-[#d4a373]/15 hover:border-[#d4a373]/40 hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Profile</a>
+          </nav>
+        {% elif NAV_ROLE == 'seller' %}
+          <nav class="space-y-1">
+            <a href="{{ url_for('seller_dashboard') }}" class="block px-4 py-3 rounded-xl border border-[#d4a373]/15 hover:border-[#d4a373]/40 hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Dashboard</a>
+            <a href="{{ url_for('seller_products') }}" class="block px-4 py-3 rounded-xl border border-[#d4a373]/15 hover:border-[#d4a373]/40 hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Products</a>
+            <a href="{{ url_for('seller_orders') }}" class="block px-4 py-3 rounded-xl border border-[#d4a373]/15 hover:border-[#d4a373]/40 hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Orders</a>
+            <a href="{{ url_for('seller_wallet') }}" class="block px-4 py-3 rounded-xl border border-[#d4a373]/15 hover:border-[#d4a373]/40 hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Wallet</a>
+          </nav>
+        {% elif NAV_ROLE == 'admin' %}
+          <nav class="space-y-1">
+            <a href="{{ url_for('admin_dashboard') }}" class="block px-4 py-3 rounded-xl border border-[#d4a373]/15 hover:border-[#d4a373]/40 hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Admin Dashboard</a>
+          </nav>
+        {% elif NAV_ROLE == 'superadmin' %}
+          <nav class="space-y-1">
+            <a href="{{ url_for('super_admin_dashboard') }}" class="block px-4 py-3 rounded-xl border border-[#d4a373]/15 hover:border-[#d4a373]/40 hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Super Admin</a>
+          </nav>
+        {% endif %}
+
+        <div class="mt-6 pt-5 border-t border-[#d4a373]/15">
+          <a href="{{ url_for('logout') }}" class="block w-full text-center px-4 py-3 rounded-xl bg-heritage-green text-white font-extrabold tracking-widest uppercase text-[11px] hover:bg-[#0f2a24] transition">Logout</a>
+        </div>
+      {% else %}
+        <div class="text-sm text-slate-600">Please login to see your menu.</div>
+      {% endif %}
+    </div>
+  </aside>
+</div>

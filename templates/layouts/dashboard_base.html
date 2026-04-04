@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-6 lg:px-8 py-10">
+  <div class="flex gap-8">
+    <!-- Sidebar (desktop) -->
+    <aside class="hidden lg:block w-72 shrink-0">
+      {% include 'partials/dashboard-sidebar.html' %}
+    </aside>
+
+    <!-- Main -->
+    <section class="flex-1 min-w-0">
+      <!-- Mobile top bar -->
+      <div class="lg:hidden flex items-center justify-between mb-6">
+        <div class="text-sm font-extrabold tracking-widest uppercase text-heritage-green">Dashboard</div>
+        <button type="button" data-ob-open-drawer="account-menu" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#d4a373]/25 hover:border-[#d4a373] hover:shadow-md transition text-xs font-bold text-slate-700">
+          <i class="fa-solid fa-bars"></i>
+          Menu
+        </button>
+      </div>
+
+      {% block dashboard_content %}{% endblock %}
+    </section>
+  </div>
+</div>
+{% endblock %}

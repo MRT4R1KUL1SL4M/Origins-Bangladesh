@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Origins | Artisan Heritage Admin Suite</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons (Premium Duotone Icons) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Google Fonts -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        :root {
+            --brand-dark: #1A1614; /* Deep Espresso / Warm Black */
+            --brand-primary: #C27803; /* Rich Amber / Gold */
+            --brand-bg: #FAF8F5; /* Warm Museum White */
+            --brand-border: #E8E3DB; 
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--brand-bg);
+            color: var(--brand-dark);
+            /* Very subtle luxury noise/texture effect */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
+        }
+        
+        h1, h2, h3, h4, .serif { font-family: 'Playfair Display', serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Elegant Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #E8E3DB; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
+
+        /* Premium Animations */
+        .fade-in { animation: elegantFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .fade-in-delayed { animation: elegantFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards; opacity: 0; }
+        @keyframes elegantFadeIn { 
+            0% { opacity: 0; transform: translateY(12px); filter: blur(4px); } 
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); } 
+        }
+
+        .submenu { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .submenu.open { max-height: 600px; }
+        .rotate-icon { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .group.active .rotate-icon { transform: rotate(180deg); }
+
+        .bar-fill { height: 0; animation: growUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes growUp { to { height: var(--h); } }
+        
+        .pie-chart { 
+            background: conic-gradient(#1A1614 0% 55%, #C27803 55% 85%, #E8E3DB 85% 100%); 
+            border-radius: 50%; 
+            animation: spinPie 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            transform: rotate(-90deg); 
+        }
+        @keyframes spinPie { 
+            from { transform: rotate(-180deg) scale(0.8); opacity: 0; } 
+            to { transform: rotate(-90deg) scale(1); opacity: 1; } 
+        }
+
+        /* Sophisticated Hover Elevation */
+        .hover-lift { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .hover-lift:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 24px 48px -12px rgba(26, 22, 20, 0.08), 0 4px 12px rgba(26, 22, 20, 0.03); 
+            border-color: rgba(194, 120, 3, 0.2);
+        }
+
+        /* Minimalistic ultra-soft shadows */
+        .premium-shadow {
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.01);
+        }
+        .premium-glow {
+            box-shadow: 0 0 30px rgba(194, 120, 3, 0.2);
+        }
+
+        .modal-overlay { transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1); backdrop-filter: blur(8px); }
+        .modal-overlay.hidden { opacity: 0; pointer-events: none; }
+        .modal-overlay:not(.hidden) { opacity: 1; pointer-events: auto; }
+        .modal-content-scale { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(0.96) translateY(10px); }
+        .modal-overlay:not(.hidden) .modal-content-scale { transform: scale(1) translateY(0); }
+
+        /* Toast Container */
+        #toast-container { position: fixed; bottom: 32px; right: 32px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
+        .toast { animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .toast.hiding { animation: fadeOutRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+
+        /* Browser Mockup styling */
+        .browser-dots span { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+        .browser-dots span:nth-child(1) { background-color: #FF5F56; }
+        .browser-dots span:nth-child(2) { background-color: #FFBD2E; }
+        .browser-dots span:nth-child(3) { background-color: #27C93F; }
+
+        /* Custom inputs for settings */
+        .minimal-input {
+            border: none;
+            border-bottom: 1px solid var(--brand-border);
+            border-radius: 0;
+            background: transparent;
+            padding: 12px 0;
+            transition: all 0.3s ease;
+        }
+        .minimal-input:focus {
+            outline: none;
+            border-bottom-color: var(--brand-primary);
+            box-shadow: 0 1px 0 0 var(--brand-primary);
+        }
+        
+        .minimal-input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            border-bottom-style: dashed;
+        }
+
+        /* Message bubbles */
+        .bubble-sent { border-radius: 20px 20px 4px 20px; }
+        .bubble-received { border-radius: 20px 20px 20px 4px; }
+    </style>
+</head>
+<body class="text-[#1A1614] min-h-screen flex antialiased selection:bg-[#C27803] selection:text-white relative">
+
+    <!-- Global Hidden File Input -->
+    <input type="file" id="hidden-file-input" class="hidden" accept="image/*">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Sidebar: Dark Espresso Theme -->
+    <aside class="bg-[#1A1614] w-[280px] fixed h-full z-30 flex flex-col transition-all duration-300 shadow-[4px_0_24px_rgba(0,0,0,0.04)] text-[#D6D0C4]" id="sidebar">
+        <div class="p-8 pb-6 bg-[#1A1614] z-10">
+            <div class="mb-8 flex items-center gap-3 px-1 hover:opacity-80 transition-opacity cursor-pointer mt-1">
+                <h1 class="font-serif text-[22px] text-white tracking-widest uppercase">Origins <span class="text-[#C27803] font-medium">Bangladesh</span></h1>
+            </div>
+            <div onclick="setActiveView('profile')" class="flex items-center gap-4 cursor-pointer group p-3 -mx-3 rounded-2xl hover:bg-[#C27803]/10 transition-all duration-300 border border-transparent hover:border-[#C27803]/30">
+                <div class="relative">
+                    <img id="sidebar-admin-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-32 -32 320 320'%3E%3Cpath d='M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z' fill='%23A39A8E'/%3E%3C/svg%3E" alt="Admin" class="relative w-10 h-10 rounded-full bg-[#2A2421] border border-white/10 object-cover group-hover:border-[#C27803] transition-colors" />
+                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-[#1A1614] rounded-full"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p id="sidebar-admin-name" class="text-sm font-medium text-white tracking-wide truncate group-hover:text-[#C27803] transition-colors">OB Admin</p>
+                    <p class="text-[10px] text-[#A39A8E] uppercase tracking-[0.1em] truncate mt-0.5 group-hover:text-[#D6D0C4] transition-colors">Platform Lead</p>
+                </div>
+            </div>
+        </div>
+        <div class="px-5 py-2 space-y-1 flex-1 overflow-y-auto" id="sidebar-menu"></div>
+        <div class="p-6 border-t border-white/5 bg-[#1A1614]">
+            <button onclick="openLogoutModal()" class="w-full flex items-center justify-center gap-3 p-3 rounded-xl bg-white/5 text-[#A39A8E] hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30 border border-transparent transition-all duration-300 font-medium text-sm group">
+                <i class="ph-duotone ph-sign-out text-lg transition-transform group-hover:-translate-x-1"></i> Sign Out
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-[280px] p-10 lg:p-14 transition-all duration-300 max-w-[1500px] mx-auto min-h-screen relative" id="main-content"></main>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logout-modal" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center bg-[#1A1614]/60">
+        <div class="bg-white w-full max-w-sm rounded-3xl premium-shadow p-8 m-4 border border-[#E8E3DB] modal-content-scale text-center">
+            <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-5 border border-red-100">
+                <i class="ph-duotone ph-sign-out text-3xl text-red-600"></i>
+            </div>
+            <h3 class="text-2xl font-serif font-semibold text-[#1A1614] mb-2">Signing Out</h3>
+            <p class="text-sm text-[#A39A8E] mb-8">Are you sure you want to securely end your current session?</p>
+            <div class="flex gap-3 justify-center">
+                <button onclick="closeLogoutModal()" class="flex-1 px-6 py-3 rounded-xl text-sm font-semibold text-[#6B635A] hover:bg-[#FAF8F5] hover:text-[#1A1614] transition-colors border border-[#E8E3DB]">Cancel</button>
+                <button onclick="confirmLogout()" class="flex-1 px-6 py-3 bg-red-600 text-white rounded-xl text-sm font-semibold hover:bg-red-700 transition-colors shadow-lg shadow-red-600/20">Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Note Modal -->
+    <div id="note-modal" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center bg-[#1A1614]/60">
+        <div id="modal-content" class="bg-white w-full max-w-md rounded-3xl premium-shadow p-8 m-4 border border-[#E8E3DB] modal-content-scale">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modal-title" class="text-2xl font-serif font-semibold text-[#1A1614] text-[#C27803]">Action Required</h3>
+                <button onclick="closeNoteModal()" class="text-[#A39A8E] hover:text-[#1A1614] hover:bg-[#E8E3DB] transition-colors bg-[#FAF8F5] p-2 rounded-full"><i class="ph-bold ph-x text-sm"></i></button>
+            </div>
+            <div class="mb-6">
+                <label class="block text-[10px] font-bold text-[#A39A8E] uppercase tracking-widest mb-3">Note / Reason</label>
+                <textarea id="modal-note" class="w-full h-32 p-4 bg-[#FAF8F5] border border-[#E8E3DB] rounded-2xl focus:outline-none focus:ring-1 focus:ring-[#C27803] focus:border-[#C27803] text-sm resize-none transition-all placeholder:text-[#D6D0C4] text-[#1A1614]" placeholder="Enter detailed notes here..."></textarea>
+            </div>
+            <div class="flex gap-3 justify-end">
+                <button onclick="closeNoteModal()" class="px-6 py-2.5 rounded-xl text-sm font-medium text-[#6B635A] hover:bg-[#FAF8F5] hover:text-[#1A1614] border border-transparent hover:border-[#E8E3DB] transition-all">Cancel</button>
+                <button onclick="submitModalAction()" id="modal-action-btn" class="px-6 py-2.5 bg-[#C27803] text-white rounded-xl text-sm font-medium hover:bg-[#A36502] transition-colors shadow-lg shadow-[#C27803]/20">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Coupon Modal -->
+    <div id="coupon-modal" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center bg-[#1A1614]/60">
+        <div class="bg-white w-full max-w-lg rounded-3xl premium-shadow p-8 m-4 border border-[#E8E3DB] modal-content-scale">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="coupon-modal-title" class="text-2xl font-serif font-semibold text-[#1A1614]">Create Coupon</h3>
+                <button onclick="closeCouponModal()" class="text-[#A39A8E] hover:text-[#1A1614] hover:bg-[#E8E3DB] transition-colors bg-[#FAF8F5] p-2 rounded-full"><i class="ph-bold ph-x text-sm"></i></button>
+            </div>
+            <div class="space-y-5 mb-6">
+                <div>
+                    <label class="block text-[10px] font-bold text-[#A39A8E] uppercase tracking-widest mb-2">Coupon Code</label>
+                    <input type="text" id="new-coupon-code" class="w-full minimal-input text-[14px] text-[#1A1614] font-medium uppercase" placeholder="e.g. SUMMER26">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-[#A39A8E] uppercase tracking-widest mb-2">Discount Type</label>
+                        <select id="new-coupon-type" onchange="toggleCouponFields()" class="w-full minimal-input text-[14px] text-[#1A1614] cursor-pointer">
+                            <option value="Percentage">Percentage (%)</option>
+                            <option value="Fixed Amount">Fixed Amount (BDT)</option>
+                            <option value="Free Delivery">Free Delivery</option>
+                        </select>
+                    </div>
+                    <div id="coupon-value-container">
+                        <label class="block text-[10px] font-bold text-[#A39A8E] uppercase tracking-widest mb-2">Value</label>
+                        <input type="number" id="new-coupon-discount" class="w-full minimal-input text-[14px] text-[#1A1614]" placeholder="e.g. 15">
+                    </div>
+                </div>
+
+                <div class="bg-[#FAF8F5] p-4 rounded-xl border border-[#E8E3DB] flex items-center gap-3">
+                    <input type="checkbox" id="new-coupon-new-user" class="w-4 h-4 text-[#C27803] accent-[#C27803] rounded cursor-pointer">
+                    <label for="new-coupon-new-user" class="text-[13px] font-medium text-[#1A1614] cursor-pointer">Valid for New Customers Only (One-time use)</label>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 pt-2">
+                    <div>
+                        <label class="block text-[10px] font-bold text-[#A39A8E] uppercase tracking-widest mb-2">Usage Limit</label>
+                        <select id="new-coupon-limit-type" onchange="toggleCouponFields()" class="w-full minimal-input text-[14px] text-[#1A1614] cursor-pointer">
+                            <option value="Unlimited">No Limit (Unlimited)</option>
+                            <option value="Custom">Custom Limit</option>
+                        </select>
+                        <input type="number" id="new-coupon-limit" class="w-full minimal-input text-[14px] text-[#1A1614] hidden mt-2" placeholder="Max uses (e.g. 100)">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-[#A39A8E] uppercase tracking-widest mb-2">Expiration Date</label>
+                        <select id="new-coupon-expiry-type" onchange="toggleCouponFields()" class="w-full minimal-input text-[14px] text-[#1A1614] cursor-pointer">
+                            <option value="Never">No Expiration</option>
+                            <option value="Custom">Custom Date</option>
+                        </select>
+                        <input type="date" id="new-coupon-date" class="w-full minimal-input text-[14px] text-[#1A1614] hidden mt-2">
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-3 justify-end mt-8 pt-4 border-t border-[#FAF8F5]">
+                <button onclick="closeCouponModal()" class="px-6 py-2.5 rounded-xl text-sm font-medium text-[#6B635A] hover:bg-[#FAF8F5] hover:text-[#1A1614] border border-transparent hover:border-[#E8E3DB] transition-all">Cancel</button>
+                <button onclick="saveCoupon()" id="coupon-action-btn" class="px-6 py-2.5 bg-[#1A1614] text-white rounded-xl text-sm font-medium hover:bg-[#C27803] transition-colors shadow-lg shadow-black/10">Generate Code</button>
+            </div>
+        </div>
+    </div>
+    <!-- Heritage Atlas Edit Modal -->
+    <div id="atlas-edit-modal" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+        <div class="modal-content-scale w-full max-w-4xl bg-white rounded-3xl border border-[#E8E3DB] premium-shadow overflow-hidden">
+            <div class="px-8 py-6 border-b border-[#E8E3DB] flex items-center justify-between">
+                <div>
+                    <h3 id="atlas-modal-title" class="font-serif text-2xl text-[#1A1614]">Edit Atlas Entry</h3>
+                    <p class="text-[12px] text-[#A39A8E] mt-1">Add, edit, and position district-wise heritage map data without changing the public design.</p>
+                </div>
+                <button onclick="closeAtlasEditModal()" class="w-10 h-10 rounded-full border border-[#E8E3DB] text-[#6B635A] hover:text-[#C27803] hover:border-[#C27803]/30 transition-all flex items-center justify-center"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="md:col-span-2 rounded-2xl border border-[#E8E3DB] bg-[#FAF8F5] p-5 flex items-start justify-between gap-4">
+                    <div>
+                        <label class="block text-[11px] uppercase tracking-widest text-[#A39A8E] mb-2">Selected District / Zilla</label>
+                        <div id="atlas-selected-district" class="font-serif text-2xl text-[#1A1614]">No district selected</div>
+                        <p class="text-[12px] text-[#6B635A] mt-2">District, map dot, and shop link will be auto-filled from the map picker.</p>
+                        <input id="atlas-district" type="hidden">
+                    </div>
+                    <button onclick="openAtlasMapPicker()" class="shrink-0 px-5 py-2.5 bg-[#1A1614] text-white rounded-xl text-[13px] font-medium hover:bg-[#C27803] transition-colors flex items-center gap-2"><i class="ph-bold ph-map-trifold"></i> Pick From Map</button>
+                </div>
+                <div><label class="block text-[11px] uppercase tracking-widest text-[#A39A8E] mb-2">Density</label><select id="atlas-density" class="w-full px-4 py-3 bg-[#FAF8F5] border border-[#E8E3DB] rounded-xl text-[13px] focus:outline-none focus:border-[#C27803]/30"><option value="low">Low</option><option value="med">Medium</option><option value="high">High</option></select></div>
+                <div><label class="block text-[11px] uppercase tracking-widest text-[#A39A8E] mb-2">Category Slug</label><select id="atlas-category" class="w-full px-4 py-3 bg-[#FAF8F5] border border-[#E8E3DB] rounded-xl text-[13px] focus:outline-none focus:border-[#C27803]/30"><option value="textile">Textile & Handloom</option><option value="craft">Handicraft</option><option value="food">Culinary & Food</option><option value="art">Fine Art & Painting</option><option value="other">Other</option></select></div>
+                <div class="md:col-span-2"><label class="block text-[11px] uppercase tracking-widest text-[#A39A8E] mb-2">GI / Featured Product Name</label><input id="atlas-product" type="text" class="w-full px-4 py-3 bg-[#FAF8F5] border border-[#E8E3DB] rounded-xl text-[13px] focus:outline-none focus:border-[#C27803]/30"></div>
+                <div class="md:col-span-2"><label class="block text-[11px] uppercase tracking-widest text-[#A39A8E] mb-2">Heritage Story</label><textarea id="atlas-story" class="w-full h-32 px-4 py-3 bg-[#FAF8F5] border border-[#E8E3DB] rounded-xl text-[13px] resize-none focus:outline-none focus:border-[#C27803]/30"></textarea></div>
+                <div><label class="block text-[11px] uppercase tracking-widest text-[#A39A8E] mb-2">Image URL</label><input id="atlas-img" type="text" class="w-full px-4 py-3 bg-[#FAF8F5] border border-[#E8E3DB] rounded-xl text-[13px] focus:outline-none focus:border-[#C27803]/30"></div>
+                <div><label class="block text-[11px] uppercase tracking-widest text-[#A39A8E] mb-2">Auto Shop Link</label><input id="atlas-link" type="text" readonly class="w-full px-4 py-3 bg-[#F1ECE4] border border-[#E8E3DB] rounded-xl text-[13px] text-[#6B635A] focus:outline-none"></div>
+                <div><label class="block text-[11px] uppercase tracking-widest text-[#A39A8E] mb-2">Auto Map Dot X (%)</label><input id="atlas-x" type="number" step="0.01" readonly class="w-full px-4 py-3 bg-[#F1ECE4] border border-[#E8E3DB] rounded-xl text-[13px] text-[#6B635A] focus:outline-none"></div>
+                <div><label class="block text-[11px] uppercase tracking-widest text-[#A39A8E] mb-2">Auto Map Dot Y (%)</label><input id="atlas-y" type="number" step="0.01" readonly class="w-full px-4 py-3 bg-[#F1ECE4] border border-[#E8E3DB] rounded-xl text-[13px] text-[#6B635A] focus:outline-none"></div>
+            </div>
+            <div class="px-8 py-5 border-t border-[#E8E3DB] flex items-center justify-between gap-3 bg-[#FAF8F5]/50">
+                <button id="atlas-delete-btn" onclick="deleteAtlasEntry()" class="hidden px-5 py-2.5 border border-red-200 text-red-600 rounded-xl text-[13px] font-medium hover:bg-red-50 transition-all">Delete Entry</button>
+                <div class="ml-auto flex items-center gap-3">
+                    <button onclick="closeAtlasEditModal()" class="px-5 py-2.5 border border-[#E8E3DB] rounded-xl text-[13px] font-medium text-[#6B635A] hover:bg-white transition-all">Cancel</button>
+                    <button onclick="saveAtlasEdit()" id="atlas-save-btn" class="px-6 py-2.5 bg-[#1A1614] text-white rounded-xl text-[13px] font-medium hover:bg-[#C27803] transition-colors">Save Entry</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="atlas-map-modal" class="modal-overlay hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4">
+        <div class="modal-content-scale w-full max-w-7xl bg-white rounded-3xl border border-[#E8E3DB] premium-shadow overflow-hidden">
+            <div class="px-8 py-6 border-b border-[#E8E3DB] flex items-center justify-between">
+                <div>
+                    <h3 class="font-serif text-2xl text-[#1A1614]">Heritage Atlas Map Picker</h3>
+                    <p class="text-[12px] text-[#A39A8E] mt-1">Pick a zilla directly from the map. District, dot coordinates, and shop link will fill automatically.</p>
+                </div>
+                <button onclick="closeAtlasMapPicker()" class="w-10 h-10 rounded-full border border-[#E8E3DB] text-[#6B635A] hover:text-[#C27803] hover:border-[#C27803]/30 transition-all flex items-center justify-center"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="grid grid-cols-1 xl:grid-cols-12 min-h-[72vh]">
+                <div class="xl:col-span-8 p-8 border-b xl:border-b-0 xl:border-r border-[#E8E3DB] bg-[#FCFBF9]">
+                    <div id="atlas-map-canvas" class="relative bg-[#FAF8F5] border border-[#E8E3DB] rounded-3xl overflow-hidden select-none min-h-[620px]">
+                        <div id="atlas-map-svg-host" class="absolute inset-0 flex items-center justify-center p-4"></div>
+                        <div id="atlas-map-markers" class="absolute inset-0 pointer-events-none"></div>
+                        <div id="atlas-map-dot" class="absolute w-5 h-5 rounded-full bg-[#C27803] border-4 border-white shadow-lg hidden -translate-x-1/2 -translate-y-1/2 z-20"></div>
+                    </div>
+                    <p id="atlas-map-coords" class="text-[12px] text-[#6B635A] mt-4">Click a zilla marker to select it for this atlas entry.</p>
+                </div>
+                <div class="xl:col-span-4 p-6 bg-white">
+                    <div class="mb-4">
+                        <input id="atlas-map-search" type="text" placeholder="Search zilla..." class="w-full px-4 py-3 bg-[#FAF8F5] border border-[#E8E3DB] rounded-2xl text-[13px] focus:outline-none focus:border-[#C27803]/30">
+                    </div>
+                    <div class="rounded-2xl border border-[#E8E3DB] bg-[#FAF8F5] p-4 mb-4">
+                        <p class="text-[11px] uppercase tracking-widest text-[#A39A8E]">Selected Zilla</p>
+                        <div id="atlas-map-selected-name" class="font-serif text-2xl text-[#1A1614] mt-2">None</div>
+                        <div id="atlas-map-selected-meta" class="text-[12px] text-[#6B635A] mt-2">Select a district from the map or list.</div>
+                    </div>
+                    <div id="atlas-map-list" class="max-h-[460px] overflow-y-auto pr-1 space-y-2"></div>
+                    <div class="mt-5 flex items-center justify-end gap-3">
+                        <button onclick="closeAtlasMapPicker()" class="px-5 py-2.5 border border-[#E8E3DB] rounded-xl text-[13px] font-medium text-[#6B635A] hover:bg-[#FAF8F5] transition-all">Cancel</button>
+                        <button onclick="applyAtlasMapSelection()" class="px-6 py-2.5 bg-[#1A1614] text-white rounded-xl text-[13px] font-medium hover:bg-[#C27803] transition-colors">Use This Zilla</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="document-viewer-modal" class="modal-overlay hidden fixed inset-0 z-[70] flex items-center justify-center bg-black/55 p-4">
+        <div class="modal-content-scale w-full max-w-[1700px] bg-white rounded-[28px] border border-[#E8E3DB] overflow-hidden shadow-[0_4px_30px_-10px_rgba(0,0,0,0.12)]">
+            <div class="px-8 py-6 border-b border-[#E8E3DB] flex items-center justify-between gap-4">
+                <div>
+                    <p class="text-[11px] uppercase tracking-[0.18em] text-[#A39A8E] font-semibold">Admin Document Viewer</p>
+                    <h1 id="viewer-title" class="font-serif text-4xl leading-none mt-2">Loading…</h1>
+                    <p class="text-[13px] text-[#6B635A] mt-2">Preview image, PDF, and text documents without leaving the admin panel.</p>
+                </div>
+                <button onclick="closeDocumentViewer()" class="px-5 py-2.5 rounded-full border border-[#E8E3DB] text-[13px] font-medium hover:bg-[#FAF8F5] transition-all">Close</button>
+            </div>
+            <div class="grid grid-cols-12 min-h-[78vh]">
+                <aside class="col-span-12 lg:col-span-4 xl:col-span-3 border-r border-[#E8E3DB] bg-[#FCFBF9]">
+                    <div class="p-5 border-b border-[#E8E3DB]"><input id="doc-search" type="text" placeholder="Search documents..." class="w-full rounded-2xl bg-white border border-[#E8E3DB] px-4 py-3 text-[13px] focus:outline-none focus:border-[#C27803]/40" /></div>
+                    <div id="doc-list" class="viewer-scroll p-4 space-y-3 overflow-y-auto max-h-[calc(78vh-88px)]"></div>
+                </aside>
+                <section class="col-span-12 lg:col-span-8 xl:col-span-9 bg-white">
+                    <div class="px-6 py-4 border-b border-[#E8E3DB] flex items-center justify-between gap-4">
+                        <div>
+                            <h2 id="doc-active-title" class="font-serif text-3xl">Select a document</h2>
+                            <p id="doc-active-meta" class="text-[12px] text-[#A39A8E] mt-1"></p>
+                        </div>
+                        <div id="image-controls" class="hidden items-center gap-2">
+                            <button data-zoom="out" class="px-4 py-2 rounded-full border border-[#E8E3DB] text-[12px] font-medium hover:bg-[#FAF8F5]">Zoom Out</button>
+                            <button data-zoom="in" class="px-4 py-2 rounded-full border border-[#E8E3DB] text-[12px] font-medium hover:bg-[#FAF8F5]">Zoom In</button>
+                            <button data-zoom="reset" class="px-4 py-2 rounded-full bg-[#1A1614] text-white text-[12px] font-medium hover:bg-[#C27803]">Reset</button>
+                        </div>
+                    </div>
+                    <div id="doc-stage" class="viewer-scroll h-[calc(78vh-82px)] overflow-auto bg-[#F7F4EF] p-6"></div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>window.__ADMIN_DASHBOARD__ = {{ admin_dashboard_data|tojson|safe }};</script>
+    <script src="{{ url_for('static', filename='assets/js/admin-dashboard.js') }}"></script>
+</body>
+</html>

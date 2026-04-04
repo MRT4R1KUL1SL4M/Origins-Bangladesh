@@ -1,0 +1,26 @@
+<div class="bg-white rounded-2xl border border-[#d4a373]/15 shadow-sm overflow-hidden">
+  <div class="px-5 py-5 bg-[#fffaf5] border-b border-[#d4a373]/15">
+    <div class="text-xs font-extrabold tracking-widest uppercase text-slate-500">Signed in as</div>
+    <div class="mt-1 text-lg font-extrabold text-heritage-green">{{ session.get('name') or 'Account' }}</div>
+    <div class="mt-1 text-[11px] font-bold tracking-widest uppercase text-[#d4a373]">{{ NAV_ROLE }}</div>
+  </div>
+
+  <nav class="p-3 space-y-1">
+    {% if NAV_ROLE == 'buyer' %}
+      <a href="{{ url_for('buyer_dashboard') }}" class="block px-4 py-3 rounded-xl hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Dashboard</a>
+      <a href="{{ url_for('buyer_orders') }}" class="block px-4 py-3 rounded-xl hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">My Orders</a>
+      <a href="{{ url_for('wishlist') }}" class="block px-4 py-3 rounded-xl hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Wishlist</a>
+      <a href="{{ url_for('buyer_authenticity_vault') }}" class="block px-4 py-3 rounded-xl hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Authenticity Vault</a>
+      <a href="{{ url_for('buyer_profile') }}" class="block px-4 py-3 rounded-xl hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Profile</a>
+    {% elif NAV_ROLE == 'seller' %}
+      <a href="{{ url_for('seller_dashboard') }}" class="block px-4 py-3 rounded-xl hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Dashboard</a>
+      <a href="{{ url_for('seller_products') }}" class="block px-4 py-3 rounded-xl hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Products</a>
+      <a href="{{ url_for('seller_orders') }}" class="block px-4 py-3 rounded-xl hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Orders</a>
+      <a href="{{ url_for('seller_wallet') }}" class="block px-4 py-3 rounded-xl hover:bg-[#f8f5f1] transition text-sm font-semibold text-slate-700">Wallet</a>
+    {% endif %}
+  </nav>
+
+  <div class="p-4 border-t border-[#d4a373]/15">
+    <a href="{{ url_for('logout') }}" class="block w-full text-center px-4 py-3 rounded-xl bg-heritage-green text-white font-extrabold tracking-widest uppercase text-[11px] hover:bg-[#0f2a24] transition">Logout</a>
+  </div>
+</div>

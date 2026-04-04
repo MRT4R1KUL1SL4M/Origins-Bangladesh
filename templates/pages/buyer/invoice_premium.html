@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice {{ invoice_no }}</title>
+    <style>
+        @page { size: A4; margin: 16mm; }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #F8F5F1;
+            color: #111827;
+            margin: 0;
+            font-size: 12px;
+        }
+        .invoice {
+            border: 1px solid rgba(212,175,55,0.35);
+            border-radius: 28px;
+            overflow: hidden;
+            background: #F8F5F1;
+        }
+        .topbar { height: 8px; background: linear-gradient(90deg,#006A4E,#D4AF37,#111827); }
+        .wrap { padding: 34px 38px 28px; }
+        .row { width: 100%; }
+        .row::after { content: ""; display: block; clear: both; }
+        .left { float: left; width: 54%; }
+        .right { float: right; width: 40%; text-align: right; }
+        .brand {
+            font-size: 30px; font-weight: 700; letter-spacing: 0.5px; margin: 0 0 8px;
+        }
+        .brand .gold { color: #D4AF37; }
+        .brand .green { color: #006A4E; }
+        .tagline {
+            color: #D4AF37; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 18px;
+        }
+        .muted { color: #64748B; }
+        .invoice-title { color: #006A4E; font-size: 34px; letter-spacing: 4px; text-transform: uppercase; margin: 0 0 8px; }
+        .pill {
+            display: inline-block; padding: 7px 12px; border-radius: 8px; background: rgba(0,106,78,0.10); color: #006A4E; border: 1px solid rgba(0,106,78,0.18); font-size: 9px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase;
+        }
+        .meta { margin-top: 16px; width: 100%; border-collapse: collapse; }
+        .meta td { padding: 5px 0; vertical-align: top; }
+        .meta .label { color: #94A3B8; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; width: 92px; }
+        .meta .value { color: #111827; font-weight: 700; }
+        .divider { border-top: 1px solid rgba(212,175,55,0.22); margin: 28px 0; }
+        .card {
+            background: #fff; border: 1px solid rgba(212,175,55,0.22); border-radius: 22px; padding: 20px 22px; min-height: 150px;
+        }
+        .card h3 { margin: 0 0 14px; font-size: 10px; color: #D4AF37; letter-spacing: 2px; text-transform: uppercase; }
+        .card .name { font-size: 18px; font-weight: 700; margin-bottom: 5px; }
+        .card .sub { font-size: 12px; color: #64748B; margin-bottom: 10px; }
+        .card p { margin: 3px 0; line-height: 1.5; }
+        .grid2 { width: 100%; margin-bottom: 24px; }
+        .grid2 .col { float: left; width: 48.2%; }
+        .grid2 .col.rightcol { float: right; }
+        table.items { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        table.items th {
+            text-align: left; font-size: 9px; color: #94A3B8; letter-spacing: 1.8px; text-transform: uppercase; padding: 14px 0; border-bottom: 2px solid #111827;
+        }
+        table.items td { padding: 17px 0; border-bottom: 1px solid rgba(212,175,55,0.22); vertical-align: top; }
+        .qty, .money { text-align: right; }
+        .prod { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .tiny { font-size: 11px; color: #64748B; }
+        .badge {
+            display: inline-block; background: #111827; color: #D4AF37; border-radius: 4px; font-size: 8px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 6px; margin-right: 8px;
+        }
+        .summary-wrap { margin-top: 24px; }
+        .summary-left { float: left; width: 46%; }
+        .summary-right { float: right; width: 38%; }
+        .verify {
+            background: #fff; border: 1px solid rgba(212,175,55,0.22); border-radius: 20px; padding: 16px; min-height: 110px;
+        }
+        .verify img { width: 78px; height: 78px; float: left; margin-right: 14px; border: 1px solid #E5E7EB; border-radius: 10px; background: #F8F5F1; }
+        .verify .code { font-family: monospace; font-size: 10px; color: #94A3B8; border: 1px solid #E5E7EB; background: #F8FAFC; padding: 6px 8px; border-radius: 8px; display: inline-block; margin-top: 8px; }
+        .totals { width: 100%; border-collapse: collapse; background: #F8F5F1; border: 1px solid rgba(212,175,55,0.45); border-radius: 18px; overflow: hidden; }
+        .totals td { padding: 10px 14px; }
+        .totals .label { color: #64748B; }
+        .totals .value { text-align: right; font-weight: 700; }
+        .totals .grand td { border-top: 1px solid rgba(212,175,55,0.55); padding-top: 14px; }
+        .totals .grand .label, .totals .grand .value { color: #006A4E; font-size: 18px; font-weight: 700; }
+        .footer { margin-top: 26px; text-align: center; }
+        .footer .icon { width: 48px; height: 48px; border-radius: 50%; background: rgba(212,175,55,0.12); color: #D4AF37; line-height: 48px; font-size: 22px; margin: 0 auto 10px; }
+        .footer h4 { margin: 0 0 6px; font-size: 18px; }
+        .footer p { margin: 0; color: #64748B; font-size: 11px; line-height: 1.55; }
+    </style>
+</head>
+<body>
+    <div class="invoice">
+        <div class="topbar"></div>
+        <div class="wrap">
+            <div class="row">
+                <div class="left">
+                    <div class="brand"><span class="gold">Origins</span> <span class="green">Bangla</span>desh</div>
+                    <div class="tagline">Preserving Heritage, Empowering Artisans</div>
+                    <p class="muted">Dhaka, Bangladesh</p>
+                    <p class="muted">{{ customer.email or 'support@originsbangladesh.com' }}</p>
+                    <p class="muted">www.originsbangladesh.com</p>
+                </div>
+                <div class="right">
+                    <div class="invoice-title">Invoice</div>
+                    <div class="pill">Payment Cleared</div>
+                    <table class="meta">
+                        <tr><td class="label">Invoice No</td><td class="value">#{{ invoice_no }}</td></tr>
+                        <tr><td class="label">Issue Date</td><td class="value">{{ issued_at }}</td></tr>
+                        <tr><td class="label">Order ID</td><td class="value">{{ order_id_display }}</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="grid2 row">
+                <div class="col">
+                    <div class="card">
+                        <h3>Billed To</h3>
+                        <div class="name">{{ customer.name }}</div>
+                        <div class="sub">Guardian ID: {{ customer.guardian_id or 'OB-000000' }}</div>
+                        {% for line in customer.address_lines %}<p>{{ line }}</p>{% endfor %}
+                        {% if customer.phone %}<p>{{ customer.phone }}</p>{% endif %}
+                        {% if customer.email %}<p>{{ customer.email }}</p>{% endif %}
+                    </div>
+                </div>
+                <div class="col rightcol">
+                    <div class="card">
+                        <h3>Shipping Destination</h3>
+                        <div class="name">{{ shipping_name }}</div>
+                        <div class="sub">Via: Origins Premium Logistics</div>
+                        {% for line in shipping_lines %}<p>{{ line }}</p>{% endfor %}
+                        {% if delivered_at %}<p>Delivered: {{ delivered_at }}</p>{% else %}<p>Status: {{ status_label }}</p>{% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <table class="items">
+                <thead>
+                    <tr>
+                        <th style="width:52%">Description &amp; Artisan</th>
+                        <th class="qty" style="width:12%">Qty</th>
+                        <th class="money" style="width:18%">Unit Price</th>
+                        <th class="money" style="width:18%">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>
+                            <div class="prod">{{ item.title }}</div>
+                            <div class="tiny">{% if item.gi_tag %}<span class="badge">GI Tag: {{ item.gi_tag }}</span>{% endif %}Artisan: {{ item.artisan_name }}</div>
+                        </td>
+                        <td class="qty">{{ item.quantity }}</td>
+                        <td class="money">{{ item.unit_fmt }}</td>
+                        <td class="money"><strong>{{ item.amount_fmt }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="summary-wrap row">
+                <div class="summary-left">
+                    <div class="verify">
+                        {% if qr_data %}<img src="{{ qr_data }}" alt="Verification QR">{% endif %}
+                        <div class="tiny" style="font-size:10px; font-weight:700; color:#D4AF37; letter-spacing:1.7px; text-transform:uppercase; margin-bottom:4px;">Provenance Tracker</div>
+                        <div class="tiny" style="line-height:1.5;">Scan to verify invoice signature, order reference, and authenticated heritage record from the live order database.</div>
+                        <div class="code">{{ invoice_no }} · {{ order_id_display }}</div>
+                    </div>
+                </div>
+                <div class="summary-right">
+                    <table class="totals">
+                        <tr><td class="label">Subtotal</td><td class="value">{{ subtotal_fmt }}</td></tr>
+                        <tr><td class="label">Shipping &amp; Handling</td><td class="value">{{ shipping_fmt }}</td></tr>
+                        <tr><td class="label">Discount</td><td class="value">{{ discount_fmt }}</td></tr>
+                        <tr class="grand"><td class="label">Total Amount</td><td class="value">{{ total_fmt }}</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="icon">★</div>
+                <h4>Thank you for guarding Bengal's heritage.</h4>
+                <p>This is a computer-generated invoice generated from your live Origins Bangladesh order data.<br>Your purchase directly supports artisans and preserves heritage craft traditions.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

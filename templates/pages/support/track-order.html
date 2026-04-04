@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Premium Track Order Section -->
+<section class="relative bg-[#F8F5F1] py-20 lg:py-28 overflow-hidden font-sans border-y border-[#D4AF37]/20">
+  
+  <!-- Subtle Background Pattern / Gradient -->
+  <div class="absolute inset-0 pointer-events-none opacity-40">
+    <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-[#D4AF37]/15 to-transparent rounded-full blur-[100px] mix-blend-multiply"></div>
+    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-[#006A4E]/15 to-transparent rounded-full blur-[100px] mix-blend-multiply"></div>
+  </div>
+
+  <div class="relative max-w-5xl mx-auto px-6 lg:px-8 z-10">
+    
+    <!-- Hero Header Area -->
+    <div class="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+      <span class="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-white/60 backdrop-blur-md text-[#006A4E] text-[11px] font-bold uppercase tracking-[0.2em] rounded-full border border-[#D4AF37]/40 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+        </svg>
+        Support Services
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-normal text-[#006A4E] mb-6 leading-tight" style="font-family: 'Georgia', serif;">
+        Track Your <span class="font-bold text-[#D4AF37] italic">Order</span>
+      </h1>
+      <div class="h-px w-24 bg-[#D4AF37] mx-auto mb-6"></div>
+      <p class="text-[15px] md:text-lg text-slate-600 leading-relaxed font-medium">
+        Use your order details to check the latest delivery status. Whether your package is just leaving our artisan workshop or arriving at your doorstep, our team is always ready to assist you.
+      </p>
+    </div>
+
+    <!-- Tracking Info Box -->
+    <div class="max-w-4xl mx-auto mb-16">
+      <div class="group bg-white rounded-[2rem] p-8 lg:p-12 border border-[#D4AF37]/20 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_50px_-15px_rgba(212,175,55,0.15)] hover:border-[#D4AF37]/40 transition-all duration-500 relative overflow-hidden">
+        
+        <!-- Abstract Decoration -->
+        <div class="absolute -right-10 -bottom-10 text-[#F8F5F1] opacity-50 group-hover:scale-110 transition-transform duration-700">
+          <svg width="200" height="200" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z"/></svg>
+        </div>
+        
+        <div class="relative z-10 flex flex-col md:flex-row gap-10">
+          <div class="flex-1">
+            <h3 class="text-xl md:text-2xl font-bold text-[#006A4E] mb-6" style="font-family: 'Georgia', serif;">The journey of your order</h3>
+            <ul class="space-y-5">
+              <li class="flex items-start gap-4">
+                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-[#006A4E]/5 flex items-center justify-center border border-[#006A4E]/20 mt-0.5">
+                  <span class="w-1.5 h-1.5 bg-[#006A4E] rounded-full"></span>
+                </span>
+                <span class="text-slate-600 leading-relaxed text-[15px]">An instant confirmation email is sent the moment your order is securely placed.</span>
+              </li>
+              <li class="flex items-start gap-4">
+                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-[#006A4E]/5 flex items-center justify-center border border-[#006A4E]/20 mt-0.5">
+                  <span class="w-1.5 h-1.5 bg-[#006A4E] rounded-full"></span>
+                </span>
+                <span class="text-slate-600 leading-relaxed text-[15px]">Upon dispatch, you will receive a detailed delivery update, complete with tracking information.</span>
+              </li>
+              <li class="flex items-start gap-4">
+                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/30 mt-0.5">
+                  <span class="w-1.5 h-1.5 bg-[#D4AF37] rounded-full"></span>
+                </span>
+                <span class="text-slate-600 leading-relaxed text-[15px]">Please note that custom or exclusive artisan-made items may require additional lead time to ensure perfection.</span>
+              </li>
+            </ul>
+
+            <!-- Highlighted Tip Box -->
+            <div class="mt-8 p-5 bg-[#F8F5F1] rounded-xl border border-[#D4AF37]/20 flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#D4AF37] mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div class="text-sm text-slate-600">
+                <strong class="text-[#111827]">Pro Tip:</strong> Check your spam or promotions folder for confirmation emails, especially if this is your first time ordering with us.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Call to Action Banner -->
+    <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-r from-[#006A4E] to-[#0a4233] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
+      <!-- Decorative BG elements for banner -->
+      <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-64 h-64 bg-[#D4AF37] opacity-20 rounded-full blur-3xl"></div>
+      
+      <div class="relative z-10 text-center md:text-left">
+        <h3 class="text-2xl md:text-3xl font-bold text-white mb-2" style="font-family: 'Georgia', serif;">Need assistance?</h3>
+        <p class="text-[#D4AF37] font-medium opacity-90 text-[15px] md:text-base">Visit our Help Center for quick answers, tracking support, and direct contact options.</p>
+      </div>
+      
+      <div class="relative z-10 shrink-0">
+        <a href="{{ url_for('support_help_center') }}" class="group relative inline-flex items-center justify-center px-8 py-4 bg-[#D4AF37] text-black font-bold uppercase tracking-wider text-sm rounded-full overflow-hidden transition-all hover:scale-105 shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:shadow-[0_0_30px_rgba(212,175,55,0.6)]">
+          <span class="relative z-10 flex items-center gap-2">
+            Go to Help Center
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+          </span>
+          <div class="absolute inset-0 h-full w-full bg-gradient-to-r from-[#E5C354] to-[#B08D28] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

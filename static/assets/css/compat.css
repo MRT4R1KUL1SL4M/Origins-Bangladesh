@@ -1,0 +1,77 @@
+/*
+  Tailwind CDN fallback helpers.
+  - Primary styling uses Tailwind Play CDN (cdn.tailwindcss.com).
+  - If that CDN fails, we fall back to Tailwind v2 prebuilt CSS.
+
+  Tailwind v2 doesn't support many Tailwind v3 “arbitrary value” classes
+  used in these templates (examples: bg-[#f8f5f1], border-[#d4a373]/20,
+  leading-[1.1], aspect-[4/5]).
+
+  This file provides *minimal* compatibility for the most visible ones so the
+  homepage doesn't look "colorless".
+*/
+
+/* -----------------------------
+   Arbitrary HEX colors
+------------------------------*/
+
+/* Backgrounds */
+.bg-\[\#f8f5f1\] { background-color: #f8f5f1; }
+.bg-\[\#fffaf5\] { background-color: #fffaf5; }
+.bg-\[\#eae5db\] { background-color: #eae5db; }
+.bg-\[\#d4a373\] { background-color: #d4a373; }
+.bg-\[\#b58556\] { background-color: #b58556; }
+.bg-\[\#0f2e26\] { background-color: #0f2e26; }
+
+/* Text */
+.text-\[\#d4a373\] { color: #d4a373; }
+.text-\[\#153a30\] { color: #153a30; }
+
+/* Borders (solid) */
+.border-\[\#d4a373\] { border-color: #d4a373; }
+.border-\[\#153a30\] { border-color: #153a30; }
+
+/* Border color with opacity (Tailwind v3 syntax: border-[#d4a373]/20 ) */
+.border-\[\#d4a373\]\/10 { border-color: rgba(212, 163, 115, 0.10); }
+.border-\[\#d4a373\]\/20 { border-color: rgba(212, 163, 115, 0.20); }
+.border-\[\#d4a373\]\/30 { border-color: rgba(212, 163, 115, 0.30); }
+.border-\[\#d4a373\]\/40 { border-color: rgba(212, 163, 115, 0.40); }
+
+/* Ring / outline-ish helpers used in a few inputs */
+.ring-\[\#d4a373\]\/20 { box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.20); }
+
+/* -----------------------------
+   Arbitrary layout utilities
+------------------------------*/
+
+/* leading-[1.1] */
+.leading-\[1\.1\] { line-height: 1.1; }
+
+/* aspect-[4/5] : maintain 4:5 ratio */
+.aspect-\[4\/5\] { position: relative; }
+.aspect-\[4\/5\]::before { content: ""; display: block; padding-top: 125%; }
+.aspect-\[4\/5\] > * { position: absolute; inset: 0; }
+
+/* rounded-[3rem] */
+.rounded-\[3rem\] { border-radius: 3rem; }
+
+/* shadow-emerald-900/20 (approx) */
+.shadow-emerald-900\/20 { box-shadow: 0 12px 30px rgba(6, 78, 59, 0.20); }
+
+/* -----------------------------
+   Hover states (very common)
+------------------------------*/
+.hover\:bg-\[\#f8f5f1\]:hover { background-color: #f8f5f1; }
+.hover\:bg-\[\#eae5db\]:hover { background-color: #eae5db; }
+.hover\:bg-\[\#0f2e26\]:hover { background-color: #0f2e26; }
+
+/* When Tailwind Play CDN fails, some gradient/opacity utilities won't exist.
+   Keep key sections readable by ensuring these are visible. */
+
+/* Basic fallback for opacity background like "bg-heritage-green/80" */
+.bg-heritage-green\/80 { background-color: rgba(21, 58, 48, 0.80); }
+.bg-heritage-green\/90 { background-color: rgba(21, 58, 48, 0.90); }
+
+/* Basic fallback for "text-orange-200/80" */
+.text-orange-200\/80 { color: rgba(254, 215, 170, 0.80); }
+

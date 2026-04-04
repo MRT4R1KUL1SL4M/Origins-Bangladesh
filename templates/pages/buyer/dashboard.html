@@ -1,0 +1,1524 @@
+{% extends 'base.html' %}
+{% block title %}Buyer - Dashboard{% endblock %}
+
+{# Use compact footer for the dashboard app-shell layout #}
+{% block footer %}{% include 'partials/footer_min.html' %}{% endblock %}
+
+{% block content %}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+        
+        :root {
+            --primary: #005035; /* Deeper, richer luxury emerald */
+            --primary-hover: #003d29;
+            --dark: #0f172a;
+            --gold: #C5A059; /* Softer, elegant antique gold */
+            --gold-light: #E5C37A;
+            --bg-canvas: #FDFBF7; /* Warm ivory/museum paper background */
+            --surface: #FFFFFF;
+        }
+        
+        #buyer-dashboard-root {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-canvas);
+            /* Ultra-subtle luxury paper texture/pattern */
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C5A059' fill-opacity='0.015'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        h1, h2, h3, h4, .font-serif {
+            font-family: 'Playfair Display', 'Georgia', serif;
+        }
+        
+        /* Custom Premium Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { 
+            background: #e2e8f0; 
+            border-radius: 10px; 
+            transition: all 0.3s ease;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+        /* Smooth Reveal Animations */
+        .fade-in {
+            animation: elegantReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(24px);
+        }
+        
+        .fade-in-stagger:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in-stagger:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in-stagger:nth-child(3) { animation-delay: 0.3s; }
+        .fade-in-stagger:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes elegantReveal {
+            0% { opacity: 0; transform: translateY(24px); filter: blur(4px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        
+        /* High-End Floating Cards */
+        .premium-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(197, 160, 89, 0.15);
+            border-radius: 2rem;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0,0,0,0.02);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .premium-card.hover-lift:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px -12px rgba(197, 160, 89, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+            border-color: rgba(197, 160, 89, 0.3);
+        }
+
+        /* Gold Text Gradients */
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #C5A059 0%, #A67C33 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn-luxury {
+            background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-luxury:hover {
+            background: linear-gradient(135deg, #005035 0%, #003d29 100%);
+            box-shadow: 0 8px 25px rgba(0,80,53,0.25);
+            transform: translateY(-2px);
+        }
+        .btn-luxury:active { transform: translateY(1px); }
+
+        .dropdown-animate {
+            transform-origin: top right;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Input specific aesthetics */
+        .premium-input {
+            background: #FDFBF7;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            transition: all 0.3s ease;
+        }
+        .premium-input:focus {
+            background: #FFFFFF;
+            border-color: #C5A059;
+            box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
+            outline: none;
+        }
+</style>
+
+{# IMPORTANT: Data injection logic remains completely untouched #}
+<script>
+  window.__BUYER_INFO__ = {{ buyer_info|tojson }};
+  window.__NOTIFICATIONS__ = {{ notifications|tojson }};
+  window.__DASH_STATS__ = {{ dash_stats|tojson }};
+  window.__ORDERS__ = {{ recent_orders|tojson }};
+  window.__WISHLIST__ = {{ wishlist_preview|tojson }};
+  window.__CART_ITEMS__ = {{ (cart_items or [])|tojson }};
+  window.__CERTS__ = {{ (vault_certs or [])|tojson }};
+  window.__EXCLUSIVE_CAMPAIGN__ = {{ (exclusive_campaign or {})|tojson }};
+</script>
+
+<div id="buyer-dashboard-root" class="min-h-screen text-slate-800 antialiased selection:bg-[#005035] selection:text-white" onclick="handleGlobalClick(event)">
+    <!-- Main Content Area -->
+    <main class="p-6 md:p-8 lg:p-12 xl:px-16 transition-all duration-300 max-w-[1600px] mx-auto relative" id="main-content">
+        <!-- Content injected by JS -->
+    </main>
+
+    <!-- Hidden Inputs for File Handling -->
+    <input type="file" id="attachment-input" class="hidden" onchange="handleFileSelected(event)">
+    <input type="file" id="document-upload-input" class="hidden" accept=".pdf,image/*" onchange="handleDocumentUpload(event)">
+    <input type="file" id="profile-image-input" class="hidden" accept="image/*" onchange="handleProfileImageSelected(event)">
+
+    <script>
+        // --- Data & Models ---
+        const MENU_STRUCTURE = [{
+            id: "dashboard", label: "Guardian Dashboard", icon: "layout-dashboard"
+        }, {
+            id: "orders", label: "My Collection", icon: "shopping-bag"
+        }, {
+            id: "vault", label: "Authenticity Vault", icon: "shield-check"
+        }, {
+            id: "wishlist", label: "Wishlist & Pre-orders", icon: "heart"
+        }, {
+            id: "messages", label: "Artisan Concierge", icon: "message-circle"
+        }, {
+            id: "profile", label: "Guardian Identity", icon: "user"
+        }];
+
+        const BUYER_INFO = window.__BUYER_INFO__ || {};
+        let CART_ITEMS = window.__CART_ITEMS__ || [];
+        let isReminderSet = false; 
+        let MOCK_NOTIFICATIONS = window.__NOTIFICATIONS__ || [];
+
+        const MOCK_ORDERS = (window.__ORDERS__ || []).map(o => {
+            const status = (o.status || 'pending');
+            const statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
+            const timeline = o.timeline || [];
+            const fallbackPhase = (() => {
+                const completed = timeline.filter(step => step && step.completed);
+                return completed.length ? completed[completed.length - 1] : (timeline[0] || { label: 'Order Confirmed', desc: 'Your order has been secured in the archive.', date: o.created_at || '' });
+            })();
+            return {
+                id: (o.display_id || `ORD-${String(o.order_id).padStart(6, "0")}`),
+                order_id: o.order_id,
+                item: o.item_title || `Order #${o.order_id}`,
+                artisan: o.seller_name || 'Origins Bangladesh',
+                price: o.total_bdt || 0,
+                date: o.created_at || '',
+                status: statusLabel,
+                img: o.image || 'https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1200&auto=format&fit=crop',
+                timeline: timeline,
+                artisan_id: o.artisan_id || null,
+                current_phase: o.current_phase || { label: fallbackPhase.label || 'Order Confirmed', desc: fallbackPhase.desc || 'Your order has been secured in the archive.', time: fallbackPhase.date || '' }
+            };
+        });
+
+        const MOCK_CERTS = window.__CERTS__ || [];
+
+        const EXCLUSIVE_CAMPAIGN = window.__EXCLUSIVE_CAMPAIGN__ || {};
+
+        const WISHLIST_ITEMS = (window.__WISHLIST__ || []).map(w => ({
+            name: w.title || '',
+            artisan: w.artisan || 'Verified Artisan',
+            price: w.price_bdt || 0,
+            img: w.image || 'https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1200&auto=format&fit=crop'
+        }));
+
+        const SHOP_ITEMS = [{
+            name: "Jamdani Saree (Red/Gold)", artisan: "Narayanganj Weavers", price: 12500,
+            img: "https://images.unsplash.com/photo-1610128079633-149867946571?q=80&w=2070&auto=format&fit=crop"
+        }, {
+            name: "Nakshi Kantha Wall Mat", artisan: "Karim Handicrafts", price: 2500,
+            img: "https://images.unsplash.com/photo-1590736969955-71cc94801759?q=80&w=2000&auto=format&fit=crop"
+        }, {
+            name: "Terracotta Horse", artisan: "Poura Shilpi", price: 850,
+            img: "https://images.unsplash.com/photo-1624626159670-6539e0d1655b?q=80&w=2070&auto=format&fit=crop"
+        }, {
+            name: "Brass Table Lamp", artisan: "Metal Works BD", price: 3200,
+            img: "https://images.unsplash.com/photo-1513506003011-38f044158911?q=80&w=1974&auto=format&fit=crop"
+        }];
+
+        let activeChatId = 'chat1';
+        const MOCK_CHATS = {
+            'chat1': {
+                id: 'chat1', name: 'Karim Handicrafts', initials: 'KA', color: 'bg-[#005035]',
+                status: 'ONLINE', lastActive: '2m ago', unread: 0, lastUpdated: Date.now() - 120000,
+                messages: [{ type: 'inbound', text: "Assalamu Alaikum Rahat Bhai! Yes, we can make the Nakshi Kantha in 6x7 feet. It will take 2 extra weeks for the detail work.", time: "10:30 AM" }, 
+                           { type: 'outbound', text: "Walaikum Assalam! That sounds perfect. Please proceed with the custom order. I am excited to see it!", time: "10:32 AM" }]
+            },
+            'chat2': {
+                id: 'chat2', name: 'Heritage Pottery', initials: 'HP', color: 'bg-[#C5A059]',
+                status: 'ONLINE', lastActive: 'Yesterday', unread: 1, lastUpdated: Date.now(),
+                messages: [{ type: 'inbound', text: "Your order has been shipped! It will reach you by tomorrow evening.", time: "Yesterday" }]
+            }
+        };
+
+        let currentView = 'dashboard';
+        let profileTab = 'identity';
+        let isNotifOpen = false;
+        let isViewDropdownOpen = false;
+        window.wishlistViewMode = 'grid';
+
+        // --- Utility Functions ---
+        function showToast(title, desc, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-10 right-10 bg-[#FFFFFF] text-slate-800 px-6 py-5 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] z-[9999] fade-in flex items-start gap-4 border border-[#C5A059]/30 min-w-[300px] max-w-sm';
+            toast.innerHTML = `
+                <div class="p-2.5 ${type === 'success' ? 'bg-[#005035]/10 text-[#005035]' : 'bg-[#C5A059]/10 text-[#C5A059]'} rounded-full shrink-0">
+                    <i data-lucide="${type === 'success' ? 'check' : 'info'}" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <p class="font-serif font-bold text-lg text-slate-900 leading-tight mb-1">${title}</p>
+                    <p class="text-xs text-slate-500 font-medium leading-relaxed">${desc}</p>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                toast.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+                setTimeout(() => toast.remove(), 500);
+            }, 3500);
+        }
+
+        function handleGlobalClick(e) {
+            const notifBtn = document.getElementById('notif-btn');
+            const notifDropdown = document.getElementById('notif-dropdown');
+            if (isNotifOpen && notifBtn && !notifBtn.contains(e.target) && notifDropdown && !notifDropdown.contains(e.target)) {
+                toggleNotifications(false);
+            }
+            const viewBtn = document.getElementById('view-dropdown-btn');
+            const viewMenu = document.getElementById('view-dropdown-menu');
+            if (isViewDropdownOpen && viewBtn && !viewBtn.contains(e.target) && viewMenu && !viewMenu.contains(e.target)) {
+                isViewDropdownOpen = false;
+                renderMainContent();
+            }
+        }
+
+        function toggleNotifications(forceState = null) {
+            isNotifOpen = forceState !== null ? forceState : !isNotifOpen;
+            const dropdown = document.getElementById('notif-dropdown');
+            if (!dropdown) return;
+
+            if (isNotifOpen) {
+                dropdown.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    dropdown.classList.remove('opacity-0', 'scale-95', '-translate-y-4');
+                    dropdown.classList.add('opacity-100', 'scale-100', 'translate-y-0');
+                });
+            } else {
+                dropdown.classList.add('opacity-0', 'scale-95', '-translate-y-4');
+                dropdown.classList.remove('opacity-100', 'scale-100', 'translate-y-0');
+                setTimeout(() => { if (!isNotifOpen) dropdown.classList.add('hidden'); }, 300);
+            }
+        }
+
+        window.handleAttachmentClick = () => { document.getElementById('attachment-input').click(); };
+        window.handleFileSelected = (event) => {
+            if (event.target.files[0]) showToast("Attachment Ready", `${event.target.files[0].name} secured.`, 'success');
+        };
+        window.triggerDocumentUpload = () => { document.getElementById('document-upload-input').click(); };
+        window.handleDocumentUpload = (event) => {
+            if (event.target.files[0]) {
+                showToast("Document Verified", `${event.target.files[0].name} ready for secure upload.`, "info");
+                const el = document.getElementById('doc-upload-text');
+                if (el) el.innerText = `Secured: ${event.target.files[0].name}`;
+            }
+        };
+        window.handleDocSubmit = () => {
+            const input = document.getElementById('document-upload-input');
+            if (input && input.files.length > 0) {
+                showToast('Submitted', 'Corporate credentials securely transmitted.', 'success');
+                input.value = '';
+                const el = document.getElementById('doc-upload-text');
+                if (el) el.innerText = 'Click to upload PDF or Image';
+            } else {
+                showToast('Action Required', 'Please select a document to upload.', 'info');
+            }
+        };
+
+        window.handleInvoiceDownload = async (id) => {
+            const numericId = String(id).replace(/\D+/g, '');
+            window.open(`/buyer/orders/${numericId}/invoice.pdf`, '_blank');
+        };
+
+        window.handleTrackOrder = async (id) => {
+            const numericId = String(id).replace(/\D+/g, '');
+            try {
+                const res = await fetch(`/api/buyer/orders/${numericId}`);
+                const data = await res.json();
+                if (!data.ok) throw new Error(data.message || 'Order not found');
+                const order = data.order;
+                const provenanceHtml = (order.provenance || []).map(step => `
+                    <div class="p-5 rounded-2xl bg-[#FDFBF7] border border-[#C5A059]/20 hover:border-[#005035]/30 transition-colors">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-[#C5A059] mb-1.5">${step.title}</p>
+                        <p class="text-sm text-slate-800 font-medium leading-relaxed">${step.description || ''}</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-3 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${step.time || ''}</p>
+                    </div>`).join('');
+                const timelineHtml = (order.timeline || []).map(step => `
+                    <div class="relative flex items-start gap-6 group">
+                        <div class="absolute left-[15px] top-8 bottom-[-24px] w-[2px] bg-slate-100 group-last:hidden"></div>
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 z-10 ${step.completed ? 'bg-[#005035] text-white shadow-md' : 'bg-white border-2 border-slate-200 text-slate-300'}">
+                            <i data-lucide="${step.completed ? 'check' : 'circle'}" class="w-4 h-4"></i>
+                        </div>
+                        <div class="flex-1 pb-8">
+                            <h4 class="font-bold text-base font-serif ${step.completed ? 'text-slate-900' : 'text-slate-400'}">${step.label}</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">${step.desc}</p>
+                            <p class="text-[10px] text-[#C5A059] font-bold uppercase tracking-widest mt-2">${step.date || ''}</p>
+                        </div>
+                    </div>`).join('');
+                const modalHtml = `
+                    <div id="tracking-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm fade-in p-4" onclick="closeTrackingModal()">
+                        <div class="bg-white rounded-[2.5rem] max-w-4xl w-full shadow-2xl relative overflow-hidden border border-white/20" onclick="event.stopPropagation()">
+                            <button onclick="closeTrackingModal()" class="absolute top-6 right-6 text-slate-400 hover:text-rose-500 hover:bg-rose-50 z-20 transition-all p-2 rounded-full active:scale-95"><i data-lucide="x" class="w-6 h-6"></i></button>
+                            <div class="p-8 md:p-10 border-b border-slate-100 bg-[#FDFBF7]">
+                                <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pr-10">
+                                    <div>
+                                        <h3 class="font-serif text-3xl font-bold text-[#005035] mb-2">Provenance Tracker</h3>
+                                        <p class="text-xs text-slate-500 font-bold tracking-widest uppercase flex items-center gap-2"><i data-lucide="box" class="w-4 h-4 text-[#C5A059]"></i> ${order.display_id}</p>
+                                    </div>
+                                    <div class="flex gap-3">
+                                        <a href="${order.invoice_url}" target="_blank" class="px-6 py-3 bg-white border border-[#C5A059]/30 text-[#005035] hover:bg-[#FDFBF7] transition-colors rounded-xl text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-sm"><i data-lucide="file-text" class="w-4 h-4"></i> Invoice</a>
+                                        ${order.contact_artisan_id ? `<button onclick="contactArtisan(${order.contact_artisan_id}, ${order.order_id})" class="btn-luxury px-6 py-3 rounded-xl text-xs uppercase tracking-widest font-bold flex items-center gap-2"><i data-lucide="message-square" class="w-4 h-4"></i> Message Artisan</button>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid md:grid-cols-5 gap-0 h-[60vh] min-h-[500px]">
+                                <div class="md:col-span-2 p-8 md:p-10 bg-[#FDFBF7] overflow-y-auto custom-scrollbar border-r border-slate-100">
+                                    <h4 class="font-serif text-xl font-bold text-slate-900 mb-8 border-b border-[#C5A059]/20 pb-4">Fulfillment Journey</h4>
+                                    <div class="pt-2">${timelineHtml}</div>
+                                </div>
+                                <div class="md:col-span-3 p-8 md:p-10 bg-white overflow-y-auto custom-scrollbar">
+                                    <h4 class="font-serif text-xl font-bold text-slate-900 mb-8 border-b border-[#C5A059]/20 pb-4">Provenance Events</h4>
+                                    <div class="space-y-4">${provenanceHtml || '<div class="text-center py-10"><i data-lucide="shield" class="w-12 h-12 text-slate-200 mx-auto mb-3"></i><p class="text-sm text-slate-500 font-medium">Awaiting first origin verification.</p></div>'}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                lucide.createIcons();
+            } catch (err) {
+                showToast('Tracking unavailable', err.message || 'Could not load order journey.', 'info');
+            }
+        };
+
+        window.closeTrackingModal = () => {
+            const modal = document.getElementById('tracking-modal');
+            if (modal) modal.remove();
+        };
+
+        window.contactArtisan = async (artisanId, orderId = null) => {
+            let resolvedArtisanId = artisanId ? Number(artisanId) : 0;
+            try {
+                if (!resolvedArtisanId && orderId) {
+                    const orderData = await fetchJSON(`/api/buyer/orders/${orderId}`);
+                    resolvedArtisanId = Number((orderData.order && orderData.order.contact_artisan_id) || 0);
+                }
+                if (!resolvedArtisanId) {
+                    showToast('Artisan unavailable', 'This order is not yet linked to an artisan thread.', 'info');
+                    return;
+                }
+                const data = await fetchJSON('/api/buyer/chats/start', {
+                    method: 'POST',
+                    body: JSON.stringify({ artisan_id: resolvedArtisanId })
+                });
+                if (data.ok && data.thread_id) {
+                    activeChatId = 'thread' + data.thread_id;
+                    CHAT_STORE.loaded = false;
+                }
+            } catch (err) {
+                showToast('Chat unavailable', err.message || 'Could not open artisan conversation.', 'info');
+                return;
+            }
+            await setActiveView('messages');
+        };
+
+        window.toggleViewDropdown = (e) => {
+            if (e) e.stopPropagation();
+            isViewDropdownOpen = !isViewDropdownOpen;
+            renderMainContent();
+        };
+
+        window.setWishlistView = (mode) => {
+            window.wishlistViewMode = mode;
+            isViewDropdownOpen = false;
+            renderMainContent();
+        };
+
+        window.handleSetReminder = () => {
+            isReminderSet = !isReminderSet;
+            renderMainContent();
+            if(isReminderSet) {
+                showToast('Notification Armed', 'We will alert you prior to the drop.', 'success');
+            }
+        };
+
+        window.switchChat = async (chatId) => {
+            activeChatId = chatId;
+            await ensureViewData('messages');
+            const chatsObj = ((CHAT_STORE && CHAT_STORE.chats) ? CHAT_STORE.chats : MOCK_CHATS);
+            if (chatsObj && chatsObj[chatId]) chatsObj[chatId].unread = 0;
+            renderSidebar();
+            renderMainContent();
+            setTimeout(() => {
+                const container = document.getElementById('chat-messages-container');
+                if (container) container.scrollTop = container.scrollHeight;
+            }, 50);
+        };
+
+        window.saveProfileChanges = async () => {
+            const firstNameInput = document.getElementById('input-first-name');
+            const lastNameInput = document.getElementById('input-last-name');
+            const bioInput = document.getElementById('input-bio');
+            const emailInput = document.getElementById('input-email');
+            const phoneInput = document.getElementById('input-phone');
+            const newName = `${firstNameInput?.value || ''} ${lastNameInput?.value || ''}`.trim() || BUYER_INFO.name;
+            const payload = {
+                name: newName,
+                bio: bioInput ? bioInput.value.trim() : BUYER_INFO.bio,
+                email: emailInput ? emailInput.value.trim() : BUYER_INFO.email,
+                phone: phoneInput ? phoneInput.value.trim() : BUYER_INFO.phone,
+            };
+            try {
+                await fetchJSON('/api/buyer/profile', { method: 'PUT', body: JSON.stringify(payload) });
+                BUYER_INFO.name = payload.name || BUYER_INFO.name;
+                BUYER_INFO.bio = payload.bio || '';
+                BUYER_INFO.email = payload.email || '';
+                BUYER_INFO.phone = payload.phone || '';
+                if (PROFILE_STORE && PROFILE_STORE.profile) PROFILE_STORE.profile.bio = BUYER_INFO.bio;
+                if (PROFILE_STORE) {
+                    PROFILE_STORE.user = { ...(PROFILE_STORE.user || {}), name: BUYER_INFO.name, email: BUYER_INFO.email, phone: BUYER_INFO.phone };
+                }
+                const navName = document.getElementById('navBuyerName');
+                if (navName) navName.textContent = BUYER_INFO.name;
+                showToast('Profile Updated', 'Your Guardian details have been saved.', 'success');
+                renderMainContent();
+            } catch (err) {
+                showToast('Update failed', err.message || 'Could not save profile.', 'info');
+            }
+        };
+
+        window.togglePasswordVisibility = (inputId, iconId) => {
+            const inputElement = document.getElementById(inputId);
+            const iconElement = document.getElementById(iconId);
+            if (!inputElement || !iconElement) return;
+            if (inputElement.type === 'password') {
+                inputElement.type = 'text';
+                iconElement.setAttribute('data-lucide', 'eye-off');
+            } else {
+                inputElement.type = 'password';
+                iconElement.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        };
+
+        window.toggleAddressEdit = () => {
+            const displayMode = document.getElementById('address-display-mode');
+            const editMode = document.getElementById('address-edit-mode');
+            const editBtn = document.getElementById('edit-address-btn');
+            const saveBtn = document.getElementById('save-address-btn');
+            const container = document.getElementById('address-container');
+            if (!displayMode || !editMode || !editBtn || !saveBtn || !container) return;
+            displayMode.classList.add('hidden');
+            editMode.classList.remove('hidden');
+            editBtn.classList.add('hidden');
+            saveBtn.classList.remove('hidden');
+            container.classList.add('ring-1', 'ring-[#C5A059]', 'bg-white');
+            container.classList.remove('bg-[#FDFBF7]', 'border-[#C5A059]/20');
+            const input = document.getElementById('input-address');
+            if (input) input.focus();
+        };
+
+        window.saveAddress = async () => {
+            const input = document.getElementById('input-address');
+            const newAddress = input ? input.value.trim() : '';
+            if (newAddress) {
+                try {
+                    await fetchJSON('/api/buyer/profile', { method: 'PUT', body: JSON.stringify({ address: newAddress }) });
+                    BUYER_INFO.address = newAddress;
+                    if (PROFILE_STORE && PROFILE_STORE.profile) PROFILE_STORE.profile.address = newAddress;
+                    const display = document.getElementById('display-address');
+                    if (display) display.textContent = newAddress;
+                    showToast('Address updated', 'Delivery details have been saved.', 'success');
+                } catch (err) {
+                    showToast('Update failed', err.message || 'Could not save address.', 'info');
+                }
+            }
+            const displayMode = document.getElementById('address-display-mode');
+            const editMode = document.getElementById('address-edit-mode');
+            const editBtn = document.getElementById('edit-address-btn');
+            const saveBtn = document.getElementById('save-address-btn');
+            const container = document.getElementById('address-container');
+            if (displayMode && editMode && editBtn && saveBtn && container) {
+                displayMode.classList.remove('hidden');
+                editMode.classList.add('hidden');
+                editBtn.classList.remove('hidden');
+                saveBtn.classList.add('hidden');
+                container.classList.remove('ring-1', 'ring-[#C5A059]', 'bg-white');
+                container.classList.add('bg-[#FDFBF7]', 'border-[#C5A059]/20');
+            }
+        };
+
+        window.triggerImageUpload = () => {
+            const input = document.getElementById('profile-image-input');
+            if (input) input.click();
+        };
+
+        window.handleProfileImageSelected = async (event) => {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const formData = new FormData();
+            formData.append('avatar', file);
+            try {
+                const res = await fetch('/api/buyer/profile/avatar', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (!res.ok || !data.ok) throw new Error(data.message || 'Upload failed');
+                BUYER_INFO.avatar_url = data.url || BUYER_INFO.avatar_url;
+                if (PROFILE_STORE && PROFILE_STORE.profile) PROFILE_STORE.profile.avatar_url = BUYER_INFO.avatar_url;
+                showToast('Avatar updated', 'Your identity image has been updated.', 'success');
+                renderMainContent();
+            } catch (err) {
+                showToast('Upload failed', err.message || 'Could not upload avatar.', 'info');
+            } finally {
+                event.target.value = '';
+            }
+        };
+
+        window.clearAllNotifications = () => {
+            MOCK_NOTIFICATIONS = [];
+            renderMainContent();
+            showToast('Audit Log Purged', 'Alert history cleared.', 'success');
+        };
+
+        function getCurrentJourney(order) {
+            if (order && order.current_phase && (order.current_phase.label || order.current_phase.time || order.current_phase.desc)) return order.current_phase;
+            const timeline = (order && order.timeline) || [];
+            const completed = timeline.filter(step => step && step.completed);
+            const current = completed.length ? completed[completed.length - 1] : (timeline[0] || null);
+            return current ? { label: current.label || 'Order Confirmed', desc: current.desc || '', time: current.date || '' } : { label: 'Order Confirmed', desc: 'Your order has been secured in the archive.', time: order?.date || '' };
+        }
+
+        function renderSidebar() {
+            const container = document.getElementById('sidebar-menu');
+            if (!container) return;
+            let html = '';
+            
+            const unreadChatsCount = Object.values((CHAT_STORE && CHAT_STORE.chats) ? CHAT_STORE.chats : MOCK_CHATS).reduce((sum, chat) => sum + (chat.unread || 0), 0);
+
+            MENU_STRUCTURE.forEach(item => {
+                const isActive = currentView === item.id;
+                const activeClass = isActive 
+                    ? 'text-[#005035] bg-[#FDFBF7] font-bold shadow-sm before:content-[""] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1.5 before:bg-[#C5A059] before:rounded-r-lg' 
+                    : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50 font-medium';
+                html += `
+                    <button onclick="setActiveView('${item.id}')" class="w-full flex items-center gap-4 px-6 py-4 mb-2 rounded-xl transition-all duration-300 group relative ${activeClass}">
+                        <i data-lucide="${item.icon}" class="w-5 h-5 ${isActive ? 'text-[#C5A059]' : 'text-slate-400 group-hover:text-[#005035]'} transition-colors"></i>
+                        <span class="text-[13px] tracking-wide font-sans">${item.label}</span>
+                        ${item.id === 'messages' && unreadChatsCount > 0 ? `<span class="ml-auto bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">${unreadChatsCount}</span>` : ''}
+                    </button>
+                `;
+            });
+            container.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        // ================================
+        // DB-backed view loaders (with mock fallback)
+        // ================================
+        const CHAT_STORE = { loaded: false, chats: MOCK_CHATS };
+        const PROFILE_STORE = { loaded: false, profile: null };
+
+        async function fetchJSON(url, options = {}) {
+            const res = await fetch(url, { headers: { 'Content-Type': 'application/json', ...(options.headers || {}) }, ...options });
+            let data = null;
+            try { data = await res.json(); } catch (e) {}
+            if (!res.ok) throw new Error((data && (data.message || data.error)) || `Request failed`);
+            return data;
+        }
+
+        async function ensureViewData(view) {
+            try {
+                if (view === 'messages' && !CHAT_STORE.loaded) {
+                    const chats = await fetchJSON('/api/buyer/chats');
+                    const out = {};
+                    (chats.chats || []).forEach(c => {
+                        out['thread' + c.thread_id] = {
+                            id: 'thread' + c.thread_id, thread_id: c.thread_id,
+                            name: c.artisan_name || 'Artisan',
+                            initials: (c.artisan_name || 'A').split(' ').slice(0, 2).map(x => x[0]).join('').toUpperCase(),
+                            color: c.color || 'bg-[#005035]', status: c.status || 'ONLINE',
+                            lastActive: c.last_active || '', unread: Number(c.unread || 0),
+                            lastUpdated: c.last_message_at ? new Date(c.last_message_at).getTime() : Date.now(), messages: []
+                        };
+                    });
+                    if (Object.keys(out).length) { CHAT_STORE.chats = out; activeChatId = Object.keys(out)[0]; }
+                    CHAT_STORE.loaded = true;
+                }
+                if (view === 'messages') {
+                    const chat = CHAT_STORE.chats[activeChatId];
+                    if (chat && (!chat.messages || !chat.messages.length) && chat.thread_id) {
+                        const msgs = await fetchJSON(`/api/buyer/chats/${chat.thread_id}/messages`);
+                        chat.messages = (msgs.messages || []).map(m => ({
+                            type: m.sender_role === 'buyer' ? 'outbound' : 'inbound', text: m.body, time: m.time || ''
+                        }));
+                        chat.unread = 0;
+                    }
+                }
+                if (view === 'profile' && !PROFILE_STORE.loaded) {
+                    const prof = await fetchJSON('/api/buyer/profile');
+                    PROFILE_STORE.profile = prof.profile || {};
+                    PROFILE_STORE.loaded = true;
+                }
+            } catch (err) {}
+        }
+
+        // ================================
+        // URL routing helpers
+        // ================================
+        function _isValidView(v) { return MENU_STRUCTURE.some(x => x.id === v); }
+        function _getViewFromURL() { const v = new URLSearchParams(window.location.search).get('view'); return _isValidView(v) ? v : 'dashboard'; }
+        function _setURLForView(v, replace = false) {
+            const url = new URL(window.location.href);
+            if (v && v !== 'dashboard') url.searchParams.set('view', v); else url.searchParams.delete('view');
+            if (replace) history.replaceState({ view: v }, '', url); else history.pushState({ view: v }, '', url);
+        }
+        function _bindDrawerMenuLinks() {
+            const drawer = document.getElementById('buyerMenuDrawer');
+            if (!drawer) return;
+            drawer.querySelectorAll('a[href]').forEach(a => {
+                a.addEventListener('click', async (e) => {
+                    const href = a.getAttribute('href') || '';
+                    if (!href.includes('/buyer/dashboard')) return;
+                    e.preventDefault(); e.stopPropagation();
+                    let nextView = 'dashboard';
+                    try { const u = new URL(href, window.location.origin); const v = u.searchParams.get('view'); if (_isValidView(v)) nextView = v; } catch (err) {}
+                    try { if (window._toggleBuyerMenuDrawer) window._toggleBuyerMenuDrawer(false); } catch (err) {}
+                    _setURLForView(nextView, false);
+                    await setActiveView(nextView, { pushURL: false });
+                });
+            });
+        }
+
+        async function setActiveView(id, opts = { pushURL: true }) {
+            currentView = id;
+            if (!opts) opts = { pushURL: true };
+            if (opts.pushURL) _setURLForView(id, false);
+            if (isNotifOpen) toggleNotifications(false);
+            if (isViewDropdownOpen) isViewDropdownOpen = false;
+            
+            if (id === 'messages') {
+                const chatsObj = ((CHAT_STORE && CHAT_STORE.chats) ? CHAT_STORE.chats : MOCK_CHATS);
+                if (chatsObj && chatsObj[activeChatId]) chatsObj[activeChatId].unread = 0;
+            }
+            
+            await ensureViewData(id);
+            renderSidebar();
+            renderMainContent();
+            window.scrollTo(0, 0);
+        }
+
+        function renderHeader(title, desc, actionHtml = '', bottomLeftHtml = '', marginBottom = 'mb-10') {
+            const unreadCount = MOCK_NOTIFICATIONS.filter(n => n.unread).length;
+            return `
+                <header class="flex flex-col lg:flex-row justify-between lg:items-end gap-6 ${marginBottom} fade-in border-b border-[#C5A059]/20 pb-8 relative z-40">
+                    <div class="flex-1">
+                        <h2 class="text-4xl md:text-5xl font-bold text-[#005035] tracking-tight font-serif mb-3">${title}</h2>
+                        <p class="text-slate-500 text-sm font-medium uppercase tracking-widest">${desc}</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-4 relative shrink-0">
+                        ${actionHtml}
+                        
+                        <!-- Premium Status Badge -->
+                        <div class="flex items-center gap-4 px-6 py-3 bg-white border border-[#C5A059]/20 rounded-2xl shadow-sm hover:shadow-md transition-shadow cursor-default">
+                            <div class="p-2 bg-[#FDFBF7] border border-[#C5A059]/30 rounded-xl">
+                                <i data-lucide="crown" class="w-5 h-5 text-[#C5A059]"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">Status Tier</p>
+                                <p class="text-base font-serif font-bold text-slate-900 leading-none">${BUYER_INFO.points || 0} Pts</p>
+                            </div>
+                        </div>
+                        
+                        <div class="relative z-[100]">
+                            <button id="notif-btn" onclick="toggleNotifications()" class="p-3.5 bg-white border border-[#C5A059]/20 rounded-2xl text-slate-600 hover:text-[#005035] hover:bg-[#FDFBF7] shadow-sm transition-all relative group">
+                                <i data-lucide="bell" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                ${unreadCount > 0 ? `<span class="absolute -top-1.5 -right-1.5 w-4 h-4 flex items-center justify-center bg-rose-500 text-white text-[9px] font-bold rounded-full border-2 border-white shadow-sm">${unreadCount}</span>` : ''}
+                            </button>
+
+                            <div id="notif-dropdown" class="hidden absolute right-0 mt-3 w-[380px] bg-white rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] border border-[#C5A059]/20 z-[110] overflow-hidden opacity-0 scale-95 -translate-y-4 dropdown-animate">
+                                <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-[#FDFBF7]">
+                                    <h4 class="font-serif font-bold text-slate-900 text-xl">Updates</h4>
+                                    <button onclick="clearAllNotifications()" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-rose-500 transition-colors bg-white px-3 py-1.5 rounded-lg border border-slate-200">Clear All</button>
+                                </div>
+                                <div class="max-h-[28rem] overflow-y-auto custom-scrollbar">
+                                    ${MOCK_NOTIFICATIONS.length > 0 ? MOCK_NOTIFICATIONS.map(n => `
+                                        <div class="p-6 border-b border-slate-50 hover:bg-[#FDFBF7]/50 transition-colors flex gap-5 items-start group ${n.unread ? 'bg-[#FDFBF7]' : ''}">
+                                            <div class="p-3 bg-white rounded-xl shadow-sm border border-[#C5A059]/20 text-[#005035] group-hover:scale-110 transition-transform shrink-0">
+                                                <i data-lucide="${n.icon}" class="w-4 h-4"></i>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-sm text-slate-800 font-bold leading-snug font-serif mb-1.5">${n.text}</p>
+                                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest flex items-center gap-1.5"><i data-lucide="clock" class="w-3 h-3"></i> ${n.time}</p>
+                                            </div>
+                                            ${n.unread ? `<div class="w-2 h-2 bg-[#C5A059] rounded-full mt-2 shrink-0 shadow-[0_0_8px_rgba(197,160,89,0.5)]"></div>` : ''}
+                                        </div>
+                                    `).join('') : `
+                                        <div class="p-16 text-center text-slate-400">
+                                            <div class="w-16 h-16 mx-auto bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-slate-100">
+                                                <i data-lucide="bell-off" class="w-6 h-6 text-slate-300"></i>
+                                            </div>
+                                            <p class="text-xs font-bold uppercase tracking-widest">No alerts</p>
+                                        </div>
+                                    `}
+                                </div>
+                                <div class="p-4 bg-white text-center border-t border-slate-100">
+                                    <button onclick="setActiveView('notifications')" class="text-[11px] font-bold uppercase tracking-widest text-[#005035] hover:text-[#C5A059] transition-colors py-2 w-full">View Audit Log</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            `;
+        }
+
+        // --- VIEWS ---
+
+        function renderDashboard() {
+            const activeOrder = MOCK_ORDERS.find(o => !['Delivered', 'Cancelled'].includes(o.status)) || MOCK_ORDERS[0] || null;
+            return `
+                ${renderHeader('Guardian Dashboard', `Welcome back, ${BUYER_INFO.name}. Preserve the legacy.`)}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12 fade-in">
+                    <!-- Impact Card 1 -->
+                    <div class="premium-card p-8 sm:p-10 relative overflow-hidden group hover-lift border-l-4 border-l-[#005035]">
+                        <div class="absolute -right-16 -top-16 w-64 h-64 bg-[#C5A059] rounded-full mix-blend-multiply filter blur-[4rem] opacity-10 group-hover:opacity-20 transition-opacity duration-700"></div>
+                        <div class="relative z-10 flex flex-col h-full justify-between gap-8">
+                            <div class="flex justify-between items-start">
+                                <p class="text-[#005035] text-[11px] font-bold uppercase tracking-widest">Direct Impact</p>
+                                <div class="p-3 bg-[#005035]/5 rounded-xl border border-[#005035]/10 text-[#005035]"><i data-lucide="users" class="w-5 h-5"></i></div>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-5xl md:text-6xl font-bold mb-3 text-slate-900">${BUYER_INFO.impact.artisans_helped}</h3>
+                                <p class="text-slate-500 text-sm font-medium">Artisan workshops directly supported</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Impact Card 2 -->
+                    <div class="premium-card p-8 sm:p-10 relative overflow-hidden group hover-lift border-l-4 border-l-[#C5A059]">
+                        <div class="absolute -right-16 -top-16 w-64 h-64 bg-[#005035] rounded-full mix-blend-multiply filter blur-[4rem] opacity-10 group-hover:opacity-20 transition-opacity duration-700"></div>
+                        <div class="relative z-10 flex flex-col h-full justify-between gap-8">
+                            <div class="flex justify-between items-start">
+                                <p class="text-[#C5A059] text-[11px] font-bold uppercase tracking-widest">Heritage Preserved</p>
+                                <div class="p-3 bg-[#C5A059]/10 rounded-xl border border-[#C5A059]/20 text-[#C5A059]"><i data-lucide="fingerprint" class="w-5 h-5"></i></div>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-5xl md:text-6xl font-bold mb-3 text-slate-900">${BUYER_INFO.impact.motifs_saved}</h3>
+                                <p class="text-slate-500 text-sm font-medium">Authentic motifs saved in your collection</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                ${activeOrder ? `
+                <div class="premium-card p-8 lg:p-12 mb-12 fade-in hover-lift relative overflow-hidden z-0">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-10 border-b border-slate-100 pb-6 relative z-10 gap-4">
+                        <div>
+                            <h3 class="font-serif text-3xl font-bold text-slate-900 mb-2">Active Provenance</h3>
+                            <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold flex items-center gap-2"><i data-lucide="box" class="w-3.5 h-3.5 text-[#C5A059]"></i> Artifact #${activeOrder.id}</p>
+                        </div>
+                        <span class="text-[10px] font-bold text-[#005035] bg-[#005035]/5 px-5 py-2.5 rounded-xl border border-[#005035]/10 uppercase tracking-widest">${(getCurrentJourney(activeOrder).label || 'Confirmed')}</span>
+                    </div>
+                    <div class="mb-10 z-10 relative">
+                        ${(() => { const journey = getCurrentJourney(activeOrder); return `
+                            <div class="bg-[#FDFBF7] border border-[#C5A059]/20 rounded-2xl p-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                                <div class="min-w-0">
+                                    <p class="text-[10px] font-bold uppercase tracking-widest text-[#C5A059] mb-2">Current Phase</p>
+                                    <h4 class="font-bold text-slate-900 text-2xl font-serif mb-2">${journey.label || 'Order Confirmed'}</h4>
+                                    <p class="text-sm text-slate-500 font-medium leading-relaxed max-w-2xl">${journey.desc || 'Your order is moving through the Origins journey.'}</p>
+                                </div>
+                                <div class="lg:text-right shrink-0">
+                                    ${journey.time ? `<p class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4"></i> ${journey.time}</p>` : ''}
+                                </div>
+                            </div>`; })()}
+                    </div>
+                    <div class="pt-8 border-t border-slate-100 flex flex-col sm:flex-row sm:justify-between items-center gap-6 relative z-10">
+                        <div class="flex items-center gap-5 w-full sm:w-auto">
+                            <div class="w-14 h-14 rounded-full bg-[#FDFBF7] flex items-center justify-center text-[#005035] font-bold shadow-sm border border-[#C5A059]/30 text-lg font-serif">MA</div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Master Artisan</p>
+                                <p class="font-serif font-bold text-xl text-slate-900">${activeOrder.artisan}</p>
+                            </div>
+                        </div>
+                        <button onclick="contactArtisan(${activeOrder.artisan_id || 'null'}, ${activeOrder.order_id || 'null'})" class="w-full sm:w-auto px-8 py-4 bg-white border border-[#C5A059]/40 rounded-xl text-xs font-bold uppercase tracking-widest text-[#005035] hover:bg-[#FDFBF7] transition-all flex justify-center items-center gap-2 shadow-sm hover:shadow">
+                            <i data-lucide="message-square" class="w-4 h-4"></i> Concierge Link
+                        </button>
+                    </div>
+                </div>` : ''}
+
+                <div class="mt-12 fade-in">
+                    <div class="bg-slate-900 rounded-[2.5rem] overflow-hidden relative group shadow-2xl border border-white/10 h-[400px]">
+                        <img src="${EXCLUSIVE_CAMPAIGN.image_url || 'https://images.unsplash.com/photo-1606294719268-9ee22378939c?q=80&w=2070&auto=format&fit=crop'}" class="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay group-hover:scale-105 transition-transform duration-1000">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent"></div>
+                        <div class="absolute inset-0 p-10 md:p-14 flex flex-col justify-end">
+                            <div class="max-w-2xl">
+                                <span class="bg-[#C5A059] text-white text-[10px] font-bold px-4 py-1.5 rounded-md uppercase tracking-widest shadow-lg inline-block mb-6">Guardian Exclusive</span>
+                                <h3 class="text-4xl md:text-5xl font-serif font-bold text-white mb-4 leading-tight">${EXCLUSIVE_CAMPAIGN.title || 'The Heritage Collection'}</h3>
+                                <p class="text-slate-300 text-lg font-medium mb-8 max-w-xl">${EXCLUSIVE_CAMPAIGN.subtitle || 'A curated selection of museum-quality artifacts, available only to verified Guardians.'}</p>
+                                <button onclick="handleSetReminder()" class="btn-luxury px-10 py-4 rounded-xl font-bold text-xs uppercase tracking-widest transition-all shadow-xl flex items-center gap-3 w-max">
+                                    <i data-lucide="${isReminderSet ? 'check' : 'bell'}" class="w-4 h-4"></i>
+                                    ${isReminderSet ? 'Access Secured' : 'Request Access'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderOrders() {
+            return `
+                ${renderHeader('My Collection', 'A chronological archive of your acquired heritage.')}
+                <div class="space-y-6 fade-in">
+                    ${MOCK_ORDERS.map(o => `
+                        <div class="premium-card p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-8 hover-lift group cursor-pointer">
+                            <div class="flex flex-col sm:flex-row gap-8 items-center w-full md:w-auto">
+                                <div class="h-36 w-36 rounded-2xl overflow-hidden shadow-inner shrink-0 bg-[#FDFBF7] p-2 border border-slate-100"><img src="${o.img}" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-700"></div>
+                                <div class="text-center sm:text-left">
+                                    <div class="flex flex-col sm:flex-row items-center gap-4 mb-3">
+                                        <h4 class="font-serif font-bold text-2xl text-slate-900 group-hover:text-[#005035] transition-colors">${o.item}</h4>
+                                        <span class="text-[10px] px-3 py-1.5 bg-[#FDFBF7] text-[#C5A059] font-bold rounded-md border border-[#C5A059]/20 uppercase tracking-widest shadow-sm">${o.status}</span>
+                                    </div>
+                                    <p class="text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-3 flex justify-center sm:justify-start items-center gap-2"><i data-lucide="user" class="w-4 h-4 text-[#C5A059]"></i> Artisan: <span class="text-slate-700">${o.artisan}</span></p>
+                                    <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Acquired: <span class="text-slate-700">${o.date}</span></p>
+                                </div>
+                            </div>
+                            <div class="w-full md:w-auto flex flex-col items-center md:items-end gap-5 border-t md:border-t-0 border-slate-100 pt-6 md:pt-0">
+                                <p class="font-bold text-[#005035] text-3xl font-serif tracking-tight">৳ ${o.price}</p>
+                                <div class="flex gap-3 w-full sm:w-auto">
+                                    <button onclick="handleInvoiceDownload('${o.id}')" class="flex-1 sm:flex-none px-6 py-3 bg-[#FDFBF7] border border-[#C5A059]/30 text-slate-700 rounded-xl text-[10px] uppercase tracking-widest font-bold hover:bg-white hover:border-[#C5A059] transition-all shadow-sm flex justify-center items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 text-[#C5A059]"></i> Document</button>
+                                    <button onclick="handleTrackOrder('${o.id}')" class="btn-luxury flex-1 sm:flex-none px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold transition-all flex justify-center items-center gap-2"><i data-lucide="map" class="w-4 h-4"></i> Track Asset</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderVault() {
+            return `
+                ${renderHeader('Authenticity Vault', 'Encrypted digital depository for your GI certificates.')}
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 fade-in">
+                    ${MOCK_CERTS.map(c => `
+                        <div class="premium-card p-4 hover-lift group relative flex flex-col">
+                            <div class="relative h-80 bg-[#FDFBF7] rounded-[1.5rem] overflow-hidden mb-6 border border-slate-100 p-2">
+                                <img src="${c.img}" class="w-full h-full object-cover rounded-xl opacity-90 group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-4 backdrop-blur-sm rounded-[1.5rem]">
+                                    <button onclick="downloadPDF('${c.product}')" class="bg-white text-slate-900 px-8 py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center gap-2 shadow-xl hover:scale-105 transition-transform">
+                                        <i data-lucide="download" class="w-4 h-4 text-[#C5A059]"></i> Extract PDF
+                                    </button>
+                                    <button onclick="verifyBlockchain('${c.hash}')" class="btn-luxury px-8 py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center gap-2 shadow-xl hover:scale-105 transition-transform">
+                                        <i data-lucide="link" class="w-4 h-4 text-[#C5A059]"></i> Verify On-Chain
+                                    </button>
+                                </div>
+                                <div class="absolute top-6 right-6 bg-white/90 backdrop-blur-md text-[#C5A059] p-3 rounded-xl shadow-lg border border-[#C5A059]/20">
+                                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+                            <div class="px-4 pb-4 flex-1 flex flex-col">
+                                <h3 class="font-serif font-bold text-2xl text-slate-900 mb-2 leading-tight">${c.product}</h3>
+                                <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-5">Origin: <span class="text-[#005035]">${c.origin}</span></p>
+                                
+                                <div class="mt-auto pt-5 border-t border-slate-100 flex justify-between items-center">
+                                    <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-3 py-1.5 rounded-md truncate w-32 border border-slate-200">${c.hash}</span>
+                                    <div class="flex items-center gap-1.5 bg-[#005035]/5 px-3 py-1.5 rounded-md border border-[#005035]/10">
+                                        <i data-lucide="check-circle" class="w-3 h-3 text-[#005035]"></i>
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#005035]">Verified</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderWishlist() {
+            const viewToggleHtml = `
+                <div class="flex items-center bg-[#FDFBF7] p-1.5 rounded-xl border border-[#C5A059]/20 shadow-sm mr-2">
+                    <button onclick="setWishlistView('grid')" title="Grid View" class="p-2.5 rounded-lg ${window.wishlistViewMode === 'grid' ? 'bg-white shadow-sm text-[#005035] border border-slate-200' : 'text-slate-400 hover:text-slate-800'} transition-all">
+                        <i data-lucide="grid" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="setWishlistView('list')" title="List View" class="p-2.5 rounded-lg ${window.wishlistViewMode === 'list' ? 'bg-white shadow-sm text-[#005035] border border-slate-200' : 'text-slate-400 hover:text-slate-800'} transition-all">
+                        <i data-lucide="list" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="setWishlistView('detail')" title="Content View" class="p-2.5 rounded-lg ${window.wishlistViewMode === 'detail' ? 'bg-white shadow-sm text-[#005035] border border-slate-200' : 'text-slate-400 hover:text-slate-800'} transition-all">
+                        <i data-lucide="layout-list" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `;
+
+            let contentHtml = '';
+
+            if (window.wishlistViewMode === 'grid') {
+                contentHtml = `
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 fade-in">
+                        ${WISHLIST_ITEMS.map(item => `
+                            <div class="premium-card p-4 hover-lift group flex flex-col">
+                                <div class="h-64 rounded-2xl overflow-hidden relative mb-5 bg-[#FDFBF7] p-2 border border-slate-100">
+                                    <button class="absolute top-4 right-4 z-10 p-2.5 bg-white/90 backdrop-blur-md rounded-xl text-rose-500 shadow-sm border border-rose-100 hover:scale-110 transition-transform">
+                                        <i data-lucide="heart" class="w-4 h-4 fill-rose-500"></i>
+                                    </button>
+                                    <img src="${item.img}" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-700">
+                                </div>
+                                <div class="px-2 pb-2 flex-1 flex flex-col">
+                                    <h4 class="font-serif font-bold text-lg text-slate-900 mb-1 leading-snug line-clamp-2">${item.name}</h4>
+                                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4 mt-auto">By ${item.artisan}</p>
+                                    <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                                        <span class="font-bold text-[#005035] text-lg font-serif">৳ ${item.price}</span>
+                                        <button onclick="handleAddToCart('${item.name}', ${item.price}, '${item.img}', '${item.artisan}')" class="btn-luxury px-4 py-2.5 rounded-lg text-[10px] uppercase tracking-widest font-bold">Add to Bag</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            else if (window.wishlistViewMode === 'list') {
+                contentHtml = `
+                    <div class="flex flex-col gap-6 fade-in">
+                        ${WISHLIST_ITEMS.map(item => `
+                            <div class="premium-card p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-8 hover-lift group">
+                                <div class="w-full sm:w-48 h-48 rounded-2xl overflow-hidden relative shrink-0 bg-[#FDFBF7] p-2 border border-slate-100">
+                                    <img src="${item.img}" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-700">
+                                </div>
+                                <div class="flex-1 flex flex-col sm:flex-row justify-between items-center w-full gap-6">
+                                    <div class="text-center sm:text-left">
+                                        <h4 class="font-serif font-bold text-2xl text-slate-900 mb-2">${item.name}</h4>
+                                        <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Master Artisan: <span class="text-slate-800">${item.artisan}</span></p>
+                                    </div>
+                                    <div class="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end border-t sm:border-t-0 pt-4 sm:pt-0 border-slate-100">
+                                        <span class="font-bold text-[#005035] text-2xl font-serif">৳ ${item.price}</span>
+                                        <div class="flex gap-3">
+                                            <button class="p-3.5 bg-white border border-rose-100 rounded-xl shadow-sm hover:shadow text-rose-500 transition-all"><i data-lucide="heart" class="w-5 h-5 fill-rose-500"></i></button>
+                                            <button onclick="handleAddToCart('${item.name}', ${item.price}, '${item.img}', '${item.artisan}')" class="btn-luxury px-8 py-3.5 rounded-xl text-xs uppercase tracking-widest font-bold whitespace-nowrap">Add to Bag</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            else if (window.wishlistViewMode === 'detail') {
+                contentHtml = `
+                    <div class="flex flex-col gap-10 fade-in">
+                        ${WISHLIST_ITEMS.map(item => `
+                            <div class="premium-card p-6 sm:p-10 flex flex-col lg:flex-row gap-12 hover-lift group">
+                                <div class="w-full lg:w-[45%] h-96 rounded-[2rem] overflow-hidden relative shrink-0 bg-[#FDFBF7] p-2 border border-slate-100">
+                                    <button class="absolute top-6 right-6 z-10 p-3 bg-white/90 backdrop-blur-md rounded-2xl text-rose-500 shadow-sm border border-rose-100 hover:scale-105 transition-transform">
+                                        <i data-lucide="heart" class="w-5 h-5 fill-rose-500"></i>
+                                    </button>
+                                    <img src="${item.img}" class="w-full h-full object-cover rounded-[1.5rem] group-hover:scale-105 transition-transform duration-1000">
+                                </div>
+                                <div class="flex-1 flex flex-col justify-center py-4">
+                                    <div class="mb-5">
+                                        <span class="text-[10px] font-bold text-[#C5A059] bg-[#FDFBF7] px-4 py-1.5 rounded-lg border border-[#C5A059]/20 uppercase tracking-[0.2em] shadow-sm">Verified Artifact</span>
+                                    </div>
+                                    <h4 class="font-serif font-bold text-4xl lg:text-5xl text-slate-900 mb-4 tracking-tight leading-tight">${item.name}</h4>
+                                    <p class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-6 flex items-center gap-2"><i data-lucide="user" class="w-4 h-4 text-[#C5A059]"></i> Master Artisan: <span class="text-slate-800">${item.artisan}</span></p>
+                                    <p class="text-slate-600 text-base leading-relaxed mb-10 font-medium max-w-2xl">A remarkable representation of Bengal's rich cultural heritage. Meticulously hand-crafted to ensure traditional motifs and authentic materials endure for future generations.</p>
+                                    <div class="flex flex-wrap items-center gap-8 mt-auto pt-8 border-t border-slate-100">
+                                        <span class="font-serif font-bold text-[#005035] text-4xl">৳ ${item.price}</span>
+                                        <button onclick="handleAddToCart('${item.name}', ${item.price}, '${item.img}', '${item.artisan}')" class="btn-luxury px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center gap-3">
+                                            <i data-lucide="shopping-bag" class="w-5 h-5"></i> Secure this piece
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            return `
+                ${renderHeader('Wishlist & Pre-orders', 'Your carefully curated future acquisitions.', viewToggleHtml)}
+                ${contentHtml}
+                <div class="mt-12 flex justify-center fade-in">
+                    <button onclick="handleBrowseArtisans()" class="px-10 py-5 bg-white border border-[#C5A059]/30 rounded-2xl flex flex-col items-center justify-center gap-3 text-slate-500 hover:border-[#C5A059] hover:bg-[#FDFBF7] transition-all shadow-sm hover:shadow group w-full max-w-md">
+                        <i data-lucide="search" class="w-6 h-6 text-[#C5A059] group-hover:scale-110 transition-transform"></i>
+                        <span class="font-bold text-sm text-slate-800 uppercase tracking-widest font-serif">Discover More Treasures</span>
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderShop() {
+            return `
+                ${renderHeader('Artisan Marketplace', 'Acquire authenticated artifacts direct from source.')}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 fade-in">
+                    ${SHOP_ITEMS.map(item => `
+                        <div class="premium-card p-4 hover-lift group flex flex-col">
+                            <div class="h-64 rounded-2xl overflow-hidden relative mb-5 bg-[#FDFBF7] p-2 border border-slate-100">
+                                <button onclick="showToast('Wishlist', 'Added to private collection', 'success')" class="absolute top-4 right-4 z-10 p-2.5 bg-white/90 backdrop-blur-md rounded-xl text-slate-300 hover:text-rose-500 shadow-sm border border-slate-100 hover:scale-110 transition-all">
+                                    <i data-lucide="heart" class="w-4 h-4"></i>
+                                </button>
+                                <img src="${item.img}" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-700">
+                            </div>
+                            <div class="px-2 pb-2 flex-1 flex flex-col">
+                                <h4 class="font-serif font-bold text-lg text-slate-900 mb-1 leading-snug line-clamp-2">${item.name}</h4>
+                                <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4 mt-auto">By <span class="text-[#005035]">${item.artisan}</span></p>
+                                <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                                    <span class="font-bold text-[#005035] text-lg font-serif">৳ ${item.price}</span>
+                                    <button onclick="handleAddToCart('${item.name}', ${item.price}, '${item.img}', '${item.artisan}')" class="btn-luxury px-4 py-2.5 rounded-lg text-[10px] uppercase tracking-widest font-bold">Add to Bag</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderCart() {
+            const total = CART_ITEMS.reduce((sum, item) => sum + item.price, 0);
+            return `
+                ${renderHeader('Your Shopping Bag', 'Finalize your acquisition of heritage pieces.')}
+                <div class="fade-in">
+                    ${CART_ITEMS.length > 0 ? `
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                            <div class="lg:col-span-7 xl:col-span-8 space-y-6">
+                                ${CART_ITEMS.map((item, index) => `
+                                    <div class="premium-card p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 group">
+                                        <div class="flex items-center gap-6 w-full sm:w-auto">
+                                            <div class="w-28 h-28 rounded-2xl overflow-hidden border border-slate-100 p-1.5 bg-[#FDFBF7] shrink-0"><img src="${item.img}" class="w-full h-full object-cover rounded-xl"></div>
+                                            <div>
+                                                <h4 class="font-serif font-bold text-slate-900 text-xl mb-1.5">${item.name}</h4>
+                                                <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Artisan: <span class="text-slate-800">${item.artisan}</span></p>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 border-t sm:border-t-0 pt-4 sm:pt-0 border-slate-100">
+                                            <p class="font-bold text-[#005035] text-2xl font-serif">৳ ${item.price}</p>
+                                            <button onclick="removeFromCart(${index})" class="text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-rose-500 transition-colors flex items-center gap-1.5 bg-slate-50 hover:bg-rose-50 px-3 py-1.5 rounded-lg"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Remove</button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="lg:col-span-5 xl:col-span-4">
+                                <div class="premium-card p-8 lg:p-10 sticky top-8 bg-[#FDFBF7]">
+                                    <h3 class="font-bold text-xs uppercase tracking-widest text-slate-800 mb-6 flex items-center gap-2 border-b border-[#C5A059]/20 pb-4"><i data-lucide="receipt" class="w-4 h-4 text-[#C5A059]"></i> Order Summary</h3>
+                                    <div class="space-y-4 text-sm font-medium text-slate-600 mb-8">
+                                        <div class="flex justify-between items-center">
+                                            <span>Subtotal</span>
+                                            <span class="font-bold text-slate-900">৳ ${total}</span>
+                                        </div>
+                                        <div class="flex justify-between items-center text-slate-500">
+                                            <span>Premium Shipping</span>
+                                            <span class="font-bold text-slate-900">৳ 150</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-6 border-t border-b border-[#C5A059]/20 mb-8 bg-white -mx-8 px-8 lg:-mx-10 lg:px-10 shadow-sm">
+                                        <span class="text-xs font-bold text-slate-800 uppercase tracking-widest">Total</span>
+                                        <span class="font-bold text-[#005035] text-3xl font-serif">৳ ${total + 150}</span>
+                                    </div>
+                                    <button onclick="checkout()" class="btn-luxury w-full py-4 rounded-xl font-bold text-xs uppercase tracking-widest flex justify-center items-center gap-2">
+                                        <i data-lucide="lock" class="w-4 h-4 text-[#C5A059]"></i> Secure Checkout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="flex flex-col items-center justify-center py-24 premium-card text-center relative overflow-hidden">
+                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#C5A059]/5 to-transparent blur-3xl"></div>
+                            <div class="w-24 h-24 bg-[#FDFBF7] rounded-full flex items-center justify-center mb-6 shadow-inner border border-slate-100 relative z-10">
+                                <i data-lucide="shopping-bag" class="w-8 h-8 text-slate-300"></i>
+                            </div>
+                            <h3 class="font-serif font-bold text-3xl text-slate-900 mb-3 relative z-10">Your bag is pristine</h3>
+                            <p class="text-sm mb-8 text-slate-500 font-medium max-w-sm relative z-10">Select masterpieces from our artisans to begin your acquisition.</p>
+                            <button onclick="setActiveView('wishlist')" class="btn-luxury px-10 py-4 rounded-xl text-xs uppercase tracking-widest font-bold relative z-10">Access Collection</button>
+                        </div>
+                    `}
+                </div>
+            `;
+        }
+
+        function renderCheckoutSuccess() {
+            return `
+                ${renderHeader('Acquisition Confirmed', 'Your transaction has been securely processed.')}
+                <div class="flex flex-col items-center justify-center py-24 fade-in text-center premium-card mt-8 relative overflow-hidden bg-[#FDFBF7]">
+                    <div class="absolute top-0 right-0 w-80 h-80 bg-[#005035]/5 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute bottom-0 left-0 w-80 h-80 bg-[#C5A059]/5 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="w-28 h-28 bg-white rounded-full flex items-center justify-center mb-8 shadow-md border border-[#005035]/10 relative z-10">
+                        <i data-lucide="check-circle" class="w-12 h-12 text-[#005035]"></i>
+                    </div>
+                    <h2 class="font-serif text-4xl md:text-5xl font-bold text-slate-900 mb-4 relative z-10">Legacy Secured.</h2>
+                    <p class="text-slate-500 mb-12 max-w-lg mx-auto text-base leading-relaxed font-medium relative z-10">Thank you for your patronage. Your artifact is undergoing final quality inspection and will soon be dispatched securely to your address.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 relative z-10">
+                        <button onclick="setActiveView('dashboard')" class="px-8 py-4 bg-white border border-slate-200 text-slate-700 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-slate-50 transition-all shadow-sm hover:shadow">Return to Dashboard</button>
+                        <button onclick="setActiveView('orders')" class="btn-luxury px-8 py-4 rounded-xl text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2">
+                            <i data-lucide="box" class="w-4 h-4 text-[#C5A059]"></i> View Collection
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMessages() {
+            const chatsObj = (CHAT_STORE && CHAT_STORE.chats) ? CHAT_STORE.chats : MOCK_CHATS;
+            const activeChat = chatsObj[activeChatId];
+            
+            const sidebarHtml = Object.values(chatsObj)
+                .sort((a, b) => b.lastUpdated - a.lastUpdated)
+                .map(chat => {
+                const isActive = chat.id === activeChatId;
+                const activeClasses = isActive ? 'border-l-[3px] border-[#005035] bg-[#FDFBF7] shadow-sm my-1 rounded-r-xl' : 'border-l-[3px] border-transparent hover:bg-slate-50 opacity-70 hover:opacity-100 my-1 rounded-r-xl';
+                const unreadDot = chat.unread > 0 ? `<div class="w-2.5 h-2.5 bg-rose-500 rounded-full mt-1.5 shrink-0 shadow-sm border border-white"></div>` : '';
+                
+                return `
+                    <div onclick="switchChat('${chat.id}')" class="p-5 flex gap-4 cursor-pointer transition-all ${activeClasses}">
+                        <div class="w-12 h-12 rounded-xl ${chat.color} flex items-center justify-center text-white shadow-sm font-bold text-lg shrink-0">${chat.initials}</div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-start mb-1">
+                                <h5 class="font-bold text-sm text-slate-900 truncate font-serif ${chat.unread > 0 ? 'text-[#005035]' : ''}">${chat.name}</h5>
+                                <span class="text-[9px] font-bold uppercase tracking-widest ${isActive ? 'text-[#C5A059]' : 'text-slate-400'}">${chat.lastActive}</span>
+                            </div>
+                            <div class="flex justify-between items-start gap-2">
+                                <p class="text-xs ${chat.unread > 0 ? 'text-slate-900 font-bold' : 'text-slate-500 font-medium'} truncate">${chat.messages.length > 0 ? chat.messages[chat.messages.length - 1].text : 'Initiate communication...'}</p>
+                                ${unreadDot}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            const profileImages = document.querySelectorAll('.profile-img-display');
+            const imgSrc = profileImages.length > 0 ? profileImages[0].src : '/static/assets/img/basic-avatar.svg';
+            
+            const messagesHtml = activeChat.messages.map(msg => {
+                if (msg.type === 'inbound') {
+                    return `
+                        <div class="flex gap-4 fade-in">
+                            <div class="w-8 h-8 rounded-xl ${activeChat.color} flex items-center justify-center text-white font-bold self-end shadow-sm text-[10px] shrink-0">${activeChat.initials}</div>
+                            <div class="bg-white border border-slate-200 p-5 rounded-2xl rounded-bl-sm shadow-sm max-w-md text-[13px] leading-relaxed text-slate-700 font-medium">
+                                ${msg.text}
+                                <span class="block mt-2 text-[9px] font-bold text-slate-400 text-right uppercase tracking-widest">${msg.time}</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="flex gap-4 justify-end fade-in">
+                            <div class="bg-[#005035] text-white p-5 rounded-2xl rounded-br-sm shadow-md max-w-md text-[13px] leading-relaxed font-medium">
+                                ${msg.text}
+                                <span class="block mt-2 text-[9px] font-bold text-[#E5C37A]/70 text-right uppercase tracking-widest">${msg.time}</span>
+                            </div>
+                            <img src="${imgSrc}" class="w-8 h-8 rounded-xl self-end shadow-sm border border-slate-200 profile-img-display object-cover shrink-0">
+                        </div>
+                    `;
+                }
+            }).join('');
+            
+            const statusHtml = activeChat.status.toUpperCase() === 'ONLINE' || activeChat.status.toUpperCase() === 'ACTIVE NOW'
+                ? `<p class="text-[9px] text-[#005035] font-bold uppercase tracking-widest flex items-center gap-1.5 mt-1"><span class="w-1.5 h-1.5 bg-[#005035] rounded-full animate-pulse shadow-[0_0_5px_rgba(0,80,53,0.5)]"></span> ${activeChat.status}</p>`
+                : `<p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-1"><span class="w-1.5 h-1.5 bg-slate-300 rounded-full"></span> ${activeChat.status}</p>`;
+
+            return `
+                ${renderHeader('Artisan Concierge', 'Direct encrypted line to your master craftsmen.', '<span class="text-[10px] text-[#005035] font-bold bg-[#FDFBF7] px-4 py-2 rounded-lg border border-[#005035]/20 flex items-center gap-2 shadow-sm uppercase tracking-widest"><span class="w-1.5 h-1.5 bg-[#005035] rounded-full animate-ping"></span> Secure Channel</span>', '', 'mb-8')}
+                
+                <div class="premium-card flex overflow-hidden fade-in" style="height: calc(100vh - 240px); min-height: 500px; padding: 0;">
+                    <div class="w-1/3 border-r border-slate-100 flex flex-col bg-white">
+                        <div class="p-6 border-b border-slate-100 bg-[#FDFBF7]"><h4 class="font-bold text-slate-800 text-xs uppercase tracking-widest flex items-center gap-2"><i data-lucide="message-square" class="w-4 h-4 text-[#C5A059]"></i> Channels</h4></div>
+                        <div class="flex-1 overflow-y-auto px-2 py-4 custom-scrollbar">${sidebarHtml}</div>
+                    </div>
+                    <div class="flex-1 flex flex-col bg-[#FDFBF7] relative">
+                        <div class="p-6 border-b border-slate-100 flex items-center gap-4 bg-white/90 backdrop-blur-md sticky top-0 z-10 shadow-sm">
+                            <div class="w-12 h-12 rounded-xl ${activeChat.color} flex items-center justify-center text-white font-bold text-xl shadow-sm shrink-0">${activeChat.initials}</div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 font-serif text-xl">${activeChat.name}</h4>
+                                ${statusHtml}
+                            </div>
+                            <div class="ml-auto flex gap-2">
+                                <button class="p-2.5 text-slate-400 hover:text-[#C5A059] bg-slate-50 hover:bg-white rounded-lg transition-colors border border-transparent hover:border-[#C5A059]/30"><i data-lucide="info" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                        <div id="chat-messages-container" class="flex-1 p-6 sm:p-8 overflow-y-auto space-y-6 custom-scrollbar">${messagesHtml}</div>
+                        <div class="p-6 bg-white border-t border-slate-100">
+                             <div class="bg-[#FDFBF7] rounded-2xl flex items-center px-3 py-2 border border-slate-200 shadow-inner focus-within:border-[#C5A059] focus-within:ring-1 focus-within:ring-[#C5A059]/30 transition-all">
+                                <button onclick="handleAttachmentClick()" class="p-2.5 text-slate-400 hover:text-[#005035] transition-colors active:scale-95"><i data-lucide="paperclip" class="w-5 h-5"></i></button>
+                                <input type="text" id="chat-input" onkeypress="if(event.key === 'Enter') handleSendMessage()" placeholder="Compose secure message..." class="flex-1 bg-transparent border-none focus:ring-0 text-[13px] py-2 px-3 text-slate-800 font-medium placeholder:text-slate-400">
+                                <button onclick="handleSendMessage()" class="btn-luxury p-3 rounded-xl transition-all active:scale-95"><i data-lucide="send" class="w-4 h-4 text-[#C5A059]"></i></button>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProfile() {
+            window.switchProfileTab = (tab) => { profileTab = tab; renderMainContent(); };
+            const PROFILE = (PROFILE_STORE && PROFILE_STORE.profile) ? PROFILE_STORE.profile : {};
+            const nameParts = BUYER_INFO.name.split(' ');
+            const currentFirstName = nameParts[0] || '';
+            const currentLastName = nameParts.slice(1).join(' ') || '';
+            
+            const content = {
+                'identity': `
+                    <div class="flex flex-col lg:flex-row gap-10 fade-in">
+                        <div class="w-full lg:w-1/3 space-y-8">
+                            <div class="premium-card p-10 text-center relative overflow-hidden group">
+                                <div class="absolute top-0 right-0 w-64 h-64 bg-[#C5A059]/5 rounded-full -mr-32 -mt-32 blur-3xl pointer-events-none"></div>
+                                <div class="relative w-36 h-36 rounded-full p-1 mx-auto mb-8 shadow-md border border-slate-200 bg-[#FDFBF7]">
+                                    <img src="${BUYER_INFO.avatar_url || '/static/assets/img/basic-avatar.svg'}" class="w-full h-full rounded-full object-cover profile-img-display">
+                                    <button onclick="triggerImageUpload()" class="absolute bottom-0 right-0 bg-white text-slate-600 p-2.5 rounded-full border border-slate-200 shadow-md hover:text-[#005035] transition-colors active:scale-95"><i data-lucide="camera" class="w-4 h-4"></i></button>
+                                </div>
+                                <h3 class="text-3xl font-serif font-bold text-slate-900 tracking-tight mb-2">${BUYER_INFO.name}</h3>
+                                ${BUYER_INFO.badge ? `<div class="bg-[#FDFBF7] text-[#C5A059] font-bold uppercase tracking-widest text-[9px] py-1.5 px-4 rounded-md border border-[#C5A059]/20 inline-block mb-6 shadow-sm"><i class="fa-solid fa-award mr-1"></i> ${BUYER_INFO.badge}</div>` : ``}
+                                <p class="text-sm text-slate-500 italic px-4 leading-relaxed font-medium">"${BUYER_INFO.bio}"</p>
+                                <div class="pt-8 border-t border-slate-100 mt-8">
+                                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-[0.2em] mb-3">Verified Persona</p>
+                                    <div class="bg-[#FDFBF7] py-3 px-4 rounded-xl border border-[#C5A059]/20 font-serif text-lg font-bold text-[#005035] shadow-sm">${BUYER_INFO.persona}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1 space-y-8">
+                            <!-- Digital Membership Card -->
+                            <div class="bg-gradient-to-br from-slate-900 to-black rounded-[2.5rem] p-10 text-white shadow-2xl relative overflow-hidden border border-slate-800 group transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_30px_60px_-15px_rgba(197,160,89,0.15)]">
+                                <!-- Holographic Background -->
+                                <div class="absolute inset-0 opacity-20 mix-blend-overlay" style="background-image: repeating-linear-gradient(45deg, #000 0, #000 1px, transparent 0, transparent 50%); background-size: 10px 10px;"></div>
+                                <div class="absolute top-[-50%] right-[-20%] w-[120%] h-[120%] bg-gradient-to-bl from-[#C5A059]/10 via-transparent to-transparent blur-3xl pointer-events-none group-hover:rotate-12 transition-transform duration-1000"></div>
+
+                                <!-- Top Section: EMV Chip & NFC -->
+                                <div class="relative z-10 flex justify-between items-center mb-12">
+                                    <div class="flex items-center gap-5">
+                                        <!-- Smart Chip SVG -->
+                                        <svg width="45" height="35" viewBox="0 0 45 35" fill="none" xmlns="http://www.w3.org/2000/svg" class="opacity-90 drop-shadow-md">
+                                            <rect width="45" height="35" rx="6" fill="url(#chip-grad)" stroke="#C5A059" stroke-width="1.5"/>
+                                            <path d="M15 0V35M30 0V35M0 12H15M30 12H45M0 23H15M30 23H45" stroke="#C5A059" stroke-width="1"/>
+                                            <defs>
+                                                <linearGradient id="chip-grad" x1="0" y1="0" x2="45" y2="35" gradientUnits="userSpaceOnUse">
+                                                    <stop stop-color="#E5C37A"/>
+                                                    <stop offset="0.5" stop-color="#A67C33"/>
+                                                    <stop offset="1" stop-color="#C5A059"/>
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                        <i data-lucide="nfc" class="w-6 h-6 text-slate-500 group-hover:text-[#C5A059] transition-colors"></i>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-slate-900 bg-gradient-to-r from-[#C5A059] to-[#E5C37A] px-3.5 py-1.5 rounded text-[9px] font-black uppercase tracking-[0.3em] shadow-sm">Origins Exclusive</span>
+                                    </div>
+                                </div>
+
+                                <!-- Middle Section: Name & Title -->
+                                <div class="relative z-10 mb-12">
+                                    <p class="text-[#C5A059] text-[10px] font-bold uppercase tracking-[0.4em] mb-2 drop-shadow-md">Heritage Guardian</p>
+                                    <h3 class="text-3xl md:text-4xl font-serif font-bold tracking-widest uppercase text-white drop-shadow-sm truncate">${BUYER_INFO.name}</h3>
+                                </div>
+
+                                <!-- Bottom Section: ID & Date -->
+                                <div class="relative z-10 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-6 border-t border-slate-800 pt-6">
+                                    <div>
+                                        <p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest mb-1.5">Guardian ID</p>
+                                        <p class="text-lg md:text-2xl font-mono font-bold tracking-[0.25em] text-slate-200 drop-shadow-md">OB-${String(BUYER_INFO.guardian_id || "00000").replace(/^OB-?|^GV-?/i, '')}</p>
+                                    </div>
+                                    <div class="sm:text-right">
+                                        <p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest mb-1.5">Member Since</p>
+                                        <p class="text-sm md:text-lg font-bold text-[#C5A059] uppercase tracking-widest">${BUYER_INFO.member_since || new Date().getFullYear()}</p>
+                                    </div>
+                                    <div class="sm:text-right">
+                                        <p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest mb-1.5">Email</p>
+                                        <p class="text-xs md:text-sm font-medium text-slate-300 tracking-wide">${BUYER_INFO.email || '-'}</p>
+                                    </div>
+                                    <div class="sm:text-right">
+                                        <p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest mb-1.5">Phone</p>
+                                        <p class="text-xs md:text-sm font-medium text-slate-300 tracking-wide">${BUYER_INFO.phone || '-'}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Regional Passport -->
+                            <div class="premium-card p-10 relative group overflow-hidden">
+                                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-8 gap-4 border-b border-slate-100 pb-6">
+                                    <h4 class="text-2xl font-serif font-bold text-slate-900 tracking-tight">Regional Passport</h4>
+                                    <span class="text-[9px] font-bold text-[#C5A059] bg-[#FDFBF7] border border-[#C5A059]/30 px-4 py-1.5 rounded-md uppercase tracking-widest shadow-sm">3 Regions Unlocked</span>
+                                </div>
+                                <div class="h-[280px] bg-[#FDFBF7] rounded-[1.5rem] border border-slate-100 flex flex-col items-center justify-center relative transition-all overflow-hidden group-hover:bg-white">
+                                     <div class="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Bangladesh_districts_map.svg/1200px-Bangladesh_districts_map.svg.png')] bg-contain bg-center opacity-[0.02] transition-all group-hover:opacity-[0.05] duration-1000 grayscale"></div>
+                                     <div class="relative z-10 text-center p-6 bg-white/80 backdrop-blur-md rounded-2xl border border-white shadow-sm">
+                                        <div class="w-14 h-14 bg-[#005035] rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg transition-transform duration-700 group-hover:-translate-y-2">
+                                            <i data-lucide="map" class="w-6 h-6 text-[#C5A059]"></i>
+                                        </div>
+                                        <p class="text-xs font-bold text-slate-900 uppercase tracking-[0.2em] mb-1.5">Map Visualization</p>
+                                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Rajshahi, Comilla, Jessore</p>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                'edit': `
+                    <div class="max-w-3xl mx-auto premium-card p-10 fade-in">
+                        <h3 class="font-serif font-bold text-3xl text-slate-900 mb-8 border-b border-slate-100 pb-6">Manage Identity</h3>
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">First Name</label><input type="text" id="input-first-name" value="${currentFirstName}" class="w-full p-4 premium-input rounded-xl text-sm font-bold text-slate-900 shadow-sm"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Last Name</label><input type="text" id="input-last-name" value="${currentLastName}" class="w-full p-4 premium-input rounded-xl text-sm font-bold text-slate-900 shadow-sm"></div>
+                            </div>
+                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Biography / Title</label><textarea id="input-bio" class="w-full p-4 premium-input rounded-xl text-sm font-medium text-slate-900 h-28 shadow-sm">${BUYER_INFO.bio}</textarea></div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Email</label><input type="email" id="input-email" value="${BUYER_INFO.email || ''}" class="w-full p-4 premium-input rounded-xl text-sm font-bold text-slate-900 shadow-sm"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Phone</label><input type="text" id="input-phone" value="${BUYER_INFO.phone || ''}" class="w-full p-4 premium-input rounded-xl text-sm font-bold text-slate-900 shadow-sm"></div>
+                            </div>
+                            
+                            <h4 class="font-bold text-xs uppercase tracking-widest text-slate-800 mt-12 mb-4 flex items-center gap-2 pt-6 border-t border-slate-100"><i data-lucide="truck" class="w-4 h-4 text-[#C5A059]"></i> Logistics Destination</h4>
+                            <div id="address-container" class="p-6 border border-[#C5A059]/20 rounded-2xl flex items-center justify-between transition-colors bg-[#FDFBF7] group">
+                                <div class="flex items-start sm:items-center gap-5 w-full relative flex-col sm:flex-row">
+                                    <div class="p-3.5 bg-white rounded-xl border border-slate-200 text-slate-400 shrink-0 transition-colors shadow-sm group-hover:text-[#005035] group-hover:border-[#005035]/30"><i data-lucide="home" class="w-5 h-5"></i></div>
+                                    <div class="flex-1 w-full" id="address-display-mode"><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Primary Address</p><p id="display-address" class="text-sm font-bold text-slate-900">${PROFILE.address || BUYER_INFO.address || ''}</p></div>
+                                    <div class="flex-1 w-full hidden" id="address-edit-mode"><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Edit Address</p><input type="text" id="input-address" value="${PROFILE.address || BUYER_INFO.address || ''}" class="w-full p-3 premium-input rounded-xl text-sm font-bold text-slate-900 shadow-sm"></div>
+                                </div>
+                                <button id="edit-address-btn" onclick="toggleAddressEdit()" class="ml-4 p-3 text-slate-400 bg-white border border-slate-200 hover:text-[#005035] hover:border-[#005035] rounded-xl transition-all shrink-0 relative z-10 shadow-sm"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                                <button id="save-address-btn" onclick="saveAddress()" class="ml-4 p-3 text-white bg-[#005035] hover:bg-[#003d29] rounded-xl transition-all shrink-0 hidden shadow-md relative z-10"><i data-lucide="check" class="w-4 h-4"></i></button>
+                            </div>
+                            
+                            <h4 class="font-bold text-xs uppercase tracking-widest text-slate-800 mt-12 mb-4 flex items-center gap-2 border-t border-slate-100 pt-8"><i data-lucide="shield" class="w-4 h-4 text-[#C5A059]"></i> Security Credential</h4>
+                            <div class="space-y-4 bg-white p-6 sm:p-8 rounded-2xl border border-slate-100 shadow-sm">
+                                <div class="relative"><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Current Secret</label><input type="password" id="curr-pass" placeholder="••••••••" class="w-full p-4 pr-12 premium-input rounded-xl text-sm font-mono tracking-widest shadow-sm"><button type="button" onclick="togglePasswordVisibility('curr-pass', 'eye-curr')" class="absolute right-4 top-[38px] text-slate-400 hover:text-[#C5A059]"><i data-lucide="eye" id="eye-curr" class="w-4 h-4"></i></button></div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="relative"><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">New Secret</label><input type="password" id="new-pass" placeholder="New Secret" class="w-full p-4 pr-12 premium-input rounded-xl text-sm font-mono tracking-widest shadow-sm"><button type="button" onclick="togglePasswordVisibility('new-pass', 'eye-new')" class="absolute right-4 top-[38px] text-slate-400 hover:text-[#C5A059]"><i data-lucide="eye" id="eye-new" class="w-4 h-4"></i></button></div>
+                                    <div class="relative"><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Confirm Secret</label><input type="password" id="conf-pass" placeholder="Confirm Secret" class="w-full p-4 pr-12 premium-input rounded-xl text-sm font-mono tracking-widest shadow-sm"><button type="button" onclick="togglePasswordVisibility('conf-pass', 'eye-conf')" class="absolute right-4 top-[38px] text-slate-400 hover:text-[#C5A059]"><i data-lucide="eye" id="eye-conf" class="w-4 h-4"></i></button></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-end pt-8">
+                                <button onclick="saveProfileChanges()" class="btn-luxury px-10 py-4 rounded-xl font-bold text-[11px] uppercase tracking-widest flex items-center gap-2">
+                                    <i data-lucide="save" class="w-4 h-4 text-[#C5A059]"></i> Update Identity
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                'docs': `
+                    <div class="max-w-3xl mx-auto fade-in">
+                        <div class="bg-slate-900 border border-white/10 p-8 rounded-3xl mb-8 flex flex-col sm:flex-row items-start sm:items-center gap-6 shadow-2xl">
+                            <div class="p-4 bg-gradient-to-br from-[#C5A059] to-[#A67C33] rounded-2xl text-white shrink-0 shadow-lg"><i data-lucide="briefcase" class="w-8 h-8"></i></div>
+                            <div>
+                                <h3 class="font-serif font-bold text-white text-2xl mb-1.5">Corporate & Museum Curator</h3>
+                                <p class="text-sm text-slate-400 leading-relaxed font-medium">Submit verified credentials to unlock wholesale protocols, tax exemptions, and exclusive bulk acquisition capabilities.</p>
+                            </div>
+                        </div>
+                        <div class="premium-card p-10 space-y-8">
+                            <div>
+                                <label class="block text-[11px] font-bold uppercase tracking-widest text-slate-800 mb-3">Entity Classification</label>
+                                <div class="relative">
+                                    <select class="w-full p-4 premium-input rounded-xl text-sm font-bold text-slate-900 appearance-none shadow-sm cursor-pointer">
+                                        <option>Corporate Entity / Boutique</option>
+                                        <option>Museum / Art Gallery</option>
+                                        <option>Educational Institution</option>
+                                    </select>
+                                    <i data-lucide="chevron-down" class="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold uppercase tracking-widest text-slate-800 mb-3">Official Documentation</label>
+                                <div onclick="triggerDocumentUpload()" class="border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center bg-[#FDFBF7] hover:bg-white hover:border-[#C5A059] cursor-pointer transition-all group">
+                                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100 shadow-sm group-hover:scale-110 transition-transform duration-500">
+                                        <i data-lucide="upload-cloud" class="w-6 h-6 text-slate-400 group-hover:text-[#C5A059]"></i>
+                                    </div>
+                                    <span id="doc-upload-text" class="text-sm font-bold text-slate-900 block mb-2 font-serif">Upload Trade License / ID PDF</span>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Maximum Secure Payload: 10MB</p>
+                                </div>
+                            </div>
+                            <button onclick="handleDocSubmit()" class="btn-luxury w-full py-4 rounded-xl text-[11px] uppercase tracking-[0.2em] font-bold flex justify-center items-center gap-2">
+                                <i data-lucide="send" class="w-4 h-4 text-[#C5A059]"></i> Transmit for Verification
+                            </button>
+                         </div>
+                    </div>
+                `
+            };
+
+            return `
+                ${renderHeader('Guardian Profile', 'Manage your secure identity and heritage preferences.')}
+                <div class="space-y-10 fade-in">
+                    <div class="flex justify-center border-b border-slate-200 max-w-3xl mx-auto px-4 sm:px-8 overflow-x-auto custom-scrollbar">
+                        <button onclick="switchProfileTab('identity')" class="px-6 sm:px-10 py-4 text-[10px] sm:text-[11px] font-bold transition-all border-b-[3px] ${profileTab === 'identity' ? 'text-[#005035] border-[#005035]' : 'text-slate-400 border-transparent hover:text-slate-800'} uppercase tracking-[0.2em] whitespace-nowrap">Identity</button>
+                        <button onclick="switchProfileTab('edit')" class="px-6 sm:px-10 py-4 text-[10px] sm:text-[11px] font-bold transition-all border-b-[3px] ${profileTab === 'edit' ? 'text-[#005035] border-[#005035]' : 'text-slate-400 border-transparent hover:text-slate-800'} uppercase tracking-[0.2em] whitespace-nowrap">Security</button>
+                        <button onclick="switchProfileTab('docs')" class="px-6 sm:px-10 py-4 text-[10px] sm:text-[11px] font-bold transition-all border-b-[3px] ${profileTab === 'docs' ? 'text-[#005035] border-[#005035]' : 'text-slate-400 border-transparent hover:text-slate-800'} uppercase tracking-[0.2em] whitespace-nowrap">Corporate</button>
+                    </div>
+                    ${content[profileTab]}
+                </div>
+            `;
+        }
+
+        function renderNotificationHistory() {
+            const hasNotifications = MOCK_NOTIFICATIONS.length > 0;
+            return `
+                <header class="flex flex-col md:flex-row justify-between md:items-end gap-6 mb-12 fade-in border-b border-[#C5A059]/20 pb-8">
+                    <div class="flex items-start md:items-center gap-6">
+                        <button onclick="setActiveView('dashboard')" class="p-3 bg-white hover:bg-[#FDFBF7] shadow-sm border border-slate-200 rounded-xl transition-all text-slate-400 hover:text-slate-900 active:scale-95 group shrink-0">
+                            <i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i>
+                        </button>
+                        <div>
+                            <span class="inline-flex items-center gap-2 px-3 py-1 mb-2 bg-[#FDFBF7] border border-[#C5A059]/20 text-[#C5A059] text-[9px] font-bold uppercase tracking-[0.2em] rounded-md">Security Log</span>
+                            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight font-serif mb-2">Transmission History</h2>
+                            <p class="text-slate-500 text-sm font-medium uppercase tracking-widest">Comprehensive audit trail of all secure alerts.</p>
+                        </div>
+                    </div>
+                    ${hasNotifications ? `<button onclick="clearAllNotifications()" class="btn-luxury px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 shrink-0"><i data-lucide="trash-2" class="w-4 h-4 text-[#C5A059]"></i> Purge Logs</button>` : ''}
+                </header>
+                
+                ${hasNotifications ? `
+                    <div class="premium-card overflow-hidden fade-in">
+                        <div class="divide-y divide-slate-100">
+                            ${MOCK_NOTIFICATIONS.map(n => `
+                                <div class="p-8 flex gap-6 items-start hover:bg-[#FDFBF7]/50 transition-all group relative ${n.unread ? 'bg-[#FDFBF7]' : ''}">
+                                    <div class="p-3.5 bg-white rounded-xl shadow-sm border border-slate-200 text-[#005035] group-hover:scale-110 group-hover:border-[#C5A059]/30 transition-all duration-500 shrink-0"><i data-lucide="${n.icon}" class="w-5 h-5"></i></div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-2">
+                                            <h4 class="font-bold text-slate-900 text-lg font-serif leading-snug">${n.text}</h4>
+                                            <span class="text-[9px] font-bold text-slate-500 bg-white px-3 py-1.5 rounded-md border border-slate-200 shadow-sm uppercase tracking-widest whitespace-nowrap shrink-0">${n.date}</span>
+                                        </div>
+                                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-4 flex items-center gap-2"><i data-lucide="clock" class="w-3.5 h-3.5 text-[#C5A059]"></i> Protocol Time: <span class="text-slate-700">${n.time}</span></p>
+                                        <div class="flex gap-4">
+                                            <button onclick="viewNotificationDetails(${n.id})" class="text-[10px] font-bold text-[#005035] hover:text-[#C5A059] tracking-widest uppercase flex items-center gap-1 transition-colors"><i data-lucide="eye" class="w-3.5 h-3.5"></i> Inspect</button>
+                                            <button onclick="archiveNotification(${n.id})" class="text-[10px] font-bold text-slate-400 hover:text-rose-500 tracking-widest uppercase transition-colors flex items-center gap-1"><i data-lucide="archive" class="w-3.5 h-3.5"></i> Archive</button>
+                                        </div>
+                                    </div>
+                                    ${n.unread ? `<div class="absolute right-8 top-10 w-2 h-2 bg-[#C5A059] rounded-full shadow-[0_0_8px_rgba(197,160,89,0.8)]"></div>` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="p-6 text-center bg-[#FDFBF7] border-t border-slate-100">
+                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-2">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-[#C5A059]"></i> End of Encrypted Audit Trail
+                            </p>
+                        </div>
+                    </div>
+                ` : `
+                    <div class="flex flex-col items-center justify-center py-24 bg-white rounded-[3rem] border border-slate-100 shadow-sm fade-in relative overflow-hidden">
+                        <div class="w-20 h-20 bg-[#FDFBF7] rounded-full flex items-center justify-center mb-6 border border-slate-100 relative z-10">
+                            <i data-lucide="bell-off" class="w-8 h-8 text-slate-300"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-2xl text-slate-900 mb-2 relative z-10">System Clear</h3>
+                        <p class="text-slate-500 text-sm mb-8 font-medium relative z-10">No new security alerts or notifications.</p>
+                        <button onclick="setActiveView('dashboard')" class="btn-luxury px-8 py-3 rounded-xl text-[11px] uppercase tracking-widest font-bold relative z-10 flex items-center gap-2">
+                            <i data-lucide="layout-dashboard" class="w-4 h-4 text-[#C5A059]"></i> Access Dashboard
+                        </button>
+                    </div>
+                `}
+            `;
+        }
+
+        function renderMainContent() {
+            const container = document.getElementById('main-content');
+            const renderers = {
+                'dashboard': renderDashboard,
+                'orders': renderOrders,
+                'vault': renderVault,
+                'wishlist': renderWishlist,
+                'shop': renderShop,
+                'messages': renderMessages,
+                'profile': renderProfile,
+                'notifications': renderNotificationHistory,
+                'cart': renderCart,
+                'checkout-success': renderCheckoutSuccess
+            };
+            container.innerHTML = (renderers[currentView] || renderDashboard)();
+            lucide.createIcons();
+            if (isNotifOpen) {
+                 const dropdown = document.getElementById('notif-dropdown');
+                 if(dropdown) {
+                    dropdown.classList.remove('hidden', 'opacity-0', 'scale-95', '-translate-y-4');
+                    dropdown.classList.add('opacity-100', 'scale-100', 'translate-y-0');
+                 }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const initial = _getViewFromURL();
+            currentView = initial;
+            _setURLForView(initial, true);
+            await ensureViewData(initial);
+            renderSidebar();
+            renderMainContent();
+            _bindDrawerMenuLinks();
+        });
+
+        window.addEventListener('popstate', async () => {
+            const v = _getViewFromURL();
+            await setActiveView(v, { pushURL: false });
+        });
+    </script>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+{% endblock %}
