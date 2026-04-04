@@ -1069,28 +1069,24 @@ _ATLAS_CACHE_TTL_SECONDS = 300  # 5 minutes
 # DB Helpers (mysql-connector)
 # -----------------------
 def get_db():
-import mysql.connector
+    host = app.config.get("DB_HOST")
+    user = app.config.get("DB_USER")
+    password = app.config.get("DB_PASSWORD")
+    database = app.config.get("DB_NAME")
+    port = int(app.config.get("DB_PORT") or 4000)
 
-host = app.config.get("DB_HOST")
-user = app.config.get("DB_USER")
-password = app.config.get("DB_PASSWORD")
-database = app.config.get("DB_NAME")
-port = int(app.config.get("DB_PORT") or 4000)
+    connect_kwargs = dict(
+        host=host,
+        user=user,
+        password=password,
+        database=database,
+        port=port,
+        autocommit=False,
+        connection_timeout=10,
+        ssl_disabled=False,
+    )
 
-connect_kwargs = dict(
-    host=host,
-    user=user,
-    password=password,
-    database=database,
-    port=port,
-    autocommit=False,
-    connection_timeout=10,
-
-    # ✅ TiDB requires SSL
-    ssl_disabled=False,
-)
-
-return mysql.connector.connect(**connect_kwargs)
+    return mysql.connector.connect(**connect_kwargs)
 
 
 def _load_atlas_district_names() -> List[str]:
