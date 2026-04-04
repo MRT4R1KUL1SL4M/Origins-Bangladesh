@@ -1075,18 +1075,14 @@ def get_db():
     database = app.config.get("DB_NAME")
     port = int(app.config.get("DB_PORT") or 4000)
 
-    connect_kwargs = dict(
+    return mysql.connector.connect(
         host=host,
         user=user,
         password=password,
         database=database,
         port=port,
-        autocommit=False,
-        connection_timeout=10,
         ssl_disabled=False,
     )
-
-    return mysql.connector.connect(**connect_kwargs)
 
 
 def _load_atlas_district_names() -> List[str]:
