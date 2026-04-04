@@ -1,14 +1,4 @@
-"""
-Origins Bangladesh - Flask + MySQL (mysql-connector-python)
 
-Goal: Navbar buttons behave realistically:
-- Search -> /shop?q=...
-- Currency change -> /set-currency/<code> (session)
-- Wishlist -> /wishlist (DB-backed)
-- Cart -> /cart (DB-backed)
-- Login/Register -> /auth/login, /auth/register (DB-backed)
-- Category/Subcategory -> /shop?category=...&sub=...
-"""
 
 from __future__ import annotations
 
@@ -1069,22 +1059,21 @@ _ATLAS_CACHE_TTL_SECONDS = 300  # 5 minutes
 # DB Helpers (mysql-connector)
 # -----------------------
 def get_db():
-    """Create a new DB connection using PyMySQL + TLS for TiDB Cloud."""
-    host = app.config.get("DB_HOST")
-    user = app.config.get("DB_USER")
-    password = app.config.get("DB_PASSWORD")
-    database = app.config.get("DB_NAME")
-    port = int(app.config.get("DB_PORT") or 4000)
-
     return pymysql.connect(
-        host=host,
-        user=user,
-        password=password,
-        database=database,
-        port=port,
+        host=app.config["DB_HOST"],
+        user=app.config["DB_USER"],
+        password=app.config["DB_PASSWORD"],
+        database=app.config["DB_NAME"],
+        port=int(app.config["DB_PORT"]),
         connect_timeout=10,
-        ssl={"ca": "/etc/ssl/certs/ca-certificates.crt"},
-        autocommit=False,
+
+        ssl={
+            "ca": "/etc/ssl/certs/ca-certificates.crt",
+            "check_hostname": False
+        },
+
+        cursorclass=pymysql.cursors.DictCursor,
+        autocommit=True,
     )
 
 
