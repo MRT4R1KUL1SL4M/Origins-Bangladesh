@@ -1,3 +1,4 @@
+import pymysql
 """
 Origins Bangladesh - Flask + MySQL (mysql-connector-python)
 
@@ -29,8 +30,6 @@ from types import SimpleNamespace
 from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import urlencode, quote
 
-import mysql.connector
-from mysql.connector import Error as MySQLError
 from markupsafe import Markup
 from flask import (
     Flask,
@@ -1069,7 +1068,6 @@ _ATLAS_CACHE_TTL_SECONDS = 300  # 5 minutes
 # DB Helpers (mysql-connector)
 # -----------------------
 from flask import g
-import pymysql
 
 def get_db():
     if "db" not in g:
