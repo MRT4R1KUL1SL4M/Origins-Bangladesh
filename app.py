@@ -1086,11 +1086,12 @@ connect_kwargs = dict(
     autocommit=False,
     connection_timeout=10,
 
-    # ✅ VERY IMPORTANT FOR TiDB
+    # ✅ TiDB requires SSL
     ssl_disabled=False,
 )
 
 return mysql.connector.connect(**connect_kwargs)
+
 
 def _load_atlas_district_names() -> List[str]:
     data_path = FSPath(app.root_path) / "static" / "assets" / "data" / "districts.json"
