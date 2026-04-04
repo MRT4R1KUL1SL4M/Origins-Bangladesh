@@ -1059,19 +1059,24 @@ _ATLAS_CACHE_TTL_SECONDS = 300  # 5 minutes
 # DB Helpers (mysql-connector)
 # -----------------------
 def get_db():
+    host = app.config.get("DB_HOST")
+    user = app.config.get("DB_USER")
+    password = app.config.get("DB_PASSWORD")
+    database = app.config.get("DB_NAME")
+    port = int(app.config.get("DB_PORT") or 4000)
+
     return pymysql.connect(
-        host=app.config["DB_HOST"],
-        user=app.config["DB_USER"],
-        password=app.config["DB_PASSWORD"],
-        database=app.config["DB_NAME"],
-        port=int(app.config["DB_PORT"]),
+        host=host,
+        user=user,
+        password=password,
+        database=database,
+        port=port,
         connect_timeout=10,
-
+        read_timeout=30,
+        write_timeout=30,
         ssl={
-            "ca": "/etc/ssl/certs/ca-certificates.crt",
-            "check_hostname": False
+            "ca": "/etc/ssl/certs/ca-certificates.crt"
         },
-
         cursorclass=pymysql.cursors.DictCursor,
         autocommit=True,
     )
