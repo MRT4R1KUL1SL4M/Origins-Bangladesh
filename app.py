@@ -1,4 +1,14 @@
+"""
+Origins Bangladesh - Flask + MySQL (mysql-connector-python)
 
+Goal: Navbar buttons behave realistically:
+- Search -> /shop?q=...
+- Currency change -> /set-currency/<code> (session)
+- Wishlist -> /wishlist (DB-backed)
+- Cart -> /cart (DB-backed)
+- Login/Register -> /auth/login, /auth/register (DB-backed)
+- Category/Subcategory -> /shop?category=...&sub=...
+"""
 
 from __future__ import annotations
 
@@ -19,8 +29,8 @@ from types import SimpleNamespace
 from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import urlencode, quote
 
-import pymysql
-from pymysql import MySQLError
+import mysql.connector
+from mysql.connector import Error as MySQLError
 from markupsafe import Markup
 from flask import (
     Flask,
@@ -1058,28 +1068,25 @@ _ATLAS_CACHE_TTL_SECONDS = 300  # 5 minutes
 # -----------------------
 # DB Helpers (mysql-connector)
 # -----------------------
-def get_db():
-    host = app.config.get("DB_HOST")
-    user = app.config.get("DB_USER")
-    password = app.config.get("DB_PASSWORD")
-    database = app.config.get("DB_NAME")
-    port = int(app.config.get("DB_PORT") or 4000)
+from flask import g
+import pymysql
 
-    return pymysql.connect(
-        host=host,
-        user=user,
-        password=password,
-        database=database,
-        port=port,
-        connect_timeout=10,
-        read_timeout=30,
-        write_timeout=30,
-        ssl={
-            "ca": "/etc/ssl/certs/ca-certificates.crt"
-        },
-        cursorclass=pymysql.cursors.DictCursor,
-        autocommit=True,
-    )
+def get_db():
+    if "db" not in g:
+        g.db = pymysql.connect(
+            host=app.config["DB_HOST"],
+            user=app.config["DB_USER"],
+            password=app.config["DB_PASSWORD"],
+            database=app.config["DB_NAME"],
+            port=int(app.config["DB_PORT"]),
+            connect_timeout=10,
+            read_timeout=30,
+            write_timeout=30,
+            ssl={"ca": "/etc/ssl/certs/ca-certificates.crt"},
+            cursorclass=pymysql.cursors.DictCursor,
+            autocommit=True,
+        )
+    return g.db
 
 
 def _load_atlas_district_names() -> List[str]:
@@ -1134,7 +1141,7 @@ def _ensure_atlas_districts_seeded() -> None:
 def db_fetchall(sql: str, params: Tuple[Any, ...] = ()) -> List[Dict[str, Any]]:
     conn = get_db()
     try:
-        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur = conn.cursor(dictionary=True)
         cur.execute(sql, params)
         rows = cur.fetchall()
         return rows or []
@@ -1148,7 +1155,7 @@ def db_fetchall(sql: str, params: Tuple[Any, ...] = ()) -> List[Dict[str, Any]]:
 def db_fetchone(sql: str, params: Tuple[Any, ...] = ()) -> Optional[Dict[str, Any]]:
     conn = get_db()
     try:
-        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur = conn.cursor(dictionary=True)
         cur.execute(sql, params)
         row = cur.fetchone()
         return row
@@ -1193,7 +1200,7 @@ def _next_ob_seq(type_code: str, yymm: str, start_seq: int) -> int:
     """
     conn = get_db()
     try:
-        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur = conn.cursor(dictionary=True)
         cur.execute(
             """
             INSERT INTO ob_id_sequence (type_code, yymm, last_seq)
@@ -4960,7 +4967,7 @@ def process_checkout():
         return redirect(url_for("cart"))
     conn = get_db()
     try:
-        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur = conn.cursor(dictionary=True)
         for item in summary["items"]:
             cur.execute("SELECT stock, price_bdt, title FROM product WHERE product_id=%s FOR UPDATE", (item["product_id"],))
             prow = cur.fetchone() or {}
@@ -10648,3 +10655,10 @@ def api_seller_campaign_request():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+@app.teardown_appcontext
+def close_db(exception):
+    from flask import g
+    db = g.pop("db", None)
+    if db is not None:
+        db.close()
