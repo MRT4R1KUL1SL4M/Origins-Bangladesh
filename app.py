@@ -1069,30 +1069,18 @@ _ATLAS_CACHE_TTL_SECONDS = 300  # 5 minutes
 # DB Helpers (mysql-connector)
 # -----------------------
 def get_db():
-    host = app.config.get("DB_HOST")
-    user = app.config.get("DB_USER")
-    password = app.config.get("DB_PASSWORD")
-    database = app.config.get("DB_NAME")
-    port = int(app.config.get("DB_PORT") or 4000)
-
-    connect_kwargs = dict(
-        host=host,
-        port=port,
-        user=user,
-        password=password,
-        database=database,
-        autocommit=False,
-        connection_timeout=15,
-        ssl_disabled=False,
+    return mysql.connector.connect(
+        host=app.config["DB_HOST"],
+        user=app.config["DB_USER"],
+        password=app.config["DB_PASSWORD"],
+        database=app.config["DB_NAME"],
+        port=int(app.config["DB_PORT"]),
+        
+        ssl_ca="/etc/ssl/certs/ca-certificates.crt",  # ✅ ADD THIS
+        ssl_verify_cert=True,                         # ✅ ADD THIS
+        
+        connection_timeout=10,
     )
-
-    ca_path = os.getenv("DB_SSL_CA", "").strip()
-    if ca_path:
-        connect_kwargs["ssl_ca"] = ca_path
-        connect_kwargs["ssl_verify_cert"] = True
-
-    return mysql.connector.connect(**connect_kwargs)
-
 
 def _load_atlas_district_names() -> List[str]:
     data_path = FSPath(app.root_path) / "static" / "assets" / "data" / "districts.json"
